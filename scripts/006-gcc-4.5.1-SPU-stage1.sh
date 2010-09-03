@@ -22,4 +22,4 @@ mkdir build-spu-stage1 && cd build-spu-stage1 || { exit 1; }
 ../configure --prefix="$PS3DEV/spu" --target="spu" --enable-languages="c,c++" --with-newlib || { exit 1; }
 
 ## Compile and install.
-make clean && make all-gcc && make install-gcc && make clean || { exit 1; }
+make clean && make -j 4 all-gcc && make install-gcc && make clean || { exit 1; }
