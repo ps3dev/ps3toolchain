@@ -7,7 +7,7 @@ diff -burN orig.gcc-4.5.0/config.sub gcc-4.5.0/config.sub
  		;;
 +	ppu)
 +		basic_machine=powerpc-unknown
-+		os=-eabi
++		os=-elf
 +		;;
  	ps2)
  		basic_machine=i386-ibm
