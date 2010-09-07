@@ -1,14 +1,38 @@
-diff -burN orig.gcc-4.5.0/config.sub gcc-4.5.0/config.sub
---- orig.gcc-4.5.0/config.sub	2010-03-23 11:26:40.000000000 -0300
-+++ gcc-4.5.0/config.sub	2010-05-25 12:30:40.891825956 -0300
+diff -burN orig.gcc-4.5.1/config.sub gcc-4.5.1/config.sub
+--- orig.gcc-4.5.1/config.sub	2010-03-23 11:26:40.000000000 -0300
++++ gcc-4.5.1/config.sub	2010-09-07 14:36:15.661504988 -0300
+@@ -4,7 +4,7 @@
+ #   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
+ #   Free Software Foundation, Inc.
+ 
+-timestamp='2010-03-22'
++timestamp='2010-09-07'
+ 
+ # This file is (in principle) common to ALL GNU software.
+ # The presence of a machine in this file suggests that SOME GNU software
 @@ -961,6 +961,10 @@
  	ppc64le-* | powerpc64little-*)
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
  		;;
 +	ppu)
-+		basic_machine=powerpc-unknown
++	        basic_machine=powerpc64-unknown
 +		os=-elf
 +		;;
  	ps2)
  		basic_machine=i386-ibm
  		;;
+diff -burN orig.gcc-4.5.1/gcc/config.gcc gcc-4.5.1/gcc/config.gcc
+--- orig.gcc-4.5.1/gcc/config.gcc	2010-07-14 05:41:46.000000000 -0300
++++ gcc-4.5.1/gcc/config.gcc	2010-09-07 14:50:47.142753447 -0300
+@@ -1976,6 +1976,11 @@
+ 	extra_options="${extra_options} rs6000/sysv4.opt"
+ 	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
+ 	;;
++powerpc64-*-elf*)
++	tm_file="${tm_file} dbxelf.h elfos.h usegas.h svr4.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
++	extra_options="${extra_options} rs6000/sysv4.opt"
++	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
++	;;
+ powerpc-*-eabialtivec*)
+ 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/eabi.h rs6000/e500.h rs6000/eabialtivec.h"
+ 	extra_options="${extra_options} rs6000/sysv4.opt"
