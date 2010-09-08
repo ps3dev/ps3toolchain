@@ -21,8 +21,24 @@ tar xfvj ../mpfr-2.4.2.tar.bz2 && ln -s mpfr-2.4.2 mpfr || { exit 1; }
 ## Create the build directory.
 mkdir build-ppu-stage1 && cd build-ppu-stage1 || { exit 1; }
 
-## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" --enable-languages="c,c++" --with-newlib || { exit 1; }
+## Configure the build
+../configure --prefix="$PS3DEV/ppu" --target="ppu" --enable-languages="c,c++" --with-altivec --with-cpu="cell" --with-newlib || { exit 1; }
+#../configure --prefix="$PS3DEV/ppu" --target="powerpc64-elf" --enable-languages="c,c++" --with-newlib || { exit 1; }
+
+#../configure --prefix="$PS3DEV/ppu" \
+#    --target="ppu" \
+#    --enable-languages="c,c++" \
+#    --disable-nls \
+#    --with-gnu-as \
+#    --with-gnu-ld \
+#    --enable-shared \
+#    --enable-multilib \
+#    --enable-target-optspace \
+#    --with-newlib \
+#    --disable-libssp \
+#    --disable-libgloss \
+#    --with-newlib
+#    --with-headers="$PS3SRC/newlib-1.18.0/newlib/libc/include"
 
 ## Compile and install.
 make clean && make -j 4 all-gcc && make install-gcc && make clean || { exit 1; }
