@@ -1,6 +1,6 @@
 diff -burN orig.gcc-4.5.1/config.sub gcc-4.5.1/config.sub
 --- orig.gcc-4.5.1/config.sub	2010-03-23 11:26:40.000000000 -0300
-+++ gcc-4.5.1/config.sub	2010-09-07 14:36:15.661504988 -0300
++++ gcc-4.5.1/config.sub	2010-09-08 16:24:41.001503622 -0300
 @@ -4,7 +4,7 @@
  #   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
  #   Free Software Foundation, Inc.
@@ -23,19 +23,20 @@ diff -burN orig.gcc-4.5.1/config.sub gcc-4.5.1/config.sub
  		;;
 diff -burN orig.gcc-4.5.1/gcc/config/rs6000/rs6000.c gcc-4.5.1/gcc/config/rs6000/rs6000.c
 --- orig.gcc-4.5.1/gcc/config/rs6000/rs6000.c	2010-06-04 01:56:54.000000000 -0300
-+++ gcc-4.5.1/gcc/config/rs6000/rs6000.c	2010-09-07 21:33:03.791503708 -0300
-@@ -24255,7 +24255,7 @@
++++ gcc-4.5.1/gcc/config/rs6000/rs6000.c	2010-09-08 16:25:42.491503924 -0300
+@@ -24255,7 +24255,9 @@
    if (TARGET_64BIT)
      {
        fputs ("\t.section\t\".opd\",\"aw\"\n\t.align 3\n", file);
--      ASM_OUTPUT_LABEL (file, name);
-+      // ASM_OUTPUT_LABEL (file, name);
++#ifndef USING_ELFOS_H
+       ASM_OUTPUT_LABEL (file, name);
++#endif
        fputs (DOUBLE_INT_ASM_OP, file);
        rs6000_output_function_entry (file, name);
        fputs (",.TOC.@tocbase,0\n\t.previous\n", file);
 diff -burN orig.gcc-4.5.1/gcc/config.gcc gcc-4.5.1/gcc/config.gcc
 --- orig.gcc-4.5.1/gcc/config.gcc	2010-07-14 05:41:46.000000000 -0300
-+++ gcc-4.5.1/gcc/config.gcc	2010-09-07 14:50:47.142753447 -0300
++++ gcc-4.5.1/gcc/config.gcc	2010-09-08 16:24:41.011512935 -0300
 @@ -1976,6 +1976,11 @@
  	extra_options="${extra_options} rs6000/sysv4.opt"
  	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
