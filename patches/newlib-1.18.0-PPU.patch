@@ -6,7 +6,7 @@ diff -burN orig.newlib-1.18.0/config.sub newlib-1.18.0/config.sub
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
  		;;
 +	ppu)
-+		basic_machine=powerpc64-unknown
++		basic_machine=powerpc-unknown
 +		os=-elf
 +		;;
  	ps2)

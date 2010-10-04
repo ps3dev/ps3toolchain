@@ -14,7 +14,7 @@ cat ../../patches/binutils-2.20-PPU.patch | patch -p1 || { exit ; }
 mkdir build-ppu && cd build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" --disable-nls --disable-werror || { exit 1; }
+../configure --prefix="$PS3DEV/ppu" --target="ppu" --disable-nls --disable-shared --disable-werror --enable-64-bit-bfd --with-altivec --with-cpu="cell" || { exit 1; }
 
 ## Compile and install.
 make clean && make -j 4 && make install && make clean || { exit 1; }
