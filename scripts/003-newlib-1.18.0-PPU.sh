@@ -1,8 +1,6 @@
 #!/bin/sh
 # newlib-1.18.0-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
-exit;
-
 ## Download the source code.
 wget --continue ftp://sources.redhat.com/pub/newlib/newlib-1.18.0.tar.gz || { exit 1; }
 
@@ -16,7 +14,8 @@ cat ../../patches/newlib-1.18.0-PPU.patch | patch -p1 || { exit 1; }
 mkdir build-ppu && cd build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" --without-gnu-as --disable-relocatable --enable-static --disable-multilib || { exit 1; }
+../configure --prefix="$PS3DEV/ppu" --target="ppu" || { exit 1; }
 
 ## Compile and install.
-make clean && make -j 4 && make install && make clean || { exit 1; }
+# make -j 4 && make install || { exit 1; }
+cp -Rv ../newlib/libc/include $PS3DEV/ppu || { exit 1; }

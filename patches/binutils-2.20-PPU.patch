@@ -6,8 +6,8 @@ diff -burN orig.binutils-2.20/config.sub binutils-2.20/config.sub
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
  		;;
 +	ppu)
-+		basic_machine=powerpc-unknown
-+		os=-elf64
++		basic_machine=powerpc64-unknown
++		os=-linux-gnu
 +		;;
  	ps2)
  		basic_machine=i386-ibm
