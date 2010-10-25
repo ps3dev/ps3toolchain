@@ -7,7 +7,7 @@ diff -burN orig.newlib-1.18.0/config.sub newlib-1.18.0/config.sub
  		;;
 +	ppu)
 +		basic_machine=powerpc64-unknown
-+		os=-linux-gnu
++		os=-none
 +		;;
  	ps2)
  		basic_machine=i386-ibm

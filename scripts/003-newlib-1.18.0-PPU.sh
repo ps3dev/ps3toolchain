@@ -17,5 +17,4 @@ mkdir build-ppu && cd build-ppu || { exit 1; }
 ../configure --prefix="$PS3DEV/ppu" --target="ppu" || { exit 1; }
 
 ## Compile and install.
-# make -j 4 && make install || { exit 1; }
-cp -Rv ../newlib/libc/include $PS3DEV/ppu || { exit 1; }
+make -j 4 && make install || { exit 1; }
