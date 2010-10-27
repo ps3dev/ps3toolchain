@@ -17,7 +17,7 @@
 	std		%r2, 0x00(%r1)
 	LOAD_DWORD(%r2, _start)
 	ld		%r2, 0x08(%r2)
-	bl		_initialize
+	bl		._initialize
 	ld		%r0, 0x70(%r1)
 	addi	%r1, %r1, 0x80
 	mtlr	%r0
