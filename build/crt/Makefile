@@ -30,7 +30,7 @@ install: $(TARGETS)
 crt.o: crt1.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-crt1.o: crt0.o crt.o
+crt1.o: crt.o crt0.o
 	$(LD) $(LDFLAGS) -r $< -o $@
 
 %.o: %.c

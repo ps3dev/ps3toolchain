@@ -22,7 +22,18 @@ tar xfvj ../mpfr-2.4.2.tar.bz2 && ln -s mpfr-2.4.2 mpfr || { exit 1; }
 mkdir build-ppu-stage2 && cd build-ppu-stage2 || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" --disable-libgomp --disable-multilib --disable-shared --disable-threads --enable-checking="release" --enable-languages="c,c++" --with-cpu="cell" --with-newlib || { exit 1; }
+../configure --prefix="$PS3DEV/ppu" --target="ppu" \
+    --disable-libgomp \
+    --disable-libmudflap \
+    --disable-multilib \
+    --disable-nls \
+    --disable-shared \
+    --disable-threads \
+    --enable-checking="release" \
+    --enable-languages="c,c++" \
+    --with-cpu="cell" \
+    --with-newlib \
+    || { exit 1; }
 
 ## Compile and install.
 make -j 4 all && make install || { exit 1; }

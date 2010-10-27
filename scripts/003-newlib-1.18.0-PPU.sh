@@ -18,3 +18,7 @@ mkdir build-ppu && cd build-ppu || { exit 1; }
 
 ## Compile and install.
 make -j 4 && make install || { exit 1; }
+
+## Build the crt files from the ps3chain project.
+## http://github.com/HACKERCHANNEL/ps3chain
+cd ../../crt && make clean && make && make install || { exit 1; }
