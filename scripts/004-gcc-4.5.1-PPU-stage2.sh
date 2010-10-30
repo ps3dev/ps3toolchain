@@ -23,14 +23,19 @@ mkdir build-ppu-stage2 && cd build-ppu-stage2 || { exit 1; }
 
 ## Configure the build.
 ../configure --prefix="$PS3DEV/ppu" --target="ppu" \
+    --disable-bootstrap \
+    --disable-checking \
     --disable-libgomp \
     --disable-libmudflap \
+    --disable-libunwind-exceptions \
     --disable-multilib \
     --disable-nls \
     --disable-shared \
     --disable-threads \
-    --enable-checking="release" \
+    --enable-__cxa_atexit \
+    --enable-altivec \
     --enable-languages="c,c++" \
+    --enable-secureplt \
     --with-cpu="cell" \
     --with-newlib \
     || { exit 1; }

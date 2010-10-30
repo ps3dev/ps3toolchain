@@ -18,8 +18,8 @@ mkdir build-ppu && cd build-ppu || { exit 1; }
     --disable-multilib \
     --disable-nls \
     --disable-shared \
-    --disable-threads \
     --disable-werror \
+    --enable-64-bit-bfd \
     || { exit 1; }
 
 ## Compile and install.
