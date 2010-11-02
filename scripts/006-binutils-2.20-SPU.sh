@@ -11,7 +11,12 @@ rm -Rf binutils-2.20 && tar xfvj binutils-2.20.tar.bz2 && cd binutils-2.20 || { 
 mkdir build-spu && cd build-spu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/spu" --target="spu" --disable-multilib --disable-werror || { exit 1; }
+../configure --prefix="$PS3DEV/spu" --target="spu" \
+    --disable-multilib \
+    --disable-nls \
+    --disable-shared \
+    --disable-werror \
+    || { exit 1; }
 
 ## Compile and install.
 make -j 4 && make install || { exit 1; }
