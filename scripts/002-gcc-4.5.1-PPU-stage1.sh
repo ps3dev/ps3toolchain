@@ -33,7 +33,6 @@ mkdir build-ppu-stage1 && cd build-ppu-stage1 || { exit 1; }
     --disable-shared \
     --disable-threads \
     --enable-__cxa_atexit \
-    --enable-altivec \
     --enable-languages="c,c++" \
     --enable-secureplt \
     --with-cpu="cell" \
