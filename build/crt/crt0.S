@@ -4,7 +4,7 @@
 	sldi	reg, reg, 0x20; \
 	oris	reg, reg, (sym)@h; \
 	ori		reg, reg, (sym)@l \
-
+	
 
 .global ._start
 ._start:
@@ -26,7 +26,7 @@
 .section ".bss","aw"
 .global __libc_stack_end
 __libc_stack_end:
-	.quad 0
+	.quad 0	
 
 .section ".opd","aw"
 .global _start
