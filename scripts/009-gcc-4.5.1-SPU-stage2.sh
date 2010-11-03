@@ -19,13 +19,7 @@ tar xfvj ../mpfr-2.4.2.tar.bz2 && ln -s mpfr-2.4.2 mpfr || { exit 1; }
 mkdir build-spu-stage2 && cd build-spu-stage2 || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/spu" --target="spu" \
-    --disable-checking \
-    --disable-multilib \
-    --disable-nls \
-    --disable-shared \
-    --enable-languages="c,c++" \
-    || { exit 1; }
+../configure --prefix="$PS3DEV/spu" --target="spu" --disable-libssp --disable-nls --enable-languages="c,c++" --with-newlib || { exit 1; }
 
 ## Compile and install.
-make -j 4 all-gcc && make install-gcc || { exit 1; }
+make -j 4 all && make install || { exit 1; }
