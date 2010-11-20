@@ -1,6 +1,6 @@
-diff -burN orig.newlib-1.18.0/config.sub newlib-1.18.0/config.sub
+diff -burN --exclude=.git orig.newlib-1.18.0/config.sub newlib-1.18.0-PPU/config.sub
 --- orig.newlib-1.18.0/config.sub	2009-11-20 06:10:09.000000000 -0400
-+++ newlib-1.18.0/config.sub	2010-11-14 01:19:19.341874687 -0400
++++ newlib-1.18.0-PPU/config.sub	2010-11-20 02:58:27.831877194 -0400
 @@ -4,7 +4,7 @@
  #   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
  #   Free Software Foundation, Inc.
@@ -30,9 +30,9 @@ diff -burN orig.newlib-1.18.0/config.sub newlib-1.18.0/config.sub
  	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
  	      | -uxpv* | -beos* | -mpeix* | -udk* \
  	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
-diff -burN orig.newlib-1.18.0/newlib/configure.host newlib-1.18.0/newlib/configure.host
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/configure.host newlib-1.18.0-PPU/newlib/configure.host
 --- orig.newlib-1.18.0/newlib/configure.host	2009-12-10 13:12:11.000000000 -0400
-+++ newlib-1.18.0/newlib/configure.host	2010-11-14 03:03:14.443125045 -0400
++++ newlib-1.18.0-PPU/newlib/configure.host	2010-11-20 02:58:27.951878094 -0400
 @@ -482,6 +482,9 @@
  	sys_dir=sparc64
  	unix_dir=unix
@@ -43,9 +43,9 @@ diff -burN orig.newlib-1.18.0/newlib/configure.host newlib-1.18.0/newlib/configu
    spu-*-*)
  	default_newlib_io_long_long="yes"
  	default_newlib_atexit_dynamic_alloc="no"
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0/newlib/libc/sys/configure
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-PPU/newlib/libc/sys/configure
 --- orig.newlib-1.18.0/newlib/libc/sys/configure	2009-12-17 16:41:36.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/configure	2010-11-14 01:34:28.954375518 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/configure	2010-11-20 02:58:28.121874870 -0400
 @@ -966,6 +966,7 @@
  h8300hms
  h8500hms
@@ -63,9 +63,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0/newlib/lib
  	m88kbug) subdirs="$subdirs m88kbug"
   ;;
  	mmixware) subdirs="$subdirs mmixware"
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0/newlib/libc/sys/configure.in
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0-PPU/newlib/libc/sys/configure.in
 --- orig.newlib-1.18.0/newlib/libc/sys/configure.in	2007-05-24 14:33:37.000000000 -0300
-+++ newlib-1.18.0/newlib/libc/sys/configure.in	2010-11-14 01:34:05.211875351 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/configure.in	2010-11-20 02:58:28.121874870 -0400
 @@ -29,6 +29,7 @@
  	h8300hms) AC_CONFIG_SUBDIRS(h8300hms) ;;
  	h8500hms) AC_CONFIG_SUBDIRS(h8500hms) ;;
@@ -74,9 +74,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0/newlib/
  	m88kbug) AC_CONFIG_SUBDIRS(m88kbug) ;;
  	mmixware) AC_CONFIG_SUBDIRS(mmixware) ;;
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0-PPU/newlib/libc/sys/lv2/aclocal.m4
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4	2010-11-14 02:23:02.381874648 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/aclocal.m4	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,992 @@
 +# generated automatically by aclocal 1.11 -*- Autoconf -*-
 +
@@ -1070,24 +1070,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0/newli
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/chmod.c newlib-1.18.0/newlib/libc/sys/lv2/chmod.c
---- orig.newlib-1.18.0/newlib/libc/sys/lv2/chmod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/chmod.c	2010-11-14 02:47:01.801874284 -0400
-@@ -0,0 +1,11 @@
-+//
-+// chmod.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <sys/types.h>
-+
-+int chmod ( const char *path, mode_t mode )
-+{
-+  return 0;
-+}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0/newlib/libc/sys/lv2/configure
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/configure	2010-11-14 02:32:05.685624784 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure	2010-11-20 02:59:06.243124707 -0400
 @@ -0,0 +1,4686 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -5775,9 +5760,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0/newlib
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0/newlib/libc/sys/lv2/configure.in
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure.in
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/configure.in	2010-11-14 02:31:57.851875663 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure.in	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,13 @@
 +dnl This is the newlib/libc/sys/rtems configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -5792,9 +5777,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0/new
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/crt0.c newlib-1.18.0/newlib/libc/sys/lv2/crt0.c
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/crt0.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/crt0.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/crt0.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/crt0.c	2010-11-14 02:29:58.781874026 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/crt0.c	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,6 @@
 +//
 +// crt0.c
@@ -5802,9 +5787,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/crt0.c newlib-1.18.0/newlib/li
 +//
 +
 +void _start ( void ) { }
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c newlib-1.18.0/newlib/libc/sys/lv2/dup.c
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/dup.c	2010-11-14 02:54:39.711874718 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,9 @@
 +//
 +// dup.c
@@ -5815,24 +5800,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c newlib-1.18.0/newlib/lib
 +{
 +  return -1;
 +}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c
---- orig.newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c	2010-11-14 02:39:22.161874216 -0400
-@@ -0,0 +1,11 @@
-+//
-+// getcwd.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <stdlib.h>
-+
-+char *getcwd ( char *buffer, size_t size )
-+{
-+  return NULL;
-+}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/gettimeofday.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c	2010-11-14 02:43:11.441874744 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/gettimeofday.c	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,9 @@
 +//
 +// getttimeofday.c
@@ -5843,9 +5813,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/gettimeofday.c newlib-1.18.0/n
 +{
 +  return 0;
 +}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c newlib-1.18.0/newlib/libc/sys/lv2/glob.c
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/glob.c	2010-11-14 02:39:40.171873763 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,11 @@
 +//
 +// glob.c
@@ -5858,9 +5828,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c newlib-1.18.0/newlib/li
 +{
 +  return 0;
 +}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newlib-1.18.0/newlib/libc/sys/lv2/globfree.c
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/globfree.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/globfree.c	2010-11-14 02:37:40.201875510 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/globfree.c	2010-11-20 02:58:28.221874116 -0400
 @@ -0,0 +1,11 @@
 +//
 +// globfree.c
@@ -5873,9 +5843,9 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newlib-1.18.0/newli
 +{
 +  return;
 +}
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.am
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am	2010-11-14 02:54:52.481874156 -0400
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.am	2010-11-20 02:59:02.191875068 -0400
 @@ -0,0 +1,18 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -5887,7 +5857,7 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0/newl
 +
 +noinst_LIBRARIES = lib.a
 +
-+lib_a_SOURCES = chmod.c dup.c getcwd.c gettimeofday.c glob.c globfree.c umask.c
++lib_a_SOURCES = dup.c gettimeofday.c glob.c globfree.c
 +lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 +lib_a_CFLAGS = $(AM_CFLAGS)
 +
@@ -5895,10 +5865,10 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0/newl
 +
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in
+diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.in
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in	2010-11-14 02:54:54.535624779 -0400
-@@ -0,0 +1,451 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.in	2010-11-20 02:59:04.473125161 -0400
+@@ -0,0 +1,431 @@
 +# Makefile.in generated by automake 1.11 from Makefile.am.
 +# @configure_input@
 +
@@ -5953,10 +5923,8 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newl
 +ARFLAGS = cru
 +lib_a_AR = $(AR) $(ARFLAGS)
 +lib_a_LIBADD =
-+am_lib_a_OBJECTS = lib_a-chmod.$(OBJEXT) lib_a-dup.$(OBJEXT) \
-+	lib_a-getcwd.$(OBJEXT) lib_a-gettimeofday.$(OBJEXT) \
-+	lib_a-glob.$(OBJEXT) lib_a-globfree.$(OBJEXT) \
-+	lib_a-umask.$(OBJEXT)
++am_lib_a_OBJECTS = lib_a-dup.$(OBJEXT) lib_a-gettimeofday.$(OBJEXT) \
++	lib_a-glob.$(OBJEXT) lib_a-globfree.$(OBJEXT)
 +lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 +DEFAULT_INCLUDES = -I.@am__isrc@
 +depcomp =
@@ -6074,7 +6042,7 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newl
 +INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 +AM_CCASFLAGS = $(INCLUDES)
 +noinst_LIBRARIES = lib.a
-+lib_a_SOURCES = chmod.c dup.c getcwd.c gettimeofday.c glob.c globfree.c umask.c
++lib_a_SOURCES = dup.c gettimeofday.c glob.c globfree.c
 +lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 +lib_a_CFLAGS = $(AM_CFLAGS)
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
@@ -6137,23 +6105,11 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newl
 +.c.obj:
 +	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 +
-+lib_a-chmod.o: chmod.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-chmod.o `test -f 'chmod.c' || echo '$(srcdir)/'`chmod.c
-+
-+lib_a-chmod.obj: chmod.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-chmod.obj `if test -f 'chmod.c'; then $(CYGPATH_W) 'chmod.c'; else $(CYGPATH_W) '$(srcdir)/chmod.c'; fi`
-+
 +lib_a-dup.o: dup.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.o `test -f 'dup.c' || echo '$(srcdir)/'`dup.c
 +
 +lib_a-dup.obj: dup.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.obj `if test -f 'dup.c'; then $(CYGPATH_W) 'dup.c'; else $(CYGPATH_W) '$(srcdir)/dup.c'; fi`
-+
-+lib_a-getcwd.o: getcwd.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getcwd.o `test -f 'getcwd.c' || echo '$(srcdir)/'`getcwd.c
-+
-+lib_a-getcwd.obj: getcwd.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getcwd.obj `if test -f 'getcwd.c'; then $(CYGPATH_W) 'getcwd.c'; else $(CYGPATH_W) '$(srcdir)/getcwd.c'; fi`
 +
 +lib_a-gettimeofday.o: gettimeofday.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-gettimeofday.o `test -f 'gettimeofday.c' || echo '$(srcdir)/'`gettimeofday.c
@@ -6172,12 +6128,6 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newl
 +
 +lib_a-globfree.obj: globfree.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-globfree.obj `if test -f 'globfree.c'; then $(CYGPATH_W) 'globfree.c'; else $(CYGPATH_W) '$(srcdir)/globfree.c'; fi`
-+
-+lib_a-umask.o: umask.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-umask.o `test -f 'umask.c' || echo '$(srcdir)/'`umask.c
-+
-+lib_a-umask.obj: umask.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-umask.obj `if test -f 'umask.c'; then $(CYGPATH_W) 'umask.c'; else $(CYGPATH_W) '$(srcdir)/umask.c'; fi`
 +
 +ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 +	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -6350,18 +6300,3 @@ diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0/newl
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -burN orig.newlib-1.18.0/newlib/libc/sys/lv2/umask.c newlib-1.18.0/newlib/libc/sys/lv2/umask.c
---- orig.newlib-1.18.0/newlib/libc/sys/lv2/umask.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0/newlib/libc/sys/lv2/umask.c	2010-11-14 02:47:15.931874276 -0400
-@@ -0,0 +1,11 @@
-+//
-+// umask.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <sys/types.h>
-+
-+mode_t umask ( mode_t cmask )
-+{
-+  return 0;
-+}
