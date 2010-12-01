@@ -1087,8 +1087,8 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newl
 +m4_include([../../../acinclude.m4])
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/autolock.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/autolock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/autolock.c	2010-11-20 19:18:09.201874284 -0400
-@@ -0,0 +1,38 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/autolock.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,39 @@
 +//
 +// autolock.c
 +// by Marcus Comstedt <marcus@mc.pp.se>
@@ -1119,7 +1119,8 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newl
 +  /* Need to check the magic again now that we have the lock... */
 +  if (LWMUTEX_UNINITIALIZED(pMutex)) {
 +
-+    sys_lwmutex_create(pMutex, &__libc_lock_attributes);
++    if(sys_lwmutex_create(pMutex, &__libc_lock_attributes))
++      abort();
 +
 +  }
 +
@@ -5846,30 +5847,35 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/crt0.c newlib-1
 +void _start ( void ) { }
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/dup.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c	2010-11-20 02:58:28.221874116 -0400
-@@ -0,0 +1,9 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,12 @@
 +//
 +// dup.c
 +// by Dan Peori (dan.peori@oopo.net)
 +//
 +
++#include <errno.h>
++
 +int dup ( int old_handle )
 +{
++  errno = ENOSYS;
 +  return -1;
 +}
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getcwd.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getcwd.c	2010-11-20 04:46:16.682283590 -0400
-@@ -0,0 +1,11 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getcwd.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,13 @@
 +//
 +// getcwd.c
 +// by Dan Peori (dan.peori@oopo.net)
 +//
 +
 +#include <stdlib.h>
++#include <errno.h>
 +
 +char *getcwd ( char *buffer, size_t size )
 +{
++  errno = ENOSYS;
 +  return NULL;
 +}
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getreent.c
@@ -5893,33 +5899,39 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newl
 +}
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/getrusage.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getrusage.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/getrusage.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getrusage.c	2010-11-24 09:06:22.144374350 -0400
-@@ -0,0 +1,12 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getrusage.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,14 @@
 +//
 +// getrusage.c
 +// by Dan Peori (dan.peori@oopo.net)
 +//
 +
 +#include <sys/resource.h>
++#include <errno.h>
 +
 +int getrusage ( int who, struct rusage *r_usage )
 +{
++  errno = ENOSYS;
 +  return -1;
 +}
 +
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/glob.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c	2010-11-20 02:58:28.221874116 -0400
-@@ -0,0 +1,11 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,15 @@
 +//
 +// glob.c
 +// by Dan Peori (dan.peori@oopo.net)
 +//
 +
 +#include <glob.h>
++#include <stdlib.h>
++#include <errno.h>
 +
 +int glob ( const char *pattern, int flags, int (*errfunc) ( const char *epath, int eerrno ), glob_t *pglob )
 +{
++  if (errfunc != NULL)
++    errfunc(NULL, ENOSYS);
 +  return 0;
 +}
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/globfree.c
@@ -5939,8 +5951,8 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newl
 +}
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock.c	2010-11-20 19:18:09.211874541 -0400
-@@ -0,0 +1,45 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,43 @@
 +//
 +// lock.c
 +// by Marcus Comstedt <marcus@mc.pp.se>
@@ -5960,8 +5972,7 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1
 +
 +int __libc_lock_close(__libc_lock_t *lock)
 +{
-+  sys_lwmutex_destroy(lock);
-+  return 0;
++  return sys_lwmutex_destroy(lock);
 +}
 +
 +int __libc_lock_acquire(__libc_lock_t *lock)
@@ -5975,8 +5986,7 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1
 +{
 +  if (LWMUTEX_UNINITIALIZED(lock))
 +    __libc_auto_lock_allocate(lock);
-+  /* Maybe there exists a real sys_lwmutex_trylock? */
-+  return sys_lwmutex_lock(lock, 1);
++  return sys_lwmutex_trylock(lock);
 +}
 +
 +int __libc_lock_release(__libc_lock_t *lock)
@@ -5988,8 +5998,8 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1
 +
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock-internal.h
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock-internal.h	2010-11-20 19:18:09.211874541 -0400
-@@ -0,0 +1,26 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock-internal.h	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,27 @@
 +#include <stdint.h>
 +
 +typedef struct sys_lwmutex sys_lwmutex_t;
@@ -6003,9 +6013,10 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h
 +}sys_lwmutex_attribute_t;
 +
 +
-+extern uint32_t sys_lwmutex_create(sys_lwmutex_t *lwmutex, const sys_lwmutex_attribute_t *lwmutex_attr);
-+extern void sys_lwmutex_destroy(sys_lwmutex_t *lwmutex);
++extern int32_t sys_lwmutex_create(sys_lwmutex_t *lwmutex, const sys_lwmutex_attribute_t *lwmutex_attr);
++extern int32_t sys_lwmutex_destroy(sys_lwmutex_t *lwmutex);
 +extern int32_t sys_lwmutex_lock(sys_lwmutex_t *lwmutex, uint64_t timeout_usec);
++extern int32_t sys_lwmutex_trylock(sys_lwmutex_t *lwmutex);
 +extern int32_t sys_lwmutex_unlock(sys_lwmutex_t *lwmutex);
 +
 +static const sys_lwmutex_attribute_t __libc_lock_attributes = {
@@ -6018,8 +6029,8 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h
 +
 diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock_recursive.c
 --- orig.newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock_recursive.c	2010-11-20 19:18:09.211874541 -0400
-@@ -0,0 +1,45 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock_recursive.c	2010-12-01 15:43:07.704374963 -0400
+@@ -0,0 +1,43 @@
 +//
 +// lock_recursive.c
 +// by Marcus Comstedt <marcus@mc.pp.se>
@@ -6039,8 +6050,7 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.
 +
 +int __libc_lock_close_recursive(__libc_lock_recursive_t *lock)
 +{
-+  sys_lwmutex_destroy(lock);
-+  return 0;
++  return sys_lwmutex_destroy(lock);
 +}
 +
 +int __libc_lock_acquire_recursive(__libc_lock_recursive_t *lock)
@@ -6054,8 +6064,7 @@ diff -burN --exclude=.git orig.newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.
 +{
 +  if (LWMUTEX_UNINITIALIZED(lock))
 +    __libc_auto_lock_allocate(lock);
-+  /* Maybe there exists a real sys_lwmutex_trylock? */
-+  return sys_lwmutex_lock(lock, 1);
++  return sys_lwmutex_trylock(lock);
 +}
 +
 +int __libc_lock_release_recursive(__libc_lock_recursive_t *lock)
