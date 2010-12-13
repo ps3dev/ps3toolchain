@@ -19,8 +19,8 @@
 
   export PS3DEV=/usr/local/ps3dev
   export PATH=$PATH:$PS3DEV/bin
-  export PATH=$PATH:$PS3DEV/ppu/bin
-  export PATH=$PATH:$PS3DEV/spu/bin
+  export PATH=$PATH:$PS3DEV/host/ppu/bin
+  export PATH=$PATH:$PS3DEV/host/spu/bin
 
  3) Run the toolchain script:
 

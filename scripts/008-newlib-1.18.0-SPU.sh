@@ -7,11 +7,17 @@ wget --continue ftp://sources.redhat.com/pub/newlib/newlib-1.18.0.tar.gz || { ex
 ## Unpack the source code.
 rm -Rf newlib-1.18.0 && tar xfvz newlib-1.18.0.tar.gz && cd newlib-1.18.0 || { exit 1; }
 
+## Patch the source code.
+cat ../../patches/newlib-1.18.0-PS3.patch | patch -p1 || { exit 1; }
+
 ## Create the build directory.
 mkdir build-spu && cd build-spu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/spu" --target="spu" || { exit 1; }
+../configure --prefix="$PS3DEV/host/spu" --target="spu" \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
+    || { exit 1; }
 
 ## Compile and install.
 make -j 4 && make install || { exit 1; }

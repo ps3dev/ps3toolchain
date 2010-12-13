@@ -8,17 +8,16 @@ wget --continue ftp://sources.redhat.com/pub/newlib/newlib-1.18.0.tar.gz || { ex
 rm -Rf newlib-1.18.0 && tar xfvz newlib-1.18.0.tar.gz && cd newlib-1.18.0 || { exit 1; }
 
 ## Patch the source code.
-cat ../../patches/newlib-1.18.0-PPU.patch | patch -p1 || { exit 1; }
+cat ../../patches/newlib-1.18.0-PS3.patch | patch -p1 || { exit 1; }
 
 ## Create the build directory.
 mkdir build-ppu && cd build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" --disable-multilib --disable-nls --disable-shared || { exit 1; }
+../configure --prefix="$PS3DEV/host/ppu" --target="ppu" \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
+    || { exit 1; }
 
 ## Compile and install.
 make -j 4 && make install || { exit 1; }
-
-## Build the crt files from the ps3chain project.
-## http://github.com/HACKERCHANNEL/ps3chain
-cd ../../crt && make clean && make && make install || { exit 1; }
