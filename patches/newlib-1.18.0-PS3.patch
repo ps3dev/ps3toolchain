@@ -631,7 +631,7 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1
 +#undef __SYMBOL_PREFIX
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.18.0-PPU/libgloss/libsysbase/configure
 --- newlib-1.18.0/libgloss/libsysbase/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/configure	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PPU/libgloss/libsysbase/configure	2010-12-17 13:23:09.763125563 -0400
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -4774,7 +4774,7 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.
 +}
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1.18.0-PPU/libgloss/libsysbase/Makefile.in
 --- newlib-1.18.0/libgloss/libsysbase/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/Makefile.in	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PPU/libgloss/libsysbase/Makefile.in	2010-12-17 13:21:40.133125010 -0400
 @@ -0,0 +1,151 @@
 +# Copyright (c) 1998 Cygnus Support
 +#
@@ -4845,11 +4845,11 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1
 +# object files needed
 +OBJS = abort.o close.o environ.o sbrk.o syscalls.o _exit.o fstat.o isatty.o \
 +	   lseek.o open.o read.o write.o lock.o ftruncate.o getpid.o fsync.o chdir.o\
-+	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o
-+	   
++	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o mkdir.o rmdir.o
++
 +	#link.o stat.o \
 +	#malloc_vars.o \
-+	#mkdir.o dir.o rename.o statvfs.o \
++	#dir.o rename.o statvfs.o \
 +	#flock.o truncate.o dirent.o \
 +	#fchmod.o
 +
@@ -4927,6 +4927,28 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1
 +
 +config.status: configure
 +	$(SHELL) config.status --recheck
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.0-PPU/libgloss/libsysbase/mkdir.c
+--- newlib-1.18.0/libgloss/libsysbase/mkdir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PPU/libgloss/libsysbase/mkdir.c	2010-12-17 13:18:45.221875045 -0400
+@@ -0,0 +1,18 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++#include <errno.h>
++
++int mkdir(const char *path,mode_t mode)
++{
++  struct _reent *r = _REENT;
++
++  if(__syscalls.mkdir_r)
++    return __syscalls.mkdir_r(r,path,mode);
++
++  r->_errno = ENOSYS;
++  return -1;
++}
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0-PPU/libgloss/libsysbase/open.c
 --- newlib-1.18.0/libgloss/libsysbase/open.c	1969-12-31 20:00:00.000000000 -0400
 +++ newlib-1.18.0-PPU/libgloss/libsysbase/open.c	2010-12-14 11:06:03.161873871 -0400
@@ -4995,6 +5017,28 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.0-PPU/libgloss/libsysbase/rmdir.c
+--- newlib-1.18.0/libgloss/libsysbase/rmdir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PPU/libgloss/libsysbase/rmdir.c	2010-12-17 13:19:33.243125025 -0400
+@@ -0,0 +1,18 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++#include <errno.h>
++
++int rmdir(const char *dirname)
++{
++  struct _reent *r = _REENT;
++
++  if(__syscalls.rmdir_r)
++    return __syscalls.rmdir_r(r,dirname);
++
++  r->_errno = ENOSYS;
++  return -1;
++}
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0-PPU/libgloss/libsysbase/sbrk.c
 --- newlib-1.18.0/libgloss/libsysbase/sbrk.c	1969-12-31 20:00:00.000000000 -0400
 +++ newlib-1.18.0-PPU/libgloss/libsysbase/sbrk.c	2010-12-14 11:06:03.161873871 -0400
@@ -5025,8 +5069,8 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0
 +}
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.18.0-PPU/libgloss/libsysbase/syscalls.c
 --- newlib-1.18.0/libgloss/libsysbase/syscalls.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/syscalls.c	2010-12-14 11:06:03.161873871 -0400
-@@ -0,0 +1,23 @@
++++ newlib-1.18.0-PPU/libgloss/libsysbase/syscalls.c	2010-12-17 13:27:47.823124359 -0400
+@@ -0,0 +1,25 @@
 +#include <sys/syscalls.h>
 +
 +struct __syscalls_t __syscalls = {
@@ -5048,7 +5092,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.
 +	NULL,			//	sys_lwmutex_lock_r
 +	NULL,			//	sys_lwmutex_trylock_r
 +	NULL,			//	sys_lwmutex_unlock_r
-+	NULL			//	exit
++	NULL,			//	exit
++	NULL,                   //      mkdir_r
++	NULL,                   //      rmdir_r
 +};
 diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18.0-PPU/libgloss/libsysbase/unlink.c
 --- newlib-1.18.0/libgloss/libsysbase/unlink.c	1969-12-31 20:00:00.000000000 -0400
@@ -12201,8 +12247,8 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.
 +#endif /* __SYS_LOCK_H__ */
 diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/syscalls.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/syscalls.h	2010-12-14 11:06:03.161873871 -0400
-@@ -0,0 +1,38 @@
++++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/syscalls.h	2010-12-17 13:31:30.731875132 -0400
+@@ -0,0 +1,41 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__
 +
@@ -12236,6 +12282,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newli
 +	int (*sys_lwmutex_unlock_r)(struct _reent *r,sys_lwmutex_t *lwmutex);
 +
 +	void (*exit)(int rc);
++
++        int (*mkdir_r)(struct _reent *r,const char *path,mode_t mode);
++        int (*rmdir_r)(struct _reent *r,const char *dirname);
 +};
 +
 +extern struct __syscalls_t __syscalls;
