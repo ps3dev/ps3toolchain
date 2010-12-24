@@ -5,7 +5,7 @@
 wget --continue ftp://ftp.gnu.org/gnu/gcc/gcc-4.5.1/gcc-4.5.1.tar.bz2 || { exit 1; }
 wget --continue ftp://ftp.gmplib.org/pub/gmp-5.0.1/gmp-5.0.1.tar.bz2 || { exit 1; }
 wget --continue http://www.multiprecision.org/mpc/download/mpc-0.8.2.tar.gz || { exit 1; }
-wget --continue http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2 || { exit 1; }
+wget --continue http://ftp.gnu.org/gnu/mpfr/mpfr-2.4.2.tar.bz2 || { exit 1; }
 
 ## Unpack the source code.
 rm -Rf gcc-4.5.1 && tar xfvj gcc-4.5.1.tar.bz2 && cd gcc-4.5.1 || { exit 1; }
