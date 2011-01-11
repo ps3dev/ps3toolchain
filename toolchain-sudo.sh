@@ -6,6 +6,9 @@ cd "`dirname $0`" || { echo "ERROR: Could not enter the ps3toolchain directory."
 
 ## Set up the environment.
 export PS3DEV=/usr/local/ps3dev
+export PSL1GHT=$PS3DEV/psl1ght
+
+## Set up the path.
 export PATH=$PATH:$PS3DEV/bin
 export PATH=$PATH:$PS3DEV/ppu/bin
 export PATH=$PATH:$PS3DEV/spu/bin
