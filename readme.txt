@@ -13,7 +13,7 @@
 
  1) Set up your environment by installing the following software:
 
-  autoconf, automake, bison, flex, gcc, make, makeinfo, patch, subversion, wget
+  autoconf, automake, bison, flex, gcc, libelf, make, makeinfo, ncurses, patch, python, subversion, wget, zlib
 
  2) Add the following to your login script:
 
