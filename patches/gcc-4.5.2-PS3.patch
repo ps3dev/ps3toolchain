@@ -24,8 +24,8 @@ diff -burN --exclude=.git gcc-4.5.2/config.sub gcc-4.5.2-PS3/config.sub
  	-qnx*)
 diff -burN --exclude=.git gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h
 --- gcc-4.5.2/gcc/config/rs6000/cell64lv2.h	1969-12-31 20:00:00.000000000 -0400
-+++ gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h	2011-01-14 17:29:25.649565961 -0400
-@@ -0,0 +1,439 @@
++++ gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h	2011-01-14 18:01:10.782063011 -0400
+@@ -0,0 +1,431 @@
 +/* Definitions of target machine for GNU compiler,
 +   for 64 bit PowerPC linux.
 +   Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
@@ -274,14 +274,6 @@ diff -burN --exclude=.git gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS3/
 +   element.  */
 +#define BLOCK_REG_PADDING(MODE, TYPE, FIRST) \
 +  (!(FIRST) ? upward : FUNCTION_ARG_PADDING (MODE, TYPE))
-+
-+/* __throw will restore its own return address to be the same as the
-+   return address of the function that the throw is being made to.
-+   This is unfortunate, because we want to check the original
-+   return address to see if we need to restore the TOC.
-+   So we have to squirrel it away with this.  */
-+#define SETUP_FRAME_ADDRESSES() \
-+  do { if (TARGET_64BIT) rs6000_aix_emit_builtin_unwind_init (); } while (0)
 +
 +/* Override svr4.h  */
 +#undef MD_EXEC_PREFIX
