@@ -1,6 +1,6 @@
-diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PS3-AerialX/config.sub
+diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PS3/config.sub
 --- newlib-1.18.0/config.sub	2009-11-20 06:10:09.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/config.sub	2011-01-14 15:02:51.719566472 -0400
++++ newlib-1.18.0-PS3/config.sub	2011-01-14 16:15:49.929567301 -0400
 @@ -4,7 +4,7 @@
  #   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
  #   Free Software Foundation, Inc.
@@ -30,9 +30,9 @@ diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PS3-AerialX/con
  	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
  	      | -uxpv* | -beos* | -mpeix* | -udk* \
  	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
-diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PS3-AerialX/libgloss/configure
+diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PS3/libgloss/configure
 --- newlib-1.18.0/libgloss/configure	2009-12-10 13:07:03.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/configure	2011-01-14 15:02:51.749567060 -0400
++++ newlib-1.18.0-PS3/libgloss/configure	2011-01-14 16:16:06.652063742 -0400
 @@ -2433,6 +2433,8 @@
  
  config_libnosys=true
@@ -61,9 +61,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PS3-Aer
  DEPDIR="${am__leading_dot}deps"
  
  ac_config_commands="$ac_config_commands depfiles"
-diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PS3-AerialX/libgloss/configure.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PS3/libgloss/configure.in
 --- newlib-1.18.0/libgloss/configure.in	2009-12-10 13:07:03.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/configure.in	2011-01-14 15:02:51.749567060 -0400
++++ newlib-1.18.0-PS3/libgloss/configure.in	2011-01-14 16:16:06.652063742 -0400
 @@ -2,6 +2,7 @@
  AC_PREREQ(2.59)
  AC_INIT([libgloss],[LIBGLOSS_VERSION])
@@ -101,9 +101,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PS3-
  LIB_AC_PROG_CC
  AS=${AS-as}
  AC_SUBST(AS)
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/abort.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.0-PS3/libgloss/libsysbase/abort.c
 --- newlib-1.18.0/libgloss/libsysbase/abort.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/abort.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/abort.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,8 @@
 +#include <stdlib.h>
 +#include <unistd.h>
@@ -113,9 +113,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.
 +	write(2, "Abort called.\n", sizeof("Abort called.\n") - 1);
 +	_exit(1);
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/acconfig.h
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.18.0-PS3/libgloss/libsysbase/acconfig.h
 --- newlib-1.18.0/libgloss/libsysbase/acconfig.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/acconfig.h	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/acconfig.h	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,29 @@
 +/* Name of package.  */
 +#undef PACKAGE
@@ -146,9 +146,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/aclocal.m4
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.18.0-PS3/libgloss/libsysbase/aclocal.m4
 --- newlib-1.18.0/libgloss/libsysbase/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/aclocal.m4	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/aclocal.m4	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,344 @@
 +# generated automatically by aclocal 1.9.5 -*- Autoconf -*-
 +
@@ -494,9 +494,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.
 +])
 +
 +m4_include([../acinclude.m4])
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chdir.c newlib-1.18.0-PS3/libgloss/libsysbase/chdir.c
 --- newlib-1.18.0/libgloss/libsysbase/chdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chdir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/chdir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,25 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -523,9 +523,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chdir.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chmod.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.0-PS3/libgloss/libsysbase/chmod.c
 --- newlib-1.18.0/libgloss/libsysbase/chmod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chmod.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/chmod.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -545,9 +545,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/close.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.0-PS3/libgloss/libsysbase/close.c
 --- newlib-1.18.0/libgloss/libsysbase/close.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/close.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/close.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -574,9 +574,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/closedir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/closedir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/closedir.c newlib-1.18.0-PS3/libgloss/libsysbase/closedir.c
 --- newlib-1.18.0/libgloss/libsysbase/closedir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/closedir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/closedir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,16 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -594,9 +594,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/closedir.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/config.h.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1.18.0-PS3/libgloss/libsysbase/config.h.in
 --- newlib-1.18.0/libgloss/libsysbase/config.h.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/config.h.in	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/config.h.in	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,25 @@
 +/* config.h.in.  Generated automatically from configure.in by autoheader.  */
 +
@@ -623,9 +623,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.18.0-PS3/libgloss/libsysbase/configure
 --- newlib-1.18.0/libgloss/libsysbase/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/configure	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -4182,9 +4182,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.1
 +
 +
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-1.18.0-PS3/libgloss/libsysbase/configure.in
 --- newlib-1.18.0/libgloss/libsysbase/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure.in	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/configure.in	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,207 @@
 +# Copyright (c) 1995, 1996 Cygnus Support
 +#
@@ -4393,9 +4393,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-
 +AC_OUTPUT
 +
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/dup.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/dup.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/dup.c newlib-1.18.0-PS3/libgloss/libsysbase/dup.c
 --- newlib-1.18.0/libgloss/libsysbase/dup.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/dup.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/dup.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,12 @@
 +//
 +// dup.c
@@ -4409,9 +4409,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/dup.c newlib-1.18.0-
 +  errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/environ.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.18.0-PS3/libgloss/libsysbase/environ.c
 --- newlib-1.18.0/libgloss/libsysbase/environ.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/environ.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/environ.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,6 @@
 +/*
 + * Version of environ for no OS
@@ -4419,9 +4419,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.1
 +
 +char *__env[1] = {0};
 +char **environ = __env;
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/execve.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18.0-PS3/libgloss/libsysbase/execve.c
 --- newlib-1.18.0/libgloss/libsysbase/execve.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/execve.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/execve.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4450,9 +4450,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/_exit.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.0-PS3/libgloss/libsysbase/_exit.c
 --- newlib-1.18.0/libgloss/libsysbase/_exit.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/_exit.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/_exit.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,15 @@
 +#include <limits.h>
 +#include "config.h"
@@ -4469,9 +4469,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.
 +
 +	while(1);
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fork.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0-PS3/libgloss/libsysbase/fork.c
 --- newlib-1.18.0/libgloss/libsysbase/fork.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fork.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/fork.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4491,9 +4491,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat64.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat64.c newlib-1.18.0-PS3/libgloss/libsysbase/fstat64.c
 --- newlib-1.18.0/libgloss/libsysbase/fstat64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat64.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/fstat64.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4523,9 +4523,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat64.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.0-PS3/libgloss/libsysbase/fstat.c
 --- newlib-1.18.0/libgloss/libsysbase/fstat.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/fstat.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4555,9 +4555,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fsync.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.0-PS3/libgloss/libsysbase/fsync.c
 --- newlib-1.18.0/libgloss/libsysbase/fsync.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fsync.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/fsync.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4579,9 +4579,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/ftruncate.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1.18.0-PS3/libgloss/libsysbase/ftruncate.c
 --- newlib-1.18.0/libgloss/libsysbase/ftruncate.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/ftruncate.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/ftruncate.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4604,9 +4604,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getpid.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18.0-PS3/libgloss/libsysbase/getpid.c
 --- newlib-1.18.0/libgloss/libsysbase/getpid.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getpid.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/getpid.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4626,9 +4626,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getrusage.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getrusage.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getrusage.c newlib-1.18.0-PS3/libgloss/libsysbase/getrusage.c
 --- newlib-1.18.0/libgloss/libsysbase/getrusage.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getrusage.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/getrusage.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4651,9 +4651,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getrusage.c newlib-1
 +	return -1;
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/gettod.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18.0-PS3/libgloss/libsysbase/gettod.c
 --- newlib-1.18.0/libgloss/libsysbase/gettod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/gettod.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/gettod.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4682,9 +4682,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/glob.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/glob.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/glob.c newlib-1.18.0-PS3/libgloss/libsysbase/glob.c
 --- newlib-1.18.0/libgloss/libsysbase/glob.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/glob.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/glob.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,15 @@
 +//
 +// glob.c
@@ -4701,9 +4701,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/glob.c newlib-1.18.0
 +    errfunc(NULL, ENOSYS);
 +  return 0;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/globfree.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/globfree.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/globfree.c newlib-1.18.0-PS3/libgloss/libsysbase/globfree.c
 --- newlib-1.18.0/libgloss/libsysbase/globfree.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/globfree.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/globfree.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,11 @@
 +//
 +// globfree.c
@@ -4716,9 +4716,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/globfree.c newlib-1.
 +{
 +  return;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/isatty.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18.0-PS3/libgloss/libsysbase/isatty.c
 --- newlib-1.18.0/libgloss/libsysbase/isatty.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/isatty.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/isatty.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4744,9 +4744,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18
 +	ptr->_errno = ENOTTY;
 +	return 0;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/kill.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0-PS3/libgloss/libsysbase/kill.c
 --- newlib-1.18.0/libgloss/libsysbase/kill.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/kill.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/kill.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4769,9 +4769,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/link.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/link.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/link.c newlib-1.18.0-PS3/libgloss/libsysbase/link.c
 --- newlib-1.18.0/libgloss/libsysbase/link.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/link.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/link.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4799,9 +4799,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/link.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lock.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0-PS3/libgloss/libsysbase/lock.c
 --- newlib-1.18.0/libgloss/libsysbase/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lock.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/lock.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,64 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4867,9 +4867,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0
 +	return -1;
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek64.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek64.c newlib-1.18.0-PS3/libgloss/libsysbase/lseek64.c
 --- newlib-1.18.0/libgloss/libsysbase/lseek64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek64.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/lseek64.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4900,9 +4900,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek64.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return (_off_t)-1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.0-PS3/libgloss/libsysbase/lseek.c
 --- newlib-1.18.0/libgloss/libsysbase/lseek.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/lseek.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4933,9 +4933,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return (_off_t)-1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1.18.0-PS3/libgloss/libsysbase/Makefile.in
 --- newlib-1.18.0/libgloss/libsysbase/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/Makefile.in	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/Makefile.in	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,154 @@
 +# Copyright (c) 1998 Cygnus Support
 +#
@@ -5091,9 +5091,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1
 +
 +config.status: configure
 +	$(SHELL) config.status --recheck
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/mkdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.0-PS3/libgloss/libsysbase/mkdir.c
 --- newlib-1.18.0/libgloss/libsysbase/mkdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/mkdir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/mkdir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,40 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5135,9 +5135,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.
 +	_mkdir(path,mode);
 +#endif
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/open.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0-PS3/libgloss/libsysbase/open.c
 --- newlib-1.18.0/libgloss/libsysbase/open.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/open.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/open.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,31 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5170,9 +5170,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/opendir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/opendir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/opendir.c newlib-1.18.0-PS3/libgloss/libsysbase/opendir.c
 --- newlib-1.18.0/libgloss/libsysbase/opendir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/opendir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/opendir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,16 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5190,9 +5190,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/opendir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/read.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0-PS3/libgloss/libsysbase/read.c
 --- newlib-1.18.0/libgloss/libsysbase/read.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/read.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/read.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5223,9 +5223,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir.c newlib-1.18.0-PS3/libgloss/libsysbase/readdir.c
 --- newlib-1.18.0/libgloss/libsysbase/readdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/readdir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,16 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5243,9 +5243,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir_r.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir_r.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir_r.c newlib-1.18.0-PS3/libgloss/libsysbase/readdir_r.c
 --- newlib-1.18.0/libgloss/libsysbase/readdir_r.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir_r.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/readdir_r.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,16 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5263,9 +5263,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir_r.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rename.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rename.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rename.c newlib-1.18.0-PS3/libgloss/libsysbase/rename.c
 --- newlib-1.18.0/libgloss/libsysbase/rename.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rename.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/rename.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5293,9 +5293,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rename.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rewinddir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rewinddir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rewinddir.c newlib-1.18.0-PS3/libgloss/libsysbase/rewinddir.c
 --- newlib-1.18.0/libgloss/libsysbase/rewinddir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rewinddir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/rewinddir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,15 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5312,9 +5312,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rewinddir.c newlib-1
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rmdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.0-PS3/libgloss/libsysbase/rmdir.c
 --- newlib-1.18.0/libgloss/libsysbase/rmdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rmdir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/rmdir.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5334,9 +5334,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/sbrk.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0-PS3/libgloss/libsysbase/sbrk.c
 --- newlib-1.18.0/libgloss/libsysbase/sbrk.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/sbrk.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/sbrk.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5362,9 +5362,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0
 +		return (caddr_t)-1;
 +	}
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/seekdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/seekdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/seekdir.c newlib-1.18.0-PS3/libgloss/libsysbase/seekdir.c
 --- newlib-1.18.0/libgloss/libsysbase/seekdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/seekdir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/seekdir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,15 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5381,9 +5381,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/seekdir.c newlib-1.1
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/settod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/settod.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/settod.c newlib-1.18.0-PS3/libgloss/libsysbase/settod.c
 --- newlib-1.18.0/libgloss/libsysbase/settod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/settod.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/settod.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5412,9 +5412,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/settod.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat64.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat64.c newlib-1.18.0-PS3/libgloss/libsysbase/stat64.c
 --- newlib-1.18.0/libgloss/libsysbase/stat64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat64.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/stat64.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5444,9 +5444,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat64.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat.c newlib-1.18.0-PS3/libgloss/libsysbase/stat.c
 --- newlib-1.18.0/libgloss/libsysbase/stat.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/stat.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5476,9 +5476,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/syscalls.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.18.0-PS3/libgloss/libsysbase/syscalls.c
 --- newlib-1.18.0/libgloss/libsysbase/syscalls.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/syscalls.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/syscalls.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,52 @@
 +#include <sys/syscalls.h>
 +
@@ -5532,9 +5532,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.
 +
 +	NULL,			//	exit
 +};
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/telldir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/telldir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/telldir.c newlib-1.18.0-PS3/libgloss/libsysbase/telldir.c
 --- newlib-1.18.0/libgloss/libsysbase/telldir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/telldir.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/telldir.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,16 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5552,9 +5552,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/telldir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/truncate.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/truncate.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/truncate.c newlib-1.18.0-PS3/libgloss/libsysbase/truncate.c
 --- newlib-1.18.0/libgloss/libsysbase/truncate.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/truncate.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/truncate.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5577,9 +5577,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/truncate.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/umask.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/umask.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/umask.c newlib-1.18.0-PS3/libgloss/libsysbase/umask.c
 --- newlib-1.18.0/libgloss/libsysbase/umask.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/umask.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/umask.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,15 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -5596,9 +5596,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/umask.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/unlink.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18.0-PS3/libgloss/libsysbase/unlink.c
 --- newlib-1.18.0/libgloss/libsysbase/unlink.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/unlink.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/unlink.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5624,9 +5624,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/utime.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/utime.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/utime.c newlib-1.18.0-PS3/libgloss/libsysbase/utime.c
 --- newlib-1.18.0/libgloss/libsysbase/utime.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/utime.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/utime.c	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5647,9 +5647,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/utime.c newlib-1.18.
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/wait.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0-PS3/libgloss/libsysbase/wait.c
 --- newlib-1.18.0/libgloss/libsysbase/wait.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/wait.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/wait.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5670,9 +5670,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/warning.h
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.18.0-PS3/libgloss/libsysbase/warning.h
 --- newlib-1.18.0/libgloss/libsysbase/warning.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/warning.h	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/warning.h	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,43 @@
 +#ifndef __WARNING_H__
 +#define __WARNING_H__
@@ -5717,9 +5717,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.1
 +                "warning: " #name " is not implemented and will always fail")
 +
 +#endif /* __WARNING_H__ */
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/write.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.0-PS3/libgloss/libsysbase/write.c
 --- newlib-1.18.0/libgloss/libsysbase/write.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/write.c	2011-01-14 15:02:51.769568117 -0400
++++ newlib-1.18.0-PS3/libgloss/libsysbase/write.c	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5750,9 +5750,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-PS3-AerialX/libgloss/spu/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-PS3/libgloss/spu/Makefile.in
 --- newlib-1.18.0/libgloss/spu/Makefile.in	2009-05-07 15:07:35.000000000 -0300
-+++ newlib-1.18.0-PS3-AerialX/libgloss/spu/Makefile.in	2011-01-14 15:02:51.799566629 -0400
++++ newlib-1.18.0-PS3/libgloss/spu/Makefile.in	2011-01-14 16:16:06.652063742 -0400
 @@ -151,7 +151,7 @@
  .PHONY: install info install-info clean-info
  install:
@@ -5762,9 +5762,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-P
  	done
  
  info:
-diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PS3-AerialX/newlib/configure.host
+diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PS3/newlib/configure.host
 --- newlib-1.18.0/newlib/configure.host	2009-12-10 13:12:11.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/configure.host	2011-01-14 15:02:51.819566807 -0400
++++ newlib-1.18.0-PS3/newlib/configure.host	2011-01-14 16:16:06.652063742 -0400
 @@ -442,7 +442,10 @@
  	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
  	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
@@ -5790,9 +5790,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PS3-
    powerpc*-*-eabialtivec*)
  	default_newlib_io_long_long="yes"
  	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/config.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-1.18.0-PS3/newlib/libc/include/sys/config.h
 --- newlib-1.18.0/newlib/libc/include/sys/config.h	2009-12-10 13:12:11.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/config.h	2011-01-14 15:02:51.889568132 -0400
++++ newlib-1.18.0-PS3/newlib/libc/include/sys/config.h	2011-01-14 16:16:06.652063742 -0400
 @@ -200,6 +200,16 @@
  #define _READ_WRITE_RETURN_TYPE _ssize_t
  #endif
@@ -5810,9 +5810,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-
  #ifndef __EXPORT
  #define __EXPORT
  #endif
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/types.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1.18.0-PS3/newlib/libc/include/sys/types.h
 --- newlib-1.18.0/newlib/libc/include/sys/types.h	2009-09-28 13:42:21.000000000 -0300
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/types.h	2011-01-14 15:02:51.889568132 -0400
++++ newlib-1.18.0-PS3/newlib/libc/include/sys/types.h	2011-01-14 16:16:06.652063742 -0400
 @@ -212,7 +212,7 @@
   * should be >= NOFILE (param.h).
   */
@@ -5822,9 +5822,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1
  #  endif
  
  typedef	long	fd_mask;
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/unistd.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-1.18.0-PS3/newlib/libc/include/sys/unistd.h
 --- newlib-1.18.0/newlib/libc/include/sys/unistd.h	2009-12-17 15:43:43.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/unistd.h	2011-01-14 15:02:51.889568132 -0400
++++ newlib-1.18.0-PS3/newlib/libc/include/sys/unistd.h	2011-01-14 16:16:06.652063742 -0400
 @@ -215,7 +215,7 @@
  int     _EXFUN(_execve, (const char *__path, char * const __argv[], char * const __envp[] ));
  #endif
@@ -5834,9 +5834,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-
  #if !defined(__INSIDE_CYGWIN__)
  int     _EXFUN(ftruncate, (int __fd, off_t __length));
  int     _EXFUN(truncate, (const char *, off_t __length));
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-PS3/newlib/libc/sys/configure
 --- newlib-1.18.0/newlib/libc/sys/configure	2009-12-17 16:41:36.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure	2011-01-14 15:02:51.969565616 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/configure	2011-01-14 16:15:50.189565454 -0400
 @@ -966,6 +966,7 @@
  h8300hms
  h8500hms
@@ -5854,9 +5854,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-
  	m88kbug) subdirs="$subdirs m88kbug"
   ;;
  	mmixware) subdirs="$subdirs mmixware"
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0-PS3/newlib/libc/sys/configure.in
 --- newlib-1.18.0/newlib/libc/sys/configure.in	2007-05-24 14:33:37.000000000 -0300
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure.in	2011-01-14 15:02:51.969565616 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/configure.in	2011-01-14 16:15:50.189565454 -0400
 @@ -29,6 +29,7 @@
  	h8300hms) AC_CONFIG_SUBDIRS(h8300hms) ;;
  	h8500hms) AC_CONFIG_SUBDIRS(h8500hms) ;;
@@ -5865,9 +5865,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18
  	m88kbug) AC_CONFIG_SUBDIRS(m88kbug) ;;
  	mmixware) AC_CONFIG_SUBDIRS(mmixware) ;;
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/aclocal.m4
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0-PS3/newlib/libc/sys/lv2/aclocal.m4
 --- newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/aclocal.m4	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/aclocal.m4	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,992 @@
 +# generated automatically by aclocal 1.11 -*- Autoconf -*-
 +
@@ -6861,9 +6861,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/autolock.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.18.0-PS3/newlib/libc/sys/lv2/autolock.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/autolock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/autolock.c	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/autolock.c	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,39 @@
 +//
 +// autolock.c
@@ -6904,9 +6904,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.
 +    abort();
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0-PS3/newlib/libc/sys/lv2/configure
 --- newlib-1.18.0/newlib/libc/sys/lv2/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/configure	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,4686 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -11594,9 +11594,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.1
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0-PS3/newlib/libc/sys/lv2/configure.in
 --- newlib-1.18.0/newlib/libc/sys/lv2/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure.in	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/configure.in	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,13 @@
 +dnl This is the newlib/libc/sys/rtems configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -11611,9 +11611,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/getreent.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.18.0-PS3/newlib/libc/sys/lv2/getreent.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/getreent.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/getreent.c	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/getreent.c	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,15 @@
 +#include <reent.h>
 +
@@ -11630,9 +11630,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.
 +  }
 +  return r;
 +}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock.c	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock.c	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,43 @@
 +//
 +// lock.c
@@ -11677,9 +11677,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0
 +  return sys_lwmutex_unlock(lock);
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock-internal.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock-internal.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock-internal.h	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock-internal.h	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,27 @@
 +#include <stdint.h>
 +
@@ -11708,9 +11708,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newl
 +
 +extern void __libc_auto_lock_allocate(sys_lwmutex_t *pMutex);
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock_recursive.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock_recursive.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock_recursive.c	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/lock_recursive.c	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,43 @@
 +//
 +// lock_recursive.c
@@ -11755,9 +11755,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c new
 +  return sys_lwmutex_unlock(lock);
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/machine/_types.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.18.0-PS3/newlib/libc/sys/lv2/machine/_types.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/machine/_types.h	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/machine/_types.h	2011-01-14 16:16:06.652063742 -0400
 @@ -0,0 +1,12 @@
 +#ifndef _MACHINE__TYPES_H
 +#define _MACHINE__TYPES_H
@@ -11771,9 +11771,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h new
 +typedef long long _off_t;
 +
 +#endif	// _MACHINE__TYPES_H
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.am
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0-PS3/newlib/libc/sys/lv2/Makefile.am
 --- newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.am	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/Makefile.am	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,18 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -11793,9 +11793,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1
 +
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0-PS3/newlib/libc/sys/lv2/Makefile.in
 --- newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.in	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/Makefile.in	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,432 @@
 +# Makefile.in generated by automake 1.11 from Makefile.am.
 +# @configure_input@
@@ -12229,9 +12229,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/dirent.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/dirent.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/dirent.h	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/dirent.h	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,61 @@
 +#ifndef _SYS_DIRENT_H
 +#define _SYS_DIRENT_H
@@ -12294,9 +12294,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h newlib-
 +#endif
 +
 +#endif
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/lock.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/lock.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/lock.h	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/lock.h	2011-01-14 16:15:50.259566131 -0400
 @@ -0,0 +1,46 @@
 +#ifndef __SYS_LOCK_H__
 +#define __SYS_LOCK_H__
@@ -12344,9 +12344,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.
 +#define __lock_release_recursive(NAME) __libc_lock_release_recursive(&(NAME))
 +
 +#endif /* __SYS_LOCK_H__ */
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/syscalls.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/syscalls.h	2011-01-14 15:02:52.039566206 -0400
++++ newlib-1.18.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2011-01-14 16:16:37.919562914 -0400
 @@ -0,0 +1,68 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__

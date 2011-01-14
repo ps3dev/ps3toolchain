@@ -1,6 +1,6 @@
-diff -burN --exclude=.git binutils-2.20.1/config.sub binutils-2.20.1-PPU/config.sub
+diff -burN --exclude=.git binutils-2.20.1/config.sub binutils-2.20.1-PS3/config.sub
 --- binutils-2.20.1/config.sub	2009-08-17 01:10:29.000000000 -0300
-+++ binutils-2.20.1-PPU/config.sub	2010-12-13 10:27:29.381874166 -0400
++++ binutils-2.20.1-PS3/config.sub	2010-12-13 12:15:22.583125839 -0400
 @@ -935,6 +935,10 @@
  	ppc64le-* | powerpc64little-*)
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
@@ -12,9 +12,9 @@ diff -burN --exclude=.git binutils-2.20.1/config.sub binutils-2.20.1-PPU/config.
  	ps2)
  		basic_machine=i386-ibm
  		;;
-diff -burN --exclude=.git binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PPU/ld/emultempl/spuelf.em
+diff -burN --exclude=.git binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PS3/ld/emultempl/spuelf.em
 --- binutils-2.20.1/ld/emultempl/spuelf.em	2009-08-10 04:50:56.000000000 -0300
-+++ binutils-2.20.1-PPU/ld/emultempl/spuelf.em	2010-12-13 10:27:29.901875868 -0400
++++ binutils-2.20.1-PS3/ld/emultempl/spuelf.em	2010-12-13 12:15:23.243125690 -0400
 @@ -355,7 +355,7 @@
    *fname = mktemp (*fname);
    if (*fname == NULL)
