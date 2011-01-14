@@ -1,6 +1,6 @@
-diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PPU/config.sub
+diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PS3-AerialX/config.sub
 --- newlib-1.18.0/config.sub	2009-11-20 06:10:09.000000000 -0400
-+++ newlib-1.18.0-PPU/config.sub	2010-12-14 11:04:02.061878828 -0400
++++ newlib-1.18.0-PS3-AerialX/config.sub	2011-01-14 15:02:51.719566472 -0400
 @@ -4,7 +4,7 @@
  #   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
  #   Free Software Foundation, Inc.
@@ -30,9 +30,9 @@ diff -burN --exclude=.git newlib-1.18.0/config.sub newlib-1.18.0-PPU/config.sub
  	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
  	      | -uxpv* | -beos* | -mpeix* | -udk* \
  	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
-diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PPU/libgloss/configure
+diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PS3-AerialX/libgloss/configure
 --- newlib-1.18.0/libgloss/configure	2009-12-10 13:07:03.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/configure	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/configure	2011-01-14 15:02:51.749567060 -0400
 @@ -2433,6 +2433,8 @@
  
  config_libnosys=true
@@ -61,9 +61,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/configure newlib-1.18.0-PPU/lib
  DEPDIR="${am__leading_dot}deps"
  
  ac_config_commands="$ac_config_commands depfiles"
-diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PPU/libgloss/configure.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PS3-AerialX/libgloss/configure.in
 --- newlib-1.18.0/libgloss/configure.in	2009-12-10 13:07:03.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/configure.in	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/configure.in	2011-01-14 15:02:51.749567060 -0400
 @@ -2,6 +2,7 @@
  AC_PREREQ(2.59)
  AC_INIT([libgloss],[LIBGLOSS_VERSION])
@@ -101,9 +101,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/configure.in newlib-1.18.0-PPU/
  LIB_AC_PROG_CC
  AS=${AS-as}
  AC_SUBST(AS)
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.0-PPU/libgloss/libsysbase/abort.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/abort.c
 --- newlib-1.18.0/libgloss/libsysbase/abort.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/abort.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/abort.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,8 @@
 +#include <stdlib.h>
 +#include <unistd.h>
@@ -113,9 +113,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/abort.c newlib-1.18.
 +	write(2, "Abort called.\n", sizeof("Abort called.\n") - 1);
 +	_exit(1);
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.18.0-PPU/libgloss/libsysbase/acconfig.h
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/acconfig.h
 --- newlib-1.18.0/libgloss/libsysbase/acconfig.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/acconfig.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/acconfig.h	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,29 @@
 +/* Name of package.  */
 +#undef PACKAGE
@@ -146,9 +146,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/acconfig.h newlib-1.
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.18.0-PPU/libgloss/libsysbase/aclocal.m4
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/aclocal.m4
 --- newlib-1.18.0/libgloss/libsysbase/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/aclocal.m4	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/aclocal.m4	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,344 @@
 +# generated automatically by aclocal 1.9.5 -*- Autoconf -*-
 +
@@ -494,64 +494,38 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/aclocal.m4 newlib-1.
 +])
 +
 +m4_include([../acinclude.m4])
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chdir.c newlib-1.18.0-PPU/libgloss/libsysbase/chdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chdir.c
 --- newlib-1.18.0/libgloss/libsysbase/chdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/chdir.c	2010-12-14 11:06:03.161873871 -0400
-@@ -0,0 +1,51 @@
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chdir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,25 @@
 +#include <unistd.h>
 +#include <reent.h>
 +#include <string.h>
 +#include <errno.h>
-+
-+#define DIRECTORY_SEPERATOR_CHAR	'/'
-+
-+const char DIRECTORY_SEPERATOR[] = "/";
-+const char DIRECTORY_THIS[] = ".";
-+const char DIRECTORY_PARENT[] = "..";
-+
-+static char _current_working_directory[MAXPATHLEN] = "/";
-+
-+int _concatenate_path(struct _reent *r,char *path,const char *extra,int maxLength)
-+{
-+	return -1;
-+}
++#include <sys/syscalls.h>
 +
 +int chdir(const char *path)
 +{
-+	const char *pathPosition;
 +	struct _reent *r = _REENT;
-+	char temp_cwd[MAXPATHLEN];
++	if(__syscalls.chdir_r)
++		return __syscalls.chdir_r(r,path);
 +
-+	if(strnlen(path,MAXPATHLEN + 1)>=MAXPATHLEN) {
-+		r->_errno = ENAMETOOLONG;
-+		return -1;
-+	}
-+
-+	strncpy(temp_cwd,_current_working_directory,MAXPATHLEN);
-+
++	r->_errno = ENOSYS;
 +	return -1;
 +}
 +
 +char* getcwd(char *buf,size_t size)
 +{
 +	struct _reent *r = _REENT;
++	if(__syscalls.getcwd_r)
++		return __syscalls.getcwd_r(r,buf,size);
 +
-+	if(size==0) {
-+		r->_errno = EINVAL;
-+		return NULL;
-+	}
-+
-+	if(size<(strnlen(_current_working_directory,MAXPATHLEN) + 1)) {
-+		r->_errno = ERANGE;
-+		return NULL;
-+	}
-+
-+	strncpy(buf,_current_working_directory,size);
-+	return buf;
++	r->_errno = ENOSYS;
++	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.0-PPU/libgloss/libsysbase/chmod.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chmod.c
 --- newlib-1.18.0/libgloss/libsysbase/chmod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/chmod.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/chmod.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -571,9 +545,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/chmod.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.0-PPU/libgloss/libsysbase/close.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/close.c
 --- newlib-1.18.0/libgloss/libsysbase/close.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/close.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/close.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -600,9 +574,29 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/close.c newlib-1.18.
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1.18.0-PPU/libgloss/libsysbase/config.h.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/closedir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/closedir.c
+--- newlib-1.18.0/libgloss/libsysbase/closedir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/closedir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,16 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++int closedir(DIR* dir)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.closedir_r)
++		return __syscalls.closedir_r(r,dir);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/config.h.in
 --- newlib-1.18.0/libgloss/libsysbase/config.h.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/config.h.in	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/config.h.in	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,25 @@
 +/* config.h.in.  Generated automatically from configure.in by autoheader.  */
 +
@@ -629,9 +623,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/config.h.in newlib-1
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.18.0-PPU/libgloss/libsysbase/configure
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure
 --- newlib-1.18.0/libgloss/libsysbase/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/configure	2010-12-17 13:23:09.763125563 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -4188,9 +4182,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure newlib-1.1
 +
 +
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-1.18.0-PPU/libgloss/libsysbase/configure.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure.in
 --- newlib-1.18.0/libgloss/libsysbase/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/configure.in	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/configure.in	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,207 @@
 +# Copyright (c) 1995, 1996 Cygnus Support
 +#
@@ -4399,9 +4393,25 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/configure.in newlib-
 +AC_OUTPUT
 +
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.18.0-PPU/libgloss/libsysbase/environ.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/dup.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/dup.c
+--- newlib-1.18.0/libgloss/libsysbase/dup.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/dup.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,12 @@
++//
++// dup.c
++// by Dan Peori (dan.peori@oopo.net)
++//
++
++#include <errno.h>
++
++int dup ( int old_handle )
++{
++  errno = ENOSYS;
++  return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/environ.c
 --- newlib-1.18.0/libgloss/libsysbase/environ.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/environ.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/environ.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,6 @@
 +/*
 + * Version of environ for no OS
@@ -4409,9 +4419,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/environ.c newlib-1.1
 +
 +char *__env[1] = {0};
 +char **environ = __env;
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18.0-PPU/libgloss/libsysbase/execve.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/execve.c
 --- newlib-1.18.0/libgloss/libsysbase/execve.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/execve.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/execve.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4440,9 +4450,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/execve.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.0-PPU/libgloss/libsysbase/_exit.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/_exit.c
 --- newlib-1.18.0/libgloss/libsysbase/_exit.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/_exit.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/_exit.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,15 @@
 +#include <limits.h>
 +#include "config.h"
@@ -4459,9 +4469,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/_exit.c newlib-1.18.
 +
 +	while(1);
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0-PPU/libgloss/libsysbase/fork.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fork.c
 --- newlib-1.18.0/libgloss/libsysbase/fork.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/fork.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fork.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4481,9 +4491,41 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fork.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.0-PPU/libgloss/libsysbase/fstat.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat64.c
+--- newlib-1.18.0/libgloss/libsysbase/fstat64.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat64.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,28 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_fstat64_r,(r,fd,st),
++	   struct _reent *r _AND
++	   int fd _AND
++	   struct stat *st) {
++#else
++int
++_DEFUN(_fstat64,(fd,st),
++	   int fd _AND
++	   struct stat *st) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.fstat64_r)
++		return __syscalls.fstat64_r(r,fd,st);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat.c
 --- newlib-1.18.0/libgloss/libsysbase/fstat.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/fstat.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fstat.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4513,9 +4555,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fstat.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.0-PPU/libgloss/libsysbase/fsync.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fsync.c
 --- newlib-1.18.0/libgloss/libsysbase/fsync.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/fsync.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/fsync.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4537,9 +4579,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/fsync.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1.18.0-PPU/libgloss/libsysbase/ftruncate.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/ftruncate.c
 --- newlib-1.18.0/libgloss/libsysbase/ftruncate.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/ftruncate.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/ftruncate.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4562,9 +4604,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/ftruncate.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18.0-PPU/libgloss/libsysbase/getpid.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getpid.c
 --- newlib-1.18.0/libgloss/libsysbase/getpid.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/getpid.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getpid.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4584,10 +4626,35 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getpid.c newlib-1.18
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18.0-PPU/libgloss/libsysbase/gettod.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/getrusage.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getrusage.c
+--- newlib-1.18.0/libgloss/libsysbase/getrusage.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/getrusage.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,21 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/time.h>
++#include <sys/times.h>
++#include <sys/syscalls.h>
++#include <sys/resource.h>
++#include <errno.h>
++
++int
++_DEFUN(_getrusage,(who, usage),
++	   int who _AND
++	   struct rusage *usage) {
++	struct _reent *r = _REENT;
++	if(__syscalls.getrusage_r)
++		return __syscalls.getrusage_r(r,who,usage);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
++
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/gettod.c
 --- newlib-1.18.0/libgloss/libsysbase/gettod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/gettod.c	2010-12-14 11:06:03.161873871 -0400
-@@ -0,0 +1,30 @@
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/gettod.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
 +#include <_syslist.h>
@@ -4615,19 +4682,50 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/gettod.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/glob.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/glob.c
+--- newlib-1.18.0/libgloss/libsysbase/glob.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/glob.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,15 @@
++//
++// glob.c
++// by Dan Peori (dan.peori@oopo.net)
++//
 +
++#include <glob.h>
++#include <stdlib.h>
++#include <errno.h>
 +
-+		
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18.0-PPU/libgloss/libsysbase/isatty.c
++int glob ( const char *pattern, int flags, int (*errfunc) ( const char *epath, int eerrno ), glob_t *pglob )
++{
++  if (errfunc != NULL)
++    errfunc(NULL, ENOSYS);
++  return 0;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/globfree.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/globfree.c
+--- newlib-1.18.0/libgloss/libsysbase/globfree.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/globfree.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,11 @@
++//
++// globfree.c
++// by Dan Peori (dan.peori@oopo.net)
++//
++
++#include <glob.h>
++
++void globfree ( glob_t *pglob )
++{
++  return;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/isatty.c
 --- newlib-1.18.0/libgloss/libsysbase/isatty.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/isatty.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/isatty.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
 +#include <_syslist.h>
 +#include <stdio.h>
 +#include <errno.h>
-+
++#include <sys/syscalls.h>
 +
 +#ifdef REENTRANT_SYSCALLS_PROVIDED
 +int
@@ -4640,15 +4738,15 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/isatty.c newlib-1.18
 +	   int fd) {
 +	struct _reent *ptr = _REENT;
 +#endif
-+	if(fd==stdout->_file || fd==stdin->_file || fd==stderr->_file)
-+		return 1;
++	if(__syscalls.isatty_r)
++		return __syscalls.isatty_r(ptr,fd);
 +
 +	ptr->_errno = ENOTTY;
 +	return 0;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0-PPU/libgloss/libsysbase/kill.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/kill.c
 --- newlib-1.18.0/libgloss/libsysbase/kill.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/kill.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/kill.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4671,9 +4769,39 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/kill.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0-PPU/libgloss/libsysbase/lock.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/link.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/link.c
+--- newlib-1.18.0/libgloss/libsysbase/link.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/link.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,26 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <reent.h>
++#include <errno.h>
++#include <sys/syscalls.h>
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_link_r,(r,old,new),
++	   struct _reent *r _AND
++	   const char *old _AND
++	   const char *new) {
++#else
++int
++_DEFUN(_link,(old,new),
++	   const char *old _AND
++	   const char *new) {
++	struct _reent *r = REENT;
++#endif
++	if(__syscalls.link_r)
++		return __syscalls.link_r(r,old,new);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lock.c
 --- newlib-1.18.0/libgloss/libsysbase/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/lock.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lock.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,64 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4739,9 +4867,42 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lock.c newlib-1.18.0
 +	return -1;
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.0-PPU/libgloss/libsysbase/lseek.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek64.c
+--- newlib-1.18.0/libgloss/libsysbase/lseek64.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek64.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,29 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <stdio.h>
++#include <errno.h>
++#include <sys/syscalls.h>
++
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++_off_t
++_DEFUN(_lseek64_r,(r,fd,pos,dir),
++	   struct _reent *r _AND
++		   int fd _AND
++		   _off64_t pos _AND
++		   int dir) {
++#else
++_off_t
++_DEFUN(_lseek64,(fd,pos,dir),
++	   int fd _AND
++	   _off64_t pos _AND
++	   int dir) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.lseek64_r)
++		return __syscalls.lseek64_r(r,fd,pos,dir);
++
++	r->_errno = ENOSYS;
++	return (_off_t)-1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek.c
 --- newlib-1.18.0/libgloss/libsysbase/lseek.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/lseek.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/lseek.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4772,10 +4933,10 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/lseek.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return (_off_t)-1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1.18.0-PPU/libgloss/libsysbase/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/Makefile.in
 --- newlib-1.18.0/libgloss/libsysbase/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/Makefile.in	2010-12-17 13:21:40.133125010 -0400
-@@ -0,0 +1,151 @@
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/Makefile.in	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,154 @@
 +# Copyright (c) 1998 Cygnus Support
 +#
 +# The authors hereby grant permission to use, copy, modify, distribute,
@@ -4845,7 +5006,10 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1
 +# object files needed
 +OBJS = abort.o close.o environ.o sbrk.o syscalls.o _exit.o fstat.o isatty.o \
 +	   lseek.o open.o read.o write.o lock.o ftruncate.o getpid.o fsync.o chdir.o\
-+	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o mkdir.o rmdir.o
++	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o mkdir.o rmdir.o\
++	   closedir.o opendir.o readdir.o readdir_r.o rewinddir.o telldir.o seekdir.o\
++	   fstat64.o getrusage.o link.o lseek64.o rename.o stat.o stat64.o truncate.o\
++	   umask.o utime.o settod.o dup.o glob.o globfree.o
 +
 +	#link.o stat.o \
 +	#malloc_vars.o \
@@ -4927,10 +5091,10 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/Makefile.in newlib-1
 +
 +config.status: configure
 +	$(SHELL) config.status --recheck
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.0-PPU/libgloss/libsysbase/mkdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/mkdir.c
 --- newlib-1.18.0/libgloss/libsysbase/mkdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/mkdir.c	2010-12-17 13:18:45.221875045 -0400
-@@ -0,0 +1,18 @@
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/mkdir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,40 @@
 +#include "config.h"
 +#include <_ansi.h>
 +#include <_syslist.h>
@@ -4938,20 +5102,42 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/mkdir.c newlib-1.18.
 +#include <sys/stat.h>
 +#include <sys/syscalls.h>
 +#include <errno.h>
++#include <reent.h>
 +
-+int mkdir(const char *path,mode_t mode)
-+{
-+  struct _reent *r = _REENT;
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_mkdir_r,(r,path,mode),
++	   struct _reent *r _AND
++	   const char *path _AND
++	   int mode) {
++#else
++int
++_DEFUN(_mkdir,(path,mode),
++	   const char *path _AND
++	   int mode) {
++	struct _reent *r = REENT;
++#endif
++	if(__syscalls.mkdir_r)
++		return __syscalls.mkdir_r(r,path,mode);
 +
-+  if(__syscalls.mkdir_r)
-+    return __syscalls.mkdir_r(r,path,mode);
-+
-+  r->_errno = ENOSYS;
-+  return -1;
++	r->_errno = ENOSYS;
++	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0-PPU/libgloss/libsysbase/open.c
++
++int
++_DEFUN(mkdir,(path,mode),
++	   const char *path _AND
++	   mode_t mode) {
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++	struct _reent *r = _REENT;
++	_mkdir_r(r,path,mode);
++#else
++	_mkdir(path,mode);
++#endif
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/open.c
 --- newlib-1.18.0/libgloss/libsysbase/open.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/open.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/open.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,31 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4984,9 +5170,29 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/open.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0-PPU/libgloss/libsysbase/read.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/opendir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/opendir.c
+--- newlib-1.18.0/libgloss/libsysbase/opendir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/opendir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,16 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++DIR* opendir(const char* dir)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.opendir_r)
++		return __syscalls.opendir_r(r,dir);
++
++	r->_errno = ENOSYS;
++	return NULL;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/read.c
 --- newlib-1.18.0/libgloss/libsysbase/read.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/read.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/read.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5017,9 +5223,98 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/read.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.0-PPU/libgloss/libsysbase/rmdir.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir.c
+--- newlib-1.18.0/libgloss/libsysbase/readdir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,16 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++struct dirent* readdir(DIR* dir)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.readdir_r)
++		return __syscalls.readdir_r(r,dir);
++
++	r->_errno = ENOSYS;
++	return NULL;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/readdir_r.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir_r.c
+--- newlib-1.18.0/libgloss/libsysbase/readdir_r.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/readdir_r.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,16 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++int readdir_r(DIR* dir, struct dirent* entry, struct dirent** result)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.readdir_r_r)
++		return __syscalls.readdir_r_r(r,dir,entry,result);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rename.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rename.c
+--- newlib-1.18.0/libgloss/libsysbase/rename.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rename.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,26 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <reent.h>
++#include <errno.h>
++#include <sys/syscalls.h>
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_rename_r,(r,old,new),
++	   struct _reent *r _AND
++	   const char *old _AND
++	   const char *new) {
++#else
++int
++_DEFUN(_rename,(old,new),
++	   const char *old _AND
++	   const char *new) {
++	struct _reent *r = REENT;
++#endif
++	if(__syscalls.rename_r)
++		return __syscalls.rename_r(r,old,new);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rewinddir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rewinddir.c
+--- newlib-1.18.0/libgloss/libsysbase/rewinddir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rewinddir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,15 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++void rewinddir(DIR* dir)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.rewinddir_r)
++		__syscalls.rewinddir_r(r,dir);
++	else
++		r->_errno = ENOSYS;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rmdir.c
 --- newlib-1.18.0/libgloss/libsysbase/rmdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/rmdir.c	2010-12-17 13:19:33.243125025 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/rmdir.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5039,9 +5334,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/rmdir.c newlib-1.18.
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0-PPU/libgloss/libsysbase/sbrk.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/sbrk.c
 --- newlib-1.18.0/libgloss/libsysbase/sbrk.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/sbrk.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/sbrk.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5067,10 +5362,124 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/sbrk.c newlib-1.18.0
 +		return (caddr_t)-1;
 +	}
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.18.0-PPU/libgloss/libsysbase/syscalls.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/seekdir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/seekdir.c
+--- newlib-1.18.0/libgloss/libsysbase/seekdir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/seekdir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,15 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++void seekdir(DIR* dir, long int offset)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.seekdir_r)
++		__syscalls.seekdir_r(r,dir,offset);
++	else
++		r->_errno = ENOSYS;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/settod.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/settod.c
+--- newlib-1.18.0/libgloss/libsysbase/settod.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/settod.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,27 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/time.h>
++#include <sys/times.h>
++#include <sys/syscalls.h>
++#include <errno.h>
++
++/*#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_settimeofday_r,(r,ptimeval,ptimezone),
++	   struct _reent *r _AND
++	   const struct timeval *ptimeval _AND
++	   const struct timezone *ptimezone) {
++#else*/
++int
++_DEFUN(settimeofday,(ptimeval,ptimezone),
++	   const struct timeval *ptimeval _AND
++	   const struct timezone *ptimezone) {
++	struct _reent *r = _REENT;
++/*#endif*/
++	if(__syscalls.settod_r)
++		return __syscalls.settod_r(r,ptimeval,ptimezone);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat64.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat64.c
+--- newlib-1.18.0/libgloss/libsysbase/stat64.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat64.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,28 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_stat64_r,(r,path,st),
++	   struct _reent *r _AND
++	   const char *path _AND
++	   struct stat *st) {
++#else
++int
++_DEFUN(_stat64,(path,st),
++	   const char *path _AND
++	   struct stat *st) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.stat64_r)
++		return __syscalls.stat64_r(r,path,st);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/stat.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat.c
+--- newlib-1.18.0/libgloss/libsysbase/stat.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/stat.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,28 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_stat_r,(r,path,st),
++	   struct _reent *r _AND
++	   const char *path _AND
++	   struct stat *st) {
++#else
++int
++_DEFUN(_stat,(path,st),
++	   const char *path _AND
++	   struct stat *st) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.stat_r)
++		return __syscalls.stat_r(r,path,st);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/syscalls.c
 --- newlib-1.18.0/libgloss/libsysbase/syscalls.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/syscalls.c	2010-12-17 13:27:47.823124359 -0400
-@@ -0,0 +1,25 @@
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/syscalls.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,52 @@
 +#include <sys/syscalls.h>
 +
 +struct __syscalls_t __syscalls = {
@@ -5080,25 +5489,116 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/syscalls.c newlib-1.
 +	NULL,			//	read_r
 +	NULL,			//	write_r
 +	NULL,			//	lseek_r
++	NULL,			//	lseek64_r
 +	NULL,			//	fstat_r
++	NULL,			//	fstat64_r
++	NULL,			//	stat_r
++	NULL,			//	stat64_r
 +	NULL,			//	ftruncate_r
++	NULL,			//	truncate_r
 +	NULL,			//	fsync_r
++	NULL,			//	link_r
 +	NULL,			//	unlink_r
 +	NULL,			//	chmod_r
++	NULL,			//	rename_r
++	NULL,			//	utime_r
++
++	NULL,			//	umask_r
++
++	NULL,			//	mkdir_r
++	NULL,			//	rmdir_r
++	NULL,			//	chdir_r
++	NULL,			//	getcwd_r
++
++	NULL,			//	closedir_r
++	NULL,			//	opendir_r
++	NULL,			//	readdir_r
++	NULL,			//	readdir_r_r
++	NULL,			//	rewinddir_r
++	NULL,			//	seekdir_r
++	NULL,			//	telldir_r
++
++	NULL,			//	isatty_r
 +	NULL,			//	execve_r
 +	NULL,			//	gettod_r
++	NULL,			//	settod_r
++	NULL,			//	getrusage_r
++
 +	NULL,			//  sys_lwmutex_create_r
 +	NULL,			//	sys_lwmutex_destroy_r
 +	NULL,			//	sys_lwmutex_lock_r
 +	NULL,			//	sys_lwmutex_trylock_r
 +	NULL,			//	sys_lwmutex_unlock_r
++
 +	NULL,			//	exit
-+	NULL,                   //      mkdir_r
-+	NULL,                   //      rmdir_r
 +};
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18.0-PPU/libgloss/libsysbase/unlink.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/telldir.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/telldir.c
+--- newlib-1.18.0/libgloss/libsysbase/telldir.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/telldir.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,16 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/dirent.h>
++#include <sys/syscalls.h>
++
++long int telldir(DIR* dir)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.telldir_r)
++		return __syscalls.telldir_r(r,dir);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/truncate.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/truncate.c
+--- newlib-1.18.0/libgloss/libsysbase/truncate.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/truncate.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,21 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <stdio.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <sys/syscalls.h>
++
++int
++_DEFUN(truncate,(path,len),
++	   const char* path _AND
++	   off_t len)
++{
++	struct _reent *r = _REENT;
++
++	if(__syscalls.truncate_r)
++		return __syscalls.truncate_r(r,path,len);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/umask.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/umask.c
+--- newlib-1.18.0/libgloss/libsysbase/umask.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/umask.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,15 @@
++#include <unistd.h>
++#include <reent.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/syscalls.h>
++
++mode_t umask(mode_t cmask)
++{
++	struct _reent *r = _REENT;
++	if(__syscalls.umask_r)
++		return __syscalls.umask_r(r,cmask);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/unlink.c
 --- newlib-1.18.0/libgloss/libsysbase/unlink.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/unlink.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/unlink.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5124,9 +5624,32 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/unlink.c newlib-1.18
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0-PPU/libgloss/libsysbase/wait.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/utime.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/utime.c
+--- newlib-1.18.0/libgloss/libsysbase/utime.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/utime.c	2011-01-14 15:02:51.769568117 -0400
+@@ -0,0 +1,19 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++#include <errno.h>
++#include <utime.h>
++
++int utime(const char* path, const struct utimbuf* times)
++{
++  struct _reent *r = _REENT;
++
++  if(__syscalls.utime_r)
++    return __syscalls.utime_r(r,path,times);
++
++  r->_errno = ENOSYS;
++  return -1;
++}
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/wait.c
 --- newlib-1.18.0/libgloss/libsysbase/wait.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/wait.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/wait.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5147,9 +5670,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/wait.c newlib-1.18.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.18.0-PPU/libgloss/libsysbase/warning.h
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/warning.h
 --- newlib-1.18.0/libgloss/libsysbase/warning.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/warning.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/warning.h	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,43 @@
 +#ifndef __WARNING_H__
 +#define __WARNING_H__
@@ -5194,9 +5717,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/warning.h newlib-1.1
 +                "warning: " #name " is not implemented and will always fail")
 +
 +#endif /* __WARNING_H__ */
-diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.0-PPU/libgloss/libsysbase/write.c
+diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/write.c
 --- newlib-1.18.0/libgloss/libsysbase/write.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/libgloss/libsysbase/write.c	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/libsysbase/write.c	2011-01-14 15:02:51.769568117 -0400
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5227,9 +5750,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/libsysbase/write.c newlib-1.18.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-PPU/libgloss/spu/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-PS3-AerialX/libgloss/spu/Makefile.in
 --- newlib-1.18.0/libgloss/spu/Makefile.in	2009-05-07 15:07:35.000000000 -0300
-+++ newlib-1.18.0-PPU/libgloss/spu/Makefile.in	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/libgloss/spu/Makefile.in	2011-01-14 15:02:51.799566629 -0400
 @@ -151,7 +151,7 @@
  .PHONY: install info install-info clean-info
  install:
@@ -5239,9 +5762,9 @@ diff -burN --exclude=.git newlib-1.18.0/libgloss/spu/Makefile.in newlib-1.18.0-P
  	done
  
  info:
-diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PPU/newlib/configure.host
+diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PS3-AerialX/newlib/configure.host
 --- newlib-1.18.0/newlib/configure.host	2009-12-10 13:12:11.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/configure.host	2010-12-17 09:18:46.671874103 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/configure.host	2011-01-14 15:02:51.819566807 -0400
 @@ -442,7 +442,10 @@
  	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
  	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
@@ -5267,9 +5790,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/configure.host newlib-1.18.0-PPU/
    powerpc*-*-eabialtivec*)
  	default_newlib_io_long_long="yes"
  	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-1.18.0-PPU/newlib/libc/include/sys/config.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/config.h
 --- newlib-1.18.0/newlib/libc/include/sys/config.h	2009-12-10 13:12:11.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/include/sys/config.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/config.h	2011-01-14 15:02:51.889568132 -0400
 @@ -200,6 +200,16 @@
  #define _READ_WRITE_RETURN_TYPE _ssize_t
  #endif
@@ -5287,9 +5810,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/config.h newlib-
  #ifndef __EXPORT
  #define __EXPORT
  #endif
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1.18.0-PPU/newlib/libc/include/sys/types.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/types.h
 --- newlib-1.18.0/newlib/libc/include/sys/types.h	2009-09-28 13:42:21.000000000 -0300
-+++ newlib-1.18.0-PPU/newlib/libc/include/sys/types.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/types.h	2011-01-14 15:02:51.889568132 -0400
 @@ -212,7 +212,7 @@
   * should be >= NOFILE (param.h).
   */
@@ -5299,9 +5822,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/types.h newlib-1
  #  endif
  
  typedef	long	fd_mask;
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-1.18.0-PPU/newlib/libc/include/sys/unistd.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/unistd.h
 --- newlib-1.18.0/newlib/libc/include/sys/unistd.h	2009-12-17 15:43:43.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/include/sys/unistd.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/include/sys/unistd.h	2011-01-14 15:02:51.889568132 -0400
 @@ -215,7 +215,7 @@
  int     _EXFUN(_execve, (const char *__path, char * const __argv[], char * const __envp[] ));
  #endif
@@ -5311,9 +5834,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/include/sys/unistd.h newlib-
  #if !defined(__INSIDE_CYGWIN__)
  int     _EXFUN(ftruncate, (int __fd, off_t __length));
  int     _EXFUN(truncate, (const char *, off_t __length));
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-PPU/newlib/libc/sys/configure
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure
 --- newlib-1.18.0/newlib/libc/sys/configure	2009-12-17 16:41:36.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/configure	2010-12-14 11:04:02.321875224 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure	2011-01-14 15:02:51.969565616 -0400
 @@ -966,6 +966,7 @@
  h8300hms
  h8500hms
@@ -5331,9 +5854,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure newlib-1.18.0-
  	m88kbug) subdirs="$subdirs m88kbug"
   ;;
  	mmixware) subdirs="$subdirs mmixware"
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0-PPU/newlib/libc/sys/configure.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure.in
 --- newlib-1.18.0/newlib/libc/sys/configure.in	2007-05-24 14:33:37.000000000 -0300
-+++ newlib-1.18.0-PPU/newlib/libc/sys/configure.in	2010-12-14 11:04:02.321875224 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/configure.in	2011-01-14 15:02:51.969565616 -0400
 @@ -29,6 +29,7 @@
  	h8300hms) AC_CONFIG_SUBDIRS(h8300hms) ;;
  	h8500hms) AC_CONFIG_SUBDIRS(h8500hms) ;;
@@ -5342,9 +5865,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/configure.in newlib-1.18
  	m88kbug) AC_CONFIG_SUBDIRS(m88kbug) ;;
  	mmixware) AC_CONFIG_SUBDIRS(mmixware) ;;
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0-PPU/newlib/libc/sys/lv2/aclocal.m4
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/aclocal.m4
 --- newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/aclocal.m4	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/aclocal.m4	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,992 @@
 +# generated automatically by aclocal 1.11 -*- Autoconf -*-
 +
@@ -6338,9 +6861,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/autolock.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/autolock.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/autolock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/autolock.c	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/autolock.c	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,39 @@
 +//
 +// autolock.c
@@ -6381,38 +6904,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/autolock.c newlib-1.
 +    abort();
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/closedir.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/closedir.c
---- newlib-1.18.0/newlib/libc/sys/lv2/closedir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/closedir.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,25 @@
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <dirent.h>
-+#include <errno.h>
-+
-+#include "lv2syscall.h"
-+
-+/*
-+ * close a directory.
-+ */
-+int
-+closedir(DIR *dirp)
-+{
-+  int32_t fd, r;
-+
-+  fd = dirp->dd_fd;
-+  dirp->dd_fd = -1;
-+  (void)free((void *)dirp);
-+  if ((r = __lv2syscall1(807, fd)) != 0) {
-+    __lv2errno(r);
-+    return -1;
-+  } else
-+    return 0;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure
 --- newlib-1.18.0/newlib/libc/sys/lv2/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,4686 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -11100,9 +11594,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure newlib-1.1
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure.in
 --- newlib-1.18.0/newlib/libc/sys/lv2/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/configure.in	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/configure.in	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,13 @@
 +dnl This is the newlib/libc/sys/rtems configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -11117,52 +11611,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/configure.in newlib-
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/crt0.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/crt0.c
---- newlib-1.18.0/newlib/libc/sys/lv2/crt0.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/crt0.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,6 @@
-+//
-+// crt0.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+void _start ( void ) { }
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/dup.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c
---- newlib-1.18.0/newlib/libc/sys/lv2/dup.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/dup.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,12 @@
-+//
-+// dup.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <errno.h>
-+
-+int dup ( int old_handle )
-+{
-+  errno = ENOSYS;
-+  return -1;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getcwd.c
---- newlib-1.18.0/newlib/libc/sys/lv2/getcwd.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getcwd.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,13 @@
-+//
-+// getcwd.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <stdlib.h>
-+#include <errno.h>
-+
-+char *getcwd ( char *buffer, size_t size )
-+{
-+  errno = ENOSYS;
-+  return NULL;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getreent.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/getreent.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/getreent.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getreent.c	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/getreent.c	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,15 @@
 +#include <reent.h>
 +
@@ -11179,61 +11630,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getreent.c newlib-1.
 +  }
 +  return r;
 +}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/getrusage.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/getrusage.c
---- newlib-1.18.0/newlib/libc/sys/lv2/getrusage.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/getrusage.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,14 @@
-+//
-+// getrusage.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <sys/resource.h>
-+#include <errno.h>
-+
-+int getrusage ( int who, struct rusage *r_usage )
-+{
-+  errno = ENOSYS;
-+  return -1;
-+}
-+
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/glob.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c
---- newlib-1.18.0/newlib/libc/sys/lv2/glob.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/glob.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,15 @@
-+//
-+// glob.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <glob.h>
-+#include <stdlib.h>
-+#include <errno.h>
-+
-+int glob ( const char *pattern, int flags, int (*errfunc) ( const char *epath, int eerrno ), glob_t *pglob )
-+{
-+  if (errfunc != NULL)
-+    errfunc(NULL, ENOSYS);
-+  return 0;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/globfree.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/globfree.c
---- newlib-1.18.0/newlib/libc/sys/lv2/globfree.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/globfree.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,11 @@
-+//
-+// globfree.c
-+// by Dan Peori (dan.peori@oopo.net)
-+//
-+
-+#include <glob.h>
-+
-+void globfree ( glob_t *pglob )
-+{
-+  return;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock.c	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock.c	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,43 @@
 +//
 +// lock.c
@@ -11278,9 +11677,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock.c newlib-1.18.0
 +  return sys_lwmutex_unlock(lock);
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock-internal.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock-internal.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock-internal.h	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock-internal.h	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,27 @@
 +#include <stdint.h>
 +
@@ -11309,9 +11708,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock-internal.h newl
 +
 +extern void __libc_auto_lock_allocate(sys_lwmutex_t *pMutex);
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock_recursive.c
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock_recursive.c
 --- newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lock_recursive.c	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/lock_recursive.c	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,43 @@
 +//
 +// lock_recursive.c
@@ -11356,189 +11755,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lock_recursive.c new
 +  return sys_lwmutex_unlock(lock);
 +}
 +
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lv2errno.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/lv2errno.c
---- newlib-1.18.0/newlib/libc/sys/lv2/lv2errno.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lv2errno.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,23 @@
-+#include <stdint.h>
-+#include <errno.h>
-+
-+static inline int maplv2errno(uint32_t errcode)
-+{
-+  switch(errcode) {
-+  case 0x8001002a:
-+    return EBADF;
-+  case 0x8001002e:
-+    return ENOTDIR;
-+  case 0x8001003a:
-+    return ENOENT;
-+
-+    /**/
-+  }
-+  return EINVAL;
-+}
-+
-+extern void __lv2errno(int32_t errcode)
-+{
-+  errno = maplv2errno((uint32_t)errcode);
-+}
-+
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/lv2syscall.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/lv2syscall.h
---- newlib-1.18.0/newlib/libc/sys/lv2/lv2syscall.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/lv2syscall.h	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,149 @@
-+#include <stdint.h>
-+
-+#define LV2_INLINE static inline __attribute__((unused))
-+
-+#define __lv2syscallarg0 
-+#define __lv2syscallarg1 __lv2syscallarg0, uint64_t a1
-+#define __lv2syscallarg2 __lv2syscallarg1, uint64_t a2
-+#define __lv2syscallarg3 __lv2syscallarg2, uint64_t a3
-+#define __lv2syscallarg4 __lv2syscallarg3, uint64_t a4
-+#define __lv2syscallarg5 __lv2syscallarg4, uint64_t a5
-+#define __lv2syscallarg6 __lv2syscallarg5, uint64_t a6
-+#define __lv2syscallarg7 __lv2syscallarg6, uint64_t a7
-+#define __lv2syscallarg8 __lv2syscallarg7, uint64_t a8
-+
-+#define __lv2syscallclobber8 "r0", "r2", "r12", "lr", \
-+	"ctr", "xer", "cr0", "cr1", "cr5", "cr6", "cr7", \
-+	"memory"
-+#define __lv2syscallclobber7 __lv2syscallclobber8, "r10"
-+#define __lv2syscallclobber6 __lv2syscallclobber7, "r9"
-+#define __lv2syscallclobber5 __lv2syscallclobber6, "r8"
-+#define __lv2syscallclobber4 __lv2syscallclobber5, "r7"
-+#define __lv2syscallclobber3 __lv2syscallclobber4, "r6"
-+#define __lv2syscallclobber2 __lv2syscallclobber3, "r5"
-+#define __lv2syscallclobber1 __lv2syscallclobber2, "r4"
-+#define __lv2syscallclobber0 __lv2syscallclobber1, "r3"
-+#define __lv2syscallreg(num, reg) \
-+	register uint64_t p##num asm(reg) = a##num
-+#define __lv2syscallregs \
-+	register uint64_t s asm("11") = syscall
-+#define __lv2syscallparam1(reg) reg(p1), reg(s)
-+#define __lv2syscallparam2(reg) reg(p1), reg(p2), reg(s)
-+#define __lv2syscallparam3(reg) reg(p1), reg(p2), reg(p3), reg(s)
-+#define __lv2syscallparam4(reg) reg(p1), reg(p2), reg(p3), reg(p4), reg(s)
-+#define __lv2syscallparam5(reg) reg(p1), reg(p2), reg(p3), reg(p4), reg(p5), reg(s)
-+#define __lv2syscallparam6(reg) reg(p1), reg(p2), reg(p3), reg(p4), reg(p5), reg(p6), reg(s)
-+#define __lv2syscallparam7(reg) reg(p1), reg(p2), reg(p3), reg(p4), reg(p5), reg(p6), reg(p7), reg(s)
-+#define __lv2syscallparam8(reg) reg(p1), reg(p2), reg(p3), reg(p4), reg(p5), reg(p6), reg(p7), reg(p8), reg(s)
-+LV2_INLINE uint64_t __lv2syscall0(uint64_t syscall __lv2syscallarg0) {
-+	__lv2syscallregs;
-+	register uint64_t p1 asm("3") = 0;
-+	asm volatile("sc"
-+			: __lv2syscallparam1("=r")
-+			: __lv2syscallparam1("r")
-+			: __lv2syscallclobber1);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall1(uint64_t syscall __lv2syscallarg1) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	asm volatile("sc"
-+			: __lv2syscallparam1("=r")
-+			: __lv2syscallparam1("r")
-+			: __lv2syscallclobber1);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall2(uint64_t syscall __lv2syscallarg2) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	asm volatile("sc"
-+			: __lv2syscallparam2("=r")
-+			: __lv2syscallparam2("r")
-+			: __lv2syscallclobber2);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall3(uint64_t syscall __lv2syscallarg3) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	asm volatile("sc"
-+			: __lv2syscallparam3("=r")
-+			: __lv2syscallparam3("r")
-+			: __lv2syscallclobber3);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall4(uint64_t syscall __lv2syscallarg4) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	__lv2syscallreg(4, "6");
-+	asm volatile("sc"
-+			: __lv2syscallparam4("=r")
-+			: __lv2syscallparam4("r")
-+			: __lv2syscallclobber4);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall5(uint64_t syscall __lv2syscallarg5) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	__lv2syscallreg(4, "6");
-+	__lv2syscallreg(5, "7");
-+	asm volatile("sc"
-+			: __lv2syscallparam5("=r")
-+			: __lv2syscallparam5("r")
-+			: __lv2syscallclobber5);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall6(uint64_t syscall __lv2syscallarg6) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	__lv2syscallreg(4, "6");
-+	__lv2syscallreg(5, "7");
-+	__lv2syscallreg(6, "8");
-+	asm volatile("sc"
-+			: __lv2syscallparam6("=r")
-+			: __lv2syscallparam6("r")
-+			: __lv2syscallclobber6);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall7(uint64_t syscall __lv2syscallarg7) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	__lv2syscallreg(4, "6");
-+	__lv2syscallreg(5, "7");
-+	__lv2syscallreg(6, "8");
-+	__lv2syscallreg(7, "9");
-+	asm volatile("sc"
-+			: __lv2syscallparam7("=r")
-+			: __lv2syscallparam7("r")
-+			: __lv2syscallclobber7);
-+	return p1;
-+}
-+LV2_INLINE uint64_t __lv2syscall8(uint64_t syscall __lv2syscallarg8) {
-+	__lv2syscallregs;
-+	__lv2syscallreg(1, "3");
-+	__lv2syscallreg(2, "4");
-+	__lv2syscallreg(3, "5");
-+	__lv2syscallreg(4, "6");
-+	__lv2syscallreg(5, "7");
-+	__lv2syscallreg(6, "8");
-+	__lv2syscallreg(7, "9");
-+	__lv2syscallreg(8, "10");
-+	asm volatile("sc"
-+			: __lv2syscallparam8("=r")
-+			: __lv2syscallparam8("r")
-+			: __lv2syscallclobber8);
-+	return p1;
-+}
-+
-+extern void __lv2errno(int32_t errcode);
-+
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/machine/_types.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/machine/_types.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/machine/_types.h	2010-12-14 11:06:03.161873871 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/machine/_types.h	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,12 @@
 +#ifndef _MACHINE__TYPES_H
 +#define _MACHINE__TYPES_H
@@ -11552,9 +11771,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/machine/_types.h new
 +typedef long long _off_t;
 +
 +#endif	// _MACHINE__TYPES_H
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.am
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.am
 --- newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.am	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.am	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,18 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -11574,10 +11793,10 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.am newlib-1
 +
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.in
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.in
 --- newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/Makefile.in	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,489 @@
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/Makefile.in	2011-01-14 15:02:52.039566206 -0400
+@@ -0,0 +1,432 @@
 +# Makefile.in generated by automake 1.11 from Makefile.am.
 +# @configure_input@
 +
@@ -11632,12 +11851,9 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +ARFLAGS = cru
 +lib_a_AR = $(AR) $(ARFLAGS)
 +lib_a_LIBADD =
-+am_lib_a_OBJECTS = lib_a-dup.$(OBJEXT) lib_a-getcwd.$(OBJEXT) \
-+	lib_a-getrusage.$(OBJEXT) lib_a-glob.$(OBJEXT) \
-+	lib_a-globfree.$(OBJEXT) lib_a-lock.$(OBJEXT) \
++am_lib_a_OBJECTS = lib_a-lock.$(OBJEXT) \
 +	lib_a-lock_recursive.$(OBJEXT) lib_a-autolock.$(OBJEXT) \
-+	lib_a-getreent.$(OBJEXT) lib_a-lv2errno.$(OBJEXT) \
-+	lib_a-opendir.$(OBJEXT) lib_a-closedir.$(OBJEXT) lib_a-readdir.$(OBJEXT)
++	lib_a-getreent.$(OBJEXT)
 +lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 +DEFAULT_INCLUDES = -I.@am__isrc@
 +depcomp =
@@ -11755,7 +11971,7 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 +AM_CCASFLAGS = $(INCLUDES)
 +noinst_LIBRARIES = lib.a
-+lib_a_SOURCES = dup.c getcwd.c getrusage.c glob.c globfree.c lock.c lock_recursive.c autolock.c getreent.c lv2errno.c opendir.c closedir.c readdir.c
++lib_a_SOURCES = lock.c lock_recursive.c autolock.c getreent.c
 +lib_a_CCASFLAGS = $(AM_CCASFLAGS)
 +lib_a_CFLAGS = $(AM_CFLAGS)
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
@@ -11818,36 +12034,6 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +.c.obj:
 +	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 +
-+lib_a-dup.o: dup.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.o `test -f 'dup.c' || echo '$(srcdir)/'`dup.c
-+
-+lib_a-dup.obj: dup.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-dup.obj `if test -f 'dup.c'; then $(CYGPATH_W) 'dup.c'; else $(CYGPATH_W) '$(srcdir)/dup.c'; fi`
-+
-+lib_a-getcwd.o: getcwd.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getcwd.o `test -f 'getcwd.c' || echo '$(srcdir)/'`getcwd.c
-+
-+lib_a-getcwd.obj: getcwd.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getcwd.obj `if test -f 'getcwd.c'; then $(CYGPATH_W) 'getcwd.c'; else $(CYGPATH_W) '$(srcdir)/getcwd.c'; fi`
-+
-+lib_a-getrusage.o: getrusage.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getrusage.o `test -f 'getrusage.c' || echo '$(srcdir)/'`getrusage.c
-+
-+lib_a-getrusage.obj: getrusage.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getrusage.obj `if test -f 'getrusage.c'; then $(CYGPATH_W) 'getrusage.c'; else $(CYGPATH_W) '$(srcdir)/getrusage.c'; fi`
-+
-+lib_a-glob.o: glob.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-glob.o `test -f 'glob.c' || echo '$(srcdir)/'`glob.c
-+
-+lib_a-glob.obj: glob.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-glob.obj `if test -f 'glob.c'; then $(CYGPATH_W) 'glob.c'; else $(CYGPATH_W) '$(srcdir)/glob.c'; fi`
-+
-+lib_a-globfree.o: globfree.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-globfree.o `test -f 'globfree.c' || echo '$(srcdir)/'`globfree.c
-+
-+lib_a-globfree.obj: globfree.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-globfree.obj `if test -f 'globfree.c'; then $(CYGPATH_W) 'globfree.c'; else $(CYGPATH_W) '$(srcdir)/globfree.c'; fi`
-+
 +lib_a-lock.o: lock.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock.o `test -f 'lock.c' || echo '$(srcdir)/'`lock.c
 +
@@ -11871,30 +12057,6 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +
 +lib_a-getreent.obj: getreent.c
 +	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.obj `if test -f 'getreent.c'; then $(CYGPATH_W) 'getreent.c'; else $(CYGPATH_W) '$(srcdir)/getreent.c'; fi`
-+
-+lib_a-lv2errno.o: lv2errno.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lv2errno.o `test -f 'lv2errno.c' || echo '$(srcdir)/'`lv2errno.c
-+
-+lib_a-lv2errno.obj: lv2errno.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lv2errno.obj `if test -f 'lv2errno.c'; then $(CYGPATH_W) 'lv2errno.c'; else $(CYGPATH_W) '$(srcdir)/lv2errno.c'; fi`
-+
-+lib_a-opendir.o: opendir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-opendir.o `test -f 'opendir.c' || echo '$(srcdir)/'`opendir.c
-+
-+lib_a-opendir.obj: opendir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-opendir.obj `if test -f 'opendir.c'; then $(CYGPATH_W) 'opendir.c'; else $(CYGPATH_W) '$(srcdir)/opendir.c'; fi`
-+
-+lib_a-closedir.o: closedir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-closedir.o `test -f 'closedir.c' || echo '$(srcdir)/'`closedir.c
-+
-+lib_a-closedir.obj: closedir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-closedir.obj `if test -f 'closedir.c'; then $(CYGPATH_W) 'closedir.c'; else $(CYGPATH_W) '$(srcdir)/closedir.c'; fi`
-+
-+lib_a-readdir.o: readdir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-readdir.o `test -f 'readdir.c' || echo '$(srcdir)/'`readdir.c
-+
-+lib_a-readdir.obj: readdir.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-readdir.obj `if test -f 'readdir.c'; then $(CYGPATH_W) 'readdir.c'; else $(CYGPATH_W) '$(srcdir)/readdir.c'; fi`
 +
 +ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 +	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -12062,142 +12224,79 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +	uninstall-am
 +
 +
-+all: crt0.o
++all:
 +
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/opendir.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/opendir.c
---- newlib-1.18.0/newlib/libc/sys/lv2/opendir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/opendir.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,32 @@
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <dirent.h>
-+#include <errno.h>
-+
-+#include "lv2syscall.h"
-+
-+/*
-+ * open a directory.
-+ */
-+DIR *
-+opendir(const char *name)
-+{
-+  int32_t fd, r;
-+  DIR *dirp;
-+
-+  if ((dirp = (DIR *)malloc(sizeof(DIR)+sizeof(struct dirent))) == NULL) {
-+    errno = ENOMEM;
-+    return NULL;
-+  }
-+
-+  if ((r = __lv2syscall2(805, (uint64_t)name, (uint64_t)(void *)&fd)) != 0) {
-+    __lv2errno(r);
-+    free(dirp);
-+    return NULL;
-+  }
-+
-+  dirp->dd_fd = fd;
-+
-+  return dirp;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/readdir.c newlib-1.18.0-PPU/newlib/libc/sys/lv2/readdir.c
---- newlib-1.18.0/newlib/libc/sys/lv2/readdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/readdir.c	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,24 @@
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+#include <dirent.h>
-+#include <errno.h>
-+
-+#include "lv2syscall.h"
-+
-+/*
-+ * get next entry in a directory.
-+ */
-+struct dirent *
-+readdir(DIR *dirp)
-+{
-+  int32_t r;
-+  uint64_t rsize = 0;
-+  struct dirent *dp = (struct dirent *)dirp->dd_buf;
-+  if ((r = __lv2syscall3(806, __dirfd(dirp), (uint64_t)(void *)dp,
-+			 (uint64_t)(void *)&rsize)) != 0) {
-+    __lv2errno(r);
-+    return NULL;
-+  }
-+  return rsize? dp : NULL;
-+}
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/dirent.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/dirent.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/dirent.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/dirent.h	2010-12-14 11:04:02.392971661 -0400
-@@ -0,0 +1,24 @@
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/dirent.h	2011-01-14 15:02:52.039566206 -0400
+@@ -0,0 +1,61 @@
 +#ifndef _SYS_DIRENT_H
-+# define _SYS_DIRENT_H
++#define _SYS_DIRENT_H
 +
 +#include <stdint.h>
 +#include <unistd.h>
++#include <sys/types.h>
 +
-+typedef struct __dirdesc {
++typedef struct _dirdesc {
 +	int32_t	dd_fd;
-+	char	dd_buf[];
++	int32_t	dd_loc;
++	int32_t	dd_size;
++	void*	dd_buf;
++	size_t	dd_len;
++	int32_t	dd_seek;
++	int32_t	dd_rewind;
++	int32_t	dd_flags;
 +} DIR;
 +
-+# define __dirfd(dp)	((dp)->dd_fd)
++#define dirfd(dp) ((dp)->dd_fd)
 +
 +struct dirent {
++	union {
++		ino_t		d_ino;
++		ino_t		d_fileno;
++	};
 +	uint8_t		d_type;
-+	uint8_t		d_namlen;
++	uint16_t	d_seekoff;
++	uint16_t	d_reclen;
++	uint16_t	d_namlen;
 +	char		d_name[MAXPATHLEN + 1];
 +};
 +
-+DIR *opendir (const char *);
-+struct dirent *readdir (DIR *);
-+int closedir (DIR *);
-+
-+#endif
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/dir.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/dir.h
---- newlib-1.18.0/newlib/libc/sys/lv2/sys/dir.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/dir.h	2010-12-14 11:06:03.161873871 -0400
-@@ -0,0 +1,31 @@
-+/* <dir.h>
-+
-+ provides prototypes for custom directory functions in libsysbase
-+
-+*/
-+#ifndef __DIR_H__
-+#define __DIR_H__
-+
-+#include <sys/stat.h>
++// File Types
++#define DT_INVALID	0xFF
++#define DT_UNKNOWN	0
++#define DT_FIFO		DT_INVALID
++#define DT_CHR		DT_INVALID
++#define DT_DIR		1
++#define DT_BLK		DT_INVALID
++#define DT_REG		2
++#define DT_LNK		3
++#define DT_SOCK		DT_INVALID
++#define DT_WHT		DT_INVALID
 +
 +#ifdef __cplusplus
 +extern "C" {
 +#endif
 +
-+/* Directory iterator for mantaining state between dir* calls */
-+typedef struct {
-+	int device;
-+	void *dirStruct;
-+} DIR_ITER;
-+
-+DIR_ITER* diropen (const char *path);
-+int dirreset (DIR_ITER *dirState);
-+int dirnext (DIR_ITER *dirState, char *filename, struct stat *filestat);
-+int dirclose (DIR_ITER *dirState);
-+
++int closedir(DIR *);
++DIR *opendir(const char *);
++struct dirent *readdir(DIR *);
++int readdir_r(DIR *, struct dirent *, struct dirent **);
++void rewinddir(DIR *);
++void seekdir(DIR *, long int);
++long int telldir(DIR *);
 +
 +#ifdef __cplusplus
 +}
 +#endif
 +
-+#endif // __DIR_H__ 
-\ No newline at end of file
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/lock.h
++#endif
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/lock.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/lock.h	2010-12-14 11:04:02.392971661 -0400
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/lock.h	2011-01-14 15:02:52.039566206 -0400
 @@ -0,0 +1,46 @@
 +#ifndef __SYS_LOCK_H__
 +#define __SYS_LOCK_H__
@@ -12245,16 +12344,20 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.
 +#define __lock_release_recursive(NAME) __libc_lock_release_recursive(&(NAME))
 +
 +#endif /* __SYS_LOCK_H__ */
-diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/syscalls.h
+diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/syscalls.h
 --- newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.18.0-PPU/newlib/libc/sys/lv2/sys/syscalls.h	2010-12-17 13:31:30.731875132 -0400
-@@ -0,0 +1,41 @@
++++ newlib-1.18.0-PS3-AerialX/newlib/libc/sys/lv2/sys/syscalls.h	2011-01-14 15:02:52.039566206 -0400
+@@ -0,0 +1,68 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__
 +
 +#include <sys/reent.h>
 +#include <sys/types.h>
++#include <sys/time.h>
 +#include <sys/stat.h>
++#include <sys/dirent.h>
++#include <sys/resource.h>
++#include <utime.h>
 +
 +typedef struct _sys_lwmutex sys_lwmutex_t;
 +typedef struct _sys_lwmutex_attr sys_lwmutex_attr_t;
@@ -12266,14 +12369,40 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newli
 +	_ssize_t (*read_r)(struct _reent *r,int fd,void *ptr,size_t len);
 +	_ssize_t (*write_r)(struct _reent *r,int fd,const void *ptr,size_t len);
 +	_off_t (*lseek_r)(struct _reent *r,int fd,_off_t pos,int dir);
++	_off_t (*lseek64_r)(struct _reent *r,int fd,_off_t pos,int dir);
 +	int (*fstat_r)(struct _reent *r,int fd,struct stat *st);
++	int (*fstat64_r)(struct _reent *r,int fd,struct stat *st);
++	int (*stat_r)(struct _reent *r, const char *path, struct stat *st);
++	int (*stat64_r)(struct _reent *r, const char *path, struct stat *st);
 +	int (*ftruncate_r)(struct _reent *r,int fd,off_t len);
++	int (*truncate_r)(struct _reent *r, const char *path, off_t length);
 +	int (*fsync_r)(struct _reent *r,int fd);
++	int (*link_r)(struct _reent *r,const char *old, const char *new);
 +	int (*unlink_r)(struct _reent *r,const char *name);
 +	int (*chmod_r)(struct _reent *r,const char *path,mode_t mode);
++	int (*rename_r)(struct _reent *r, const char *old, const char *new);
++	int (*utime_r)(struct _reent *r, const char *path, const struct utimbuf *times);
 +
++	mode_t (*umask_r)(struct _reent *r,mode_t cmask);
++
++	int (*mkdir_r)(struct _reent *r,const char *path,mode_t mode);
++	int (*rmdir_r)(struct _reent *r,const char *dirname);
++	int (*chdir_r)(struct _reent *r,const char *dirname);
++	char* (*getcwd_r)(struct _reent *r,char *buf, size_t size);
++
++	int (*closedir_r)(struct _reent *r,DIR*);
++	DIR* (*opendir_r)(struct _reent *r,const char*);
++	struct dirent* (*readdir_r)(struct _reent *r,DIR*);
++	int (*readdir_r_r)(struct _reent *r,DIR*, struct dirent*, struct dirent**);
++	void (*rewinddir_r)(struct _reent *r,DIR*);
++	void (*seekdir_r)(struct _reent *r,DIR*, long int);
++	long int (*telldir_r)(struct _reent *r,DIR*);
++
++	int (*isatty_r)(struct _reent *r,int fd);
 +	int (*execve_r)(struct _reent *r,char *name,char **argv,char **env);
 +	int (*gettod_r)(struct _reent *r,struct timeval *ptimeval,void *ptimezone);
++	int (*settod_r)(struct _reent *r,const struct timeval *ptimeval,const struct timezone *ptimezone);
++	int (*getrusage_r)(struct _reent *r,int who, struct rusage *r_usage);
 +
 +	int (*sys_lwmutex_create_r)(struct _reent *r,sys_lwmutex_t *lwmutex,const sys_lwmutex_attr_t *attr);
 +	int (*sys_lwmutex_destroy_r)(struct _reent *r,sys_lwmutex_t *lwmutex);
@@ -12282,9 +12411,6 @@ diff -burN --exclude=.git newlib-1.18.0/newlib/libc/sys/lv2/sys/syscalls.h newli
 +	int (*sys_lwmutex_unlock_r)(struct _reent *r,sys_lwmutex_t *lwmutex);
 +
 +	void (*exit)(int rc);
-+
-+        int (*mkdir_r)(struct _reent *r,const char *path,mode_t mode);
-+        int (*rmdir_r)(struct _reent *r,const char *dirname);
 +};
 +
 +extern struct __syscalls_t __syscalls;
