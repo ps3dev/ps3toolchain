@@ -33,7 +33,7 @@ mkdir build-ppu-stage2 && cd build-ppu-stage2 || { exit 1; }
     --disable-shared \
     --disable-threads \
     --enable-__cxa_atexit \
-    --enable-languages="c,c++,objc" \
+    --enable-languages="c,c++,objc,obj-c++" \
     --enable-secureplt \
     --with-cpu="cell" \
     --with-newlib \
