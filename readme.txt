@@ -13,26 +13,19 @@
 
  1) Set up your environment by installing the following software:
 
-  autoconf, automake, bison, flex, gcc, libelf, make, makeinfo, ncurses, patch, python, subversion, wget, zlib
+  autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
+  ncurses, patch, python, subversion, wget, zlib
 
  2) Add the following to your login script:
 
   export PS3DEV=/usr/local/ps3dev
-  export PSL1GHT=$PS3DEV/psl1ght
-
   export PATH=$PATH:$PS3DEV/bin
   export PATH=$PATH:$PS3DEV/ppu/bin
   export PATH=$PATH:$PS3DEV/spu/bin
 
+  export PSL1GHT=$PS3DEV/psl1ght
+  export PATH=$PATH:$PSL1GHT/bin
+
  3) Run the toolchain script:
 
   ./toolchain.sh
-
- ==========================
-  Where do I go from here?
- ==========================
-
-  Visit the following sites to learn more:
-
-   http://www.ps2dev.org
-   http://forums.ps2dev.org
