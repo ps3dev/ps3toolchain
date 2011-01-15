@@ -31,7 +31,7 @@ mkdir build-ppu-stage2 && cd build-ppu-stage2 || { exit 1; }
     --disable-nls \
     --disable-shared \
     --disable-win32-registry \
-    --enable-languages="c,c++" \
+    --enable-languages="c,c++,objc,obj-c++" \
     --enable-long-double-128 \
     --enable-lto \
     --enable-threads \
