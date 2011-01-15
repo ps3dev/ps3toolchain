@@ -19,6 +19,7 @@ mkdir build-spu && cd build-spu || { exit 1; }
     --disable-shared \
     --disable-debug \
     --disable-dependency-tracking \
+    --disable-werror \
     --with-gcc \
     --with-gnu-as \
     --with-gnu-ld \
