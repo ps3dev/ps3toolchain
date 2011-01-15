@@ -8,18 +8,21 @@ wget --continue ftp://ftp.gnu.org/gnu/binutils/binutils-2.20.1.tar.bz2 || { exit
 rm -Rf binutils-2.20.1 && tar xfvj binutils-2.20.1.tar.bz2 && cd binutils-2.20.1 || { exit 1; }
 
 ## Patch the source code.
-cat ../../patches/binutils-2.20.1-PPU.patch | patch -p1 || { exit ; }
+cat ../../patches/binutils-2.20.1-PS3.patch | patch -p1 || { exit ; }
 
 ## Create the build directory.
 mkdir build-ppu && cd build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" \
-    --disable-multilib \
+../configure --prefix="$PS3DEV/host/ppu" --target="ppu" \
     --disable-nls \
     --disable-shared \
-    --disable-werror \
+    --disable-debug \
+    --disable-dependency-tracking \
     --enable-64-bit-bfd \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
     || { exit 1; }
 
 ## Compile and install.

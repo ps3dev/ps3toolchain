@@ -11,7 +11,7 @@ wget --continue http://ftp.gnu.org/gnu/mpfr/mpfr-2.4.2.tar.bz2 || { exit 1; }
 rm -Rf gcc-4.5.2 && tar xfvj gcc-4.5.2.tar.bz2 && cd gcc-4.5.2 || { exit 1; }
 
 ## Patch the source code.
-cat ../../patches/gcc-4.5.2-PPU.patch | patch -p1 || { exit 1; }
+cat ../../patches/gcc-4.5.2-PS3.patch | patch -p1 || { exit 1; }
 
 ## Unpack the libraries.
 tar xfvj ../gmp-5.0.1.tar.bz2 && ln -s gmp-5.0.1 gmp || { exit 1; }
