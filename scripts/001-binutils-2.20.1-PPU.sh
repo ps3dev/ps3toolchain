@@ -19,6 +19,7 @@ mkdir build-ppu && cd build-ppu || { exit 1; }
     --disable-shared \
     --disable-debug \
     --disable-dependency-tracking \
+    --disable-werror \
     --enable-64-bit-bfd \
     --with-gcc \
     --with-gnu-as \
