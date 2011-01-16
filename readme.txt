@@ -24,7 +24,7 @@
   export PATH=$PATH:$PS3DEV/host/spu/bin
 
   export PSL1GHT=$PS3DEV/psl1ght
-  export PATH=$PATH:$PSL1GHT/bin
+  export PATH=$PATH:$PSL1GHT/host/bin
 
  3) Run the toolchain script:
 
