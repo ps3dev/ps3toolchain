@@ -3,3 +3,6 @@
 
 ## Check for python.
 python --version 1> /dev/null || { echo "ERROR: Install python before continuing."; exit 1; }
+
+## Check for python header files
+( ls /usr/include/python2.*/Python.h || ls /opt/local/include/python2.*/Python.h ) 1> /dev/null 2> /dev/null || { echo "ERROR: Install python-dev before continuing."; exit 1; }
