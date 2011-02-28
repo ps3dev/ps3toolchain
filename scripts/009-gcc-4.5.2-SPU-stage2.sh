@@ -31,7 +31,7 @@ mkdir build-spu-stage2 && cd build-spu-stage2 || { exit 1; }
     --disable-nls \
     --disable-shared \
     --disable-win32-registry \
-    --enable-languages="c" \
+    --enable-languages="c,c++" \
     --enable-lto \
     --enable-threads \
     --with-newlib \
