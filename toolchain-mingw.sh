@@ -33,13 +33,13 @@ if [ $MSYSTEM == MINGW32 ]; then
 		exit 1
 	fi
 
-	##Install Dependancy packages
+	## Install Dependancy packages
 	mingw-get install msys-wget libz libpdcurses gmp pexports msys-patch
 
 	## Create the build directory.
 	mkdir -p build && cd build || { echo "ERROR: Could not create the build directory."; exit 1; }
 
-	##Install libelf
+	## Install libelf
 	wget http://www.mr511.de/software/libelf-0.8.13.tar.gz
 	tar -zxvf libelf-0.8.13.tar.gz
 	cd libelf-0.8.13
@@ -47,21 +47,25 @@ if [ $MSYSTEM == MINGW32 ]; then
 	make
 	make install
 	
-	##Install pkg-config
+	## Install pkg-config
 	wget http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
 	unzip -o pkg-config_0.25-1_win32.zip bin/*.exe -d /mingw > NUL
-	
-	##This wasnt working for me
-	#pexports "$WINDIR\System32\python27.dll" > python27.def
-	#dlltool --dllname "$WINDIR\System32\python27.dll" --def python27.def --output-lib libpython27.a 
-	#mv libpython27.a $PYINSTALLDIR/libs
+
+	## Convert python.dll to a shared library
+	PYDLL="$WINDIR\SysWOW64\python27.dll"
+	pexports "$PYDLL" > python27.def
+	if [ $? != 0 ]; then
+		PYDLL="$WINDIR\System32\python27.dll"
+		pexports "$PYDLL" > python27.def
+	fi
+	dlltool --dllname "$PYDLL" --def python27.def --output-lib libpython27.a 
+	mv libpython27.a $PYINSTALLDIR/libs
 
 	## Enter the ps3toolchain directory.
 	cd ..
 
 	## Run the toolchain script.
-	#./toolchain.sh $@ || { echo "ERROR: Could not run the toolchain script."; exit 1; }
-	echo done!
+	./toolchain.sh $@ || { echo "ERROR: Could not run the toolchain script."; exit 1; }
 else
 	echo "MinGW was not detected as your kernel, exitting."
 fi
