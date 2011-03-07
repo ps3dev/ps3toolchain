@@ -47,11 +47,16 @@ if [ $MSYSTEM == MINGW32 ]; then
 	make
 	make install
 	
-	## Install pkg-config
-	wget ftp://mirrors.kernel.org/sourceware/cygwin/release/pkg-config/pkg-config-0.23b-10.tar.bz2
-	wget ftp://mirrors.kernel.org/sourceware/cygwin/release/cygwin/cygwin-1.7.8-1.tar.bz2
-	tar xjOf pkg-config-0.23b-10.tar.bz2 usr/bin/pkg-config.exe > /mingw/bin/pkg-config.exe
-	tar xjOf cygwin-1.7.8-1.tar.bz2 usr/bin/cygwin1.dll > /mingw/bin/cygwin1.dll
+	## Install pkg-config and dependancy dll's
+	wget http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
+	wget http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip
+	wget http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26/glib_2.26.1-1_win32.zip
+
+	unzip -o pkg-config_0.25-1_win32.zip bin/*.exe -d /mingw > NUL
+	unzip -o glib_2.26.1-1_win32.zip bin/*.dll -d /mingw > NUL
+	unzip -o gettext-runtime_0.18.1.1-2_win32.zip bin/*.dll -d /mingw > NUL
+
+	rm -Rf pkg-config_0.25-1_win32.zip glib_2.26.1-1_win32.zip gettext-runtime_0.18.1.1-2_win32.zip
 
 	## Convert python.dll to a shared library
 	PYDLL="$WINDIR\SysWOW64\python27.dll"
