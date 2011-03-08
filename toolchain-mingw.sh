@@ -20,7 +20,7 @@ if [ $MSYSTEM == MINGW32 ]; then
 	echo
 	echo The purpose of this change is to add export paths to your profile.
 	echo To undo this, edit /etc/profile and removing these lines from the bottom:
-	echo -e '\E[4m(Note:\E[0m These are also the exports that will be added, take note.)'
+	echo -e '(\E[4mNote:\E[0m These are also the exports that will be added, take note.)'
 	echo
 	echo -e '\E[0;32m	export GITINSTALLDIR=/c/msysgit'
 	echo '	export PATH="$PATH:$GITINSTALLDIR/bin"'
