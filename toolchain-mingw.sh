@@ -54,7 +54,8 @@ if [ $MSYSTEM == MINGW32 ]; then
 			break
 			;;
 		"Quit, I will set them myself.")
-			echo -e "\E[1m Exitting, Run this script again when you are ready.\E[0m"
+			echo
+			echo -e "\E[1mExitting, Run this script again when you are ready.\E[0m"
 			exit 0
 			;;
 		*) echo Invalid option, please try again.
