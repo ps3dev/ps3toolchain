@@ -57,4 +57,4 @@ cd gcc-4.5.2/build-ppu || { exit 1; }
     || { exit 1; }
 
 ## Compile and install.
-make -j 4 all-gcc && make install-gcc || { exit 1; }
+make -j 4 all && make install || { exit 1; }
