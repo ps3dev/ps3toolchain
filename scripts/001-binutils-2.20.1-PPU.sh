@@ -1,17 +1,28 @@
 #!/bin/sh
 # binutils-2.20.1-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
-## Download the source code.
-wget --continue ftp://ftp.gnu.org/gnu/binutils/binutils-2.20.1.tar.bz2 || { exit 1; }
+if [ ! -d binutils-2.20.1 ]; then
 
-## Unpack the source code.
-rm -Rf binutils-2.20.1 && tar xfvj binutils-2.20.1.tar.bz2 && cd binutils-2.20.1 || { exit 1; }
+  ## Download the source code.
+  wget --continue ftp://ftp.gnu.org/gnu/binutils/binutils-2.20.1.tar.bz2 || { exit 1; }
 
-## Patch the source code.
-cat ../../patches/binutils-2.20.1-PS3.patch | patch -p1 || { exit ; }
+  ## Unpack the source code.
+  tar xfvj binutils-2.20.1.tar.bz2 || { exit 1; }
 
-## Create the build directory.
-mkdir build-ppu && cd build-ppu || { exit 1; }
+  ## Patch the source code.
+  cat ../patches/binutils-2.20.1-PS3.patch | patch -p0 || { exit ; }
+
+fi
+
+if [ ! -d binutils-2.20.1/build-ppu ]; then
+
+  ## Create the build directory.
+  mkdir binutils-2.20.1/build-ppu || { exit 1; }
+
+fi
+
+## Enter the build directory.
+cd binutils-2.20.1/build-ppu || { exit 1; }
 
 ## Configure the build.
 ../configure --prefix="$PS3DEV/host/ppu" --target="ppu" \
