@@ -10,7 +10,7 @@ if [ ! -d gdb-7.2 ]; then
   tar xfvj gdb-7.2.tar.bz2 || { exit 1; }
 
   ## Patch the source code.
-  cat ../patches/gdb-7.2-PS3.patch | patch -p0 || { exit ; }
+  cat ../patches/gdb-7.2-PS3.patch | patch -p1 -d gdb-7.2 || { exit ; }
 
 fi
 

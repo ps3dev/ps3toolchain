@@ -15,7 +15,7 @@ if [ ! -d gcc-4.5.2 ]; then
   rm -Rf gcc-4.5.2 && tar xfvj gcc-4.5.2.tar.bz2 || { exit 1; }
 
   ## Patch the source code.
-  cat ../patches/gcc-4.5.2-PS3.patch | patch -p0 || { exit 1; }
+  cat ../patches/gcc-4.5.2-PS3.patch | patch -p1 -d gcc-4.5.2 || { exit 1; }
 
   ## Enter the source code directory.
   cd gcc-4.5.2 || { exit 1; }

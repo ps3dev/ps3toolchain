@@ -10,7 +10,7 @@ if [ ! -d newlib-1.19.0 ]; then
   tar xfvz newlib-1.19.0.tar.gz || { exit 1; }
 
   ## Patch the source code.
-  cat ../patches/newlib-1.19.0-PS3.patch | patch -p0 || { exit 1; }
+  cat ../patches/newlib-1.19.0-PS3.patch | patch -p1 -d newlib-1.19.0 || { exit 1; }
 
 fi
 

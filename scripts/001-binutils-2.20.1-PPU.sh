@@ -10,7 +10,7 @@ if [ ! -d binutils-2.20.1 ]; then
   tar xfvj binutils-2.20.1.tar.bz2 || { exit 1; }
 
   ## Patch the source code.
-  cat ../patches/binutils-2.20.1-PS3.patch | patch -p0 || { exit ; }
+  cat ../patches/binutils-2.20.1-PS3.patch | patch -p1 -d binutils-2.20.1 || { exit ; }
 
 fi
 
