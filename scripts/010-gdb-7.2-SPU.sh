@@ -25,7 +25,7 @@ fi
 cd gdb-7.2/build-spu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/host/spu" --target="spu" \
+../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
     --disable-werror \

@@ -20,11 +20,12 @@
 
   export PS3DEV=/usr/local/ps3dev
   export PATH=$PATH:$PS3DEV/bin
-  export PATH=$PATH:$PS3DEV/host/ppu/bin
-  export PATH=$PATH:$PS3DEV/host/spu/bin
+  export PATH=$PATH:$PS3DEV/ppu/bin
+  export PATH=$PATH:$PS3DEV/spu/bin
 
-  export PSL1GHT=$PS3DEV/psl1ght
-  export PATH=$PATH:$PSL1GHT/host/bin
+  export DEVKITPRO=$PS3DEV
+  export DEVKITPS3=$PS3DEV
+  export PSL1GHT=$PS3DEV/libpsl1ght
 
  3) Run the toolchain script:
 

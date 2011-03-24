@@ -25,7 +25,7 @@ fi
 cd binutils-2.20.1/build-spu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/host/spu" --target="spu" \
+../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-shared \
     --disable-debug \
