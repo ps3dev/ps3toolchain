@@ -1,6 +1,8 @@
 #!/bin/sh
 # psl1ght.sh by Dan Peori (dan.peori@oopo.net)
 
+exit; ## FIX ME LATER
+
 ## Download the source code.
 wget --no-check-certificate https://github.com/HACKERCHANNEL/PSL1GHT/tarball/master -O psl1ght.tar.gz || { exit 1; }
 

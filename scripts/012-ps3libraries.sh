@@ -1,6 +1,8 @@
 #!/bin/sh
 # ps3libraries.sh by Dan Peori (dan.peori@oopo.net)
 
+exit; ## FIX ME LATER
+
 ## Download the source code.
 wget --no-check-certificate https://github.com/ps3dev/ps3libraries/tarball/master -O ps3libraries.tar.gz || { exit 1; }
 
