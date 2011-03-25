@@ -2,4 +2,4 @@
 # check-make.sh by Dan Peori (dan.peori@oopo.net)
 
 ## Check for make.
-make -v 1> /dev/null || { echo "ERROR: Install make before continuing."; exit 1; }
+${MAKE:-make} -v 1> /dev/null || { echo "ERROR: Install make before continuing."; exit 1; }
