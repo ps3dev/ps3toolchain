@@ -38,4 +38,4 @@ cd binutils-2.20.1/build-ppu || { exit 1; }
     || { exit 1; }
 
 ## Compile and install.
-make -j 4 && make install || { exit 1; }
+${MAKE:-make} -j 4 && ${MAKE:-make} install || { exit 1; }

@@ -32,4 +32,4 @@ cd gdb-7.2/build-spu || { exit 1; }
     || { exit 1; }
 
 ## Compile and install.
-make -j 4 && make install || { exit 1; }
+${MAKE:-make} -j 4 && ${MAKE:-make} install || { exit 1; }

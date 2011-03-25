@@ -11,4 +11,4 @@ rm -Rf psl1ght && mkdir psl1ght && tar --strip-components=1 --directory=psl1ght 
 cd psl1ght || { exit 1; }
 
 ## Compile and install.
-make && make install || { exit 1; }
+${MAKE:-make} && ${MAKE:-make} install || { exit 1; }
