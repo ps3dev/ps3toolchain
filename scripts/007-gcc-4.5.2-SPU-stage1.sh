@@ -55,4 +55,4 @@ cd gcc-4.5.2/build-spu || { exit 1; }
     || { exit 1; }
 
 ## Compile and install.
-make -j 4 all-gcc && make install-gcc || { exit 1; }
+${MAKE:-make} -j 4 all-gcc && ${MAKE:-make} install-gcc || { exit 1; }

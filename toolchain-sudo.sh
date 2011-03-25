@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # toolchain-sudo.sh by Dan Peori (dan.peori@oopo.net)
 
 ## Enter the ps3toolchain directory.
