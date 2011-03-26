@@ -4,5 +4,9 @@
 ## Check for python.
 ( python --version || python -V ) 1> /dev/null 2> /dev/null || { echo "ERROR: Install python before continuing."; exit 1; }
 
+## Check for python-config
+pyprefix=$(python-config --prefix)
+[ $? -eq 0 ] || { echo "ERROR: Install python-dev before continuing."; exit 1; }
+
 ## Check for python header files
-( ls /usr/include/python2.*/Python.h || ls /opt/local/include/python2.*/Python.h || ls $PYINSTALLDIR/include/Python.h ) 1> /dev/null 2> /dev/null || { echo "ERROR: Install python-dev before continuing."; exit 1; }
+[ -f "${pyprefix}"/include/python2.*/Python.h -o -f /opt/local/include/python2.*/Python.h -o -f $PYINSTALLDIR/include/Python.h ] || { echo "ERROR: Install python-dev before continuing."; exit 1; }
