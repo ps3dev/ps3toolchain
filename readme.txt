@@ -27,13 +27,11 @@
  2) Add the following to your login script:
 
   export PS3DEV=/usr/local/ps3dev
+  export PSL1GHT=$PS3DEV/libpsl1ght
+
   export PATH=$PATH:$PS3DEV/bin
   export PATH=$PATH:$PS3DEV/ppu/bin
   export PATH=$PATH:$PS3DEV/spu/bin
-
-  export DEVKITPRO=$PS3DEV
-  export DEVKITPS3=$PS3DEV
-  export PSL1GHT=$PS3DEV/libpsl1ght
 
  3) Run the toolchain script:
 
