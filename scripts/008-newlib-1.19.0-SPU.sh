@@ -25,7 +25,7 @@ fi
 cd newlib-1.19.0/build-spu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/host/spu" --target="spu" \
+../configure --prefix="$PS3DEV/spu" --target="spu" \
     --enable-newlib-multithread \
     --enable-newlib-hw-fp \
     || { exit 1; }

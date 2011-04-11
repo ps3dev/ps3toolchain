@@ -25,7 +25,7 @@ fi
 cd gdb-7.2/build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/host/ppu" --target="ppu" \
+../configure --prefix="$PS3DEV/ppu" --target="ppu" \
     --disable-multilib \
     --disable-nls \
     --disable-sim \
