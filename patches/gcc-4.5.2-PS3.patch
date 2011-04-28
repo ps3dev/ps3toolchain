@@ -561,7 +561,7 @@ diff -burN --exclude=.git gcc-4.5.2/gcc/config/rs6000/rs6000.c gcc-4.5.2-PS3/gcc
 +
 +static bool rs6000_cell64lv2_valid_pointer_mode(enum machine_mode mode)
 +{
-+     return mode == SImode || (TARGET_64BIT && mode == DImode) || mode == Pmode;
++     return (mode == SImode || (TARGET_64BIT && mode == DImode) || mode == ptr_mode || mode == Pmode);
 +}
 +#endif
 +
