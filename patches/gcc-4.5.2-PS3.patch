@@ -456,7 +456,7 @@ diff -burN --exclude=.git gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS3/
 +
 +#define POWERPC_CELL64LV2
 +
-+#define POINTERS_EXTEND_UNSIGNED 0
++#define POINTERS_EXTEND_UNSIGNED 1
 +
 +/* ppc{32,64} linux has 128-bit long double support in glibc 2.4 and later.  */
 +#ifdef TARGET_DEFAULT_LONG_DOUBLE_128
