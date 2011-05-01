@@ -22,7 +22,7 @@
 
   apt-get install autoconf automake bison flex gcc libelf-dev make \
     texinfo libncurses5-dev patch python subversion wget zlib1g-dev \
-    libtool python-dev bzip2 libgmp-dev pkg-config
+    libtool python-dev bzip2 libgmp3-dev pkg-config
 
  2) Add the following to your login script:
 
