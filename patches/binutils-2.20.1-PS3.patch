@@ -36,3 +36,14 @@ diff -burN --exclude=.git binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1
    perror (argv[0]);
    _exit (127);
  }
+diff -burN --exclude=.git binutils-2.20.1/include/elf/internal.h binutils-2.20.1-PS3/include/elf/internal.h
+--- binutils-2.20.1/include/elf/internal.h	2008-11-14 15:44:09.000000000 +0100
++++ binutils-2.20.1-PS3/include/elf/internal.h	2011-05-15 16:35:15.928088040 +0200
+@@ -316,6 +316,7 @@
+    /* SHF_ALLOC sections must have VMAs within the segment.  Be		\
+       careful about segments right at the end of memory.  */		\
+    && ((sec_hdr->sh_flags & SHF_ALLOC) == 0				\
++       || ELF_SECTION_SIZE(sec_hdr,segment) == 0                        \
+        || (sec_hdr->sh_addr >= segment->p_vaddr				\
+ 	   && (sec_hdr->sh_addr - segment->p_vaddr			\
+ 	       + ELF_SECTION_SIZE(sec_hdr, segment) <= segment->p_memsz))))
