@@ -1,6 +1,75 @@
-diff -burN --exclude=.git binutils-2.20.1/config.sub binutils-2.20.1-PS3/config.sub
---- binutils-2.20.1/config.sub	2009-08-17 01:10:29.000000000 -0300
-+++ binutils-2.20.1-PS3/config.sub	2011-03-23 21:26:08.088037883 -0300
+diff -burN '--exclude=.git' binutils-2.20.1/bfd/elf.c binutils-2.20.1-PS3//bfd/elf.c
+--- binutils-2.20.1/bfd/elf.c	2009-09-10 13:47:12.000000000 +0200
++++ binutils-2.20.1-PS3//bfd/elf.c	2011-05-20 19:53:01.000000000 +0200
+@@ -973,7 +973,9 @@
+       phdr = elf_tdata (abfd)->phdr;
+       for (i = 0; i < elf_elfheader (abfd)->e_phnum; i++, phdr++)
+ 	{
+-	  if (phdr->p_type == PT_LOAD
++	  if (((phdr->p_type == PT_LOAD
++		&& (hdr->sh_flags & SHF_TLS) == 0)
++	       || phdr->p_type == PT_TLS)
+ 	      && ELF_IS_SECTION_IN_SEGMENT (hdr, phdr))
+ 	    {
+ 	      if ((flags & SEC_LOAD) == 0)
+@@ -3826,8 +3828,12 @@
+ 	  phdr_in_segment = FALSE;
+ 	}
+ 
+-      /* Create a final PT_LOAD program segment.  */
+-      if (last_hdr != NULL)
++      /* Create a final PT_LOAD program segment, but not if it's just
++	 for .tbss.  */
++      if (last_hdr != NULL
++	  && (i - phdr_index != 1
++	      || ((last_hdr->flags & (SEC_THREAD_LOCAL | SEC_LOAD))
++		  != SEC_THREAD_LOCAL)))
+ 	{
+ 	  m = make_mapping (abfd, sections, phdr_index, i, phdr_in_segment);
+ 	  if (m == NULL)
+@@ -4531,7 +4537,8 @@
+ 	    sec = *secpp;
+ 	    this_hdr = &(elf_section_data(sec)->this_hdr);
+ 	    if (this_hdr->sh_size != 0
+-		&& !ELF_IS_SECTION_IN_SEGMENT_FILE (this_hdr, p))
++		&& !ELF_IS_SECTION_IN_SEGMENT_FILE (this_hdr, p)
++		&& !ELF_TBSS_SPECIAL (this_hdr, p))
+ 	      {
+ 		(*_bfd_error_handler)
+ 		  (_("%B: section `%A' can't be allocated in segment %d"),
+@@ -4704,17 +4711,21 @@
+ 	      && (p->p_type != PT_NOTE
+ 		  || bfd_get_format (abfd) != bfd_core))
+ 	    {
+-	      Elf_Internal_Shdr *hdr;
+-	      asection *sect;
+-
+ 	      BFD_ASSERT (!m->includes_filehdr && !m->includes_phdrs);
+ 
+-	      sect = m->sections[m->count - 1];
+-	      hdr = &elf_section_data (sect)->this_hdr;
+-	      p->p_filesz = sect->filepos - m->sections[0]->filepos;
+-	      if (hdr->sh_type != SHT_NOBITS)
+-		p->p_filesz += hdr->sh_size;
++	      p->p_filesz = 0;
+ 	      p->p_offset = m->sections[0]->filepos;
++	      for (i = m->count; i-- != 0;)
++		{
++		  asection *sect = m->sections[i];
++		  Elf_Internal_Shdr *hdr = &elf_section_data (sect)->this_hdr;
++		  if (hdr->sh_type != SHT_NOBITS)
++		    {
++		      p->p_filesz = (sect->filepos - m->sections[0]->filepos
++				     + hdr->sh_size);
++		      break;
++		    }
++		}
+ 	    }
+ 	}
+       else if (m->includes_filehdr)
+diff -burN '--exclude=.git' binutils-2.20.1/config.sub binutils-2.20.1-PS3//config.sub
+--- binutils-2.20.1/config.sub	2009-08-17 06:10:29.000000000 +0200
++++ binutils-2.20.1-PS3//config.sub	2011-05-15 16:41:45.000000000 +0200
 @@ -935,6 +935,10 @@
  	ppc64le-* | powerpc64little-*)
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
@@ -12,9 +81,29 @@ diff -burN --exclude=.git binutils-2.20.1/config.sub binutils-2.20.1-PS3/config.
  	ps2)
  		basic_machine=i386-ibm
  		;;
-diff -burN --exclude=.git binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PS3/ld/emultempl/spuelf.em
---- binutils-2.20.1/ld/emultempl/spuelf.em	2009-08-10 04:50:56.000000000 -0300
-+++ binutils-2.20.1-PS3/ld/emultempl/spuelf.em	2011-03-23 21:26:08.598037917 -0300
+diff -burN '--exclude=.git' binutils-2.20.1/include/elf/internal.h binutils-2.20.1-PS3//include/elf/internal.h
+--- binutils-2.20.1/include/elf/internal.h	2008-11-14 15:44:09.000000000 +0100
++++ binutils-2.20.1-PS3//include/elf/internal.h	2011-05-20 20:05:52.000000000 +0200
+@@ -292,10 +292,13 @@
+ 
+ /* .tbss is special.  It doesn't contribute memory space to normal
+    segments and it doesn't take file space in normal segments.  */
++#define ELF_TBSS_SPECIAL(sec_hdr, segment)			\
++  (((sec_hdr)->sh_flags & SHF_TLS) != 0				\
++   && (sec_hdr)->sh_type == SHT_NOBITS				\
++   && (segment)->p_type != PT_TLS)
++
+ #define ELF_SECTION_SIZE(sec_hdr, segment)			\
+-   (((sec_hdr->sh_flags & SHF_TLS) == 0				\
+-     || sec_hdr->sh_type != SHT_NOBITS				\
+-     || segment->p_type == PT_TLS) ? sec_hdr->sh_size : 0)
++  (ELF_TBSS_SPECIAL(sec_hdr, segment) ? 0 : (sec_hdr)->sh_size)
+ 
+ /* Decide if the given sec_hdr is in the given segment.  PT_TLS segment
+    contains only SHF_TLS sections.  Only PT_LOAD, PT_GNU_RELRO and
+diff -burN '--exclude=.git' binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PS3//ld/emultempl/spuelf.em
+--- binutils-2.20.1/ld/emultempl/spuelf.em	2009-08-10 09:50:56.000000000 +0200
++++ binutils-2.20.1-PS3//ld/emultempl/spuelf.em	2011-05-15 16:41:58.000000000 +0200
 @@ -355,7 +355,7 @@
    *fname = mktemp (*fname);
    if (*fname == NULL)
@@ -36,14 +125,3 @@ diff -burN --exclude=.git binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1
    perror (argv[0]);
    _exit (127);
  }
-diff -burN --exclude=.git binutils-2.20.1/include/elf/internal.h binutils-2.20.1-PS3/include/elf/internal.h
---- binutils-2.20.1/include/elf/internal.h	2008-11-14 15:44:09.000000000 +0100
-+++ binutils-2.20.1-PS3/include/elf/internal.h	2011-05-15 16:35:15.928088040 +0200
-@@ -316,6 +316,7 @@
-    /* SHF_ALLOC sections must have VMAs within the segment.  Be		\
-       careful about segments right at the end of memory.  */		\
-    && ((sec_hdr->sh_flags & SHF_ALLOC) == 0				\
-+       || ELF_SECTION_SIZE(sec_hdr,segment) == 0                        \
-        || (sec_hdr->sh_addr >= segment->p_vaddr				\
- 	   && (sec_hdr->sh_addr - segment->p_vaddr			\
- 	       + ELF_SECTION_SIZE(sec_hdr, segment) <= segment->p_memsz))))
