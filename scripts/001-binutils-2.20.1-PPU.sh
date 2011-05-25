@@ -25,7 +25,7 @@ fi
 cd binutils-2.20.1/build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-lv2" \
     --disable-nls \
     --disable-shared \
     --disable-debug \

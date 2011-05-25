@@ -1,6 +1,6 @@
-diff -burN '--exclude=.git' binutils-2.20.1/bfd/elf.c binutils-2.20.1-PS3//bfd/elf.c
---- binutils-2.20.1/bfd/elf.c	2009-09-10 13:47:12.000000000 +0200
-+++ binutils-2.20.1-PS3//bfd/elf.c	2011-05-20 19:53:01.000000000 +0200
+diff -burN '--exclude=.git' binutils-2.20.1/bfd/elf.c binutils-2.20.1-PS3/bfd/elf.c
+--- binutils-2.20.1/bfd/elf.c	2009-09-10 08:47:12.000000000 -0300
++++ binutils-2.20.1-PS3/bfd/elf.c	2011-05-25 10:15:20.410050911 -0300
 @@ -973,7 +973,9 @@
        phdr = elf_tdata (abfd)->phdr;
        for (i = 0; i < elf_elfheader (abfd)->e_phnum; i++, phdr++)
@@ -67,10 +67,20 @@ diff -burN '--exclude=.git' binutils-2.20.1/bfd/elf.c binutils-2.20.1-PS3//bfd/e
  	    }
  	}
        else if (m->includes_filehdr)
-diff -burN '--exclude=.git' binutils-2.20.1/config.sub binutils-2.20.1-PS3//config.sub
---- binutils-2.20.1/config.sub	2009-08-17 06:10:29.000000000 +0200
-+++ binutils-2.20.1-PS3//config.sub	2011-05-15 16:41:45.000000000 +0200
-@@ -935,6 +935,10 @@
+diff -burN '--exclude=.git' binutils-2.20.1/config.sub binutils-2.20.1-PS3/config.sub
+--- binutils-2.20.1/config.sub	2009-08-17 01:10:29.000000000 -0300
++++ binutils-2.20.1-PS3/config.sub	2011-05-25 10:15:55.590050902 -0300
+@@ -234,6 +234,9 @@
+ 		basic_machine=m68k-atari
+ 		os=-mint
+ 		;;
++        -lv2)
++	        os=-elf
++		;;
+ esac
+ 
+ # Decode aliases for certain CPU-COMPANY combinations.
+@@ -935,6 +938,10 @@
  	ppc64le-* | powerpc64little-*)
  		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
  		;;
@@ -81,9 +91,9 @@ diff -burN '--exclude=.git' binutils-2.20.1/config.sub binutils-2.20.1-PS3//conf
  	ps2)
  		basic_machine=i386-ibm
  		;;
-diff -burN '--exclude=.git' binutils-2.20.1/include/elf/internal.h binutils-2.20.1-PS3//include/elf/internal.h
---- binutils-2.20.1/include/elf/internal.h	2008-11-14 15:44:09.000000000 +0100
-+++ binutils-2.20.1-PS3//include/elf/internal.h	2011-05-20 20:05:52.000000000 +0200
+diff -burN '--exclude=.git' binutils-2.20.1/include/elf/internal.h binutils-2.20.1-PS3/include/elf/internal.h
+--- binutils-2.20.1/include/elf/internal.h	2008-11-14 10:44:09.000000000 -0400
++++ binutils-2.20.1-PS3/include/elf/internal.h	2011-05-25 10:15:21.160050910 -0300
 @@ -292,10 +292,13 @@
  
  /* .tbss is special.  It doesn't contribute memory space to normal
@@ -101,9 +111,9 @@ diff -burN '--exclude=.git' binutils-2.20.1/include/elf/internal.h binutils-2.20
  
  /* Decide if the given sec_hdr is in the given segment.  PT_TLS segment
     contains only SHF_TLS sections.  Only PT_LOAD, PT_GNU_RELRO and
-diff -burN '--exclude=.git' binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PS3//ld/emultempl/spuelf.em
---- binutils-2.20.1/ld/emultempl/spuelf.em	2009-08-10 09:50:56.000000000 +0200
-+++ binutils-2.20.1-PS3//ld/emultempl/spuelf.em	2011-05-15 16:41:58.000000000 +0200
+diff -burN '--exclude=.git' binutils-2.20.1/ld/emultempl/spuelf.em binutils-2.20.1-PS3/ld/emultempl/spuelf.em
+--- binutils-2.20.1/ld/emultempl/spuelf.em	2009-08-10 04:50:56.000000000 -0300
++++ binutils-2.20.1-PS3/ld/emultempl/spuelf.em	2011-05-25 10:15:21.220050910 -0300
 @@ -355,7 +355,7 @@
    *fname = mktemp (*fname);
    if (*fname == NULL)

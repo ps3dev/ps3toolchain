@@ -41,7 +41,7 @@ fi
 cd gcc-4.5.2/build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-lv2" \
     --disable-dependency-tracking \
     --disable-libstdcxx-pch \
     --disable-multilib \
