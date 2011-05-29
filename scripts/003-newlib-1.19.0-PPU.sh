@@ -25,7 +25,7 @@ fi
 cd newlib-1.19.0/build-ppu || { exit 1; }
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-lv2" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
     --enable-newlib-multithread \
     --enable-newlib-hw-fp \
     || { exit 1; }
