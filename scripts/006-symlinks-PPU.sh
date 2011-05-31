@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash -e
 # symlinks-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
 ## Enter the PPU directory.
