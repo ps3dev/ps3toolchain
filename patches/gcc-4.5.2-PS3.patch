@@ -556,12 +556,12 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config.gcc gcc-4.5.2-PS3/gcc/config.gc
  	extra_parts="crt2.o"
 diff -burN '--exclude=.git' gcc-4.5.2/libgcc/config.host gcc-4.5.2-PS3/libgcc/config.host
 --- gcc-4.5.2/libgcc/config.host	2010-09-12 00:27:09.000000000 -0300
-+++ gcc-4.5.2-PS3/libgcc/config.host	2011-05-29 00:23:47.420039503 -0300
++++ gcc-4.5.2-PS3/libgcc/config.host	2011-05-31 10:05:54.520033110 -0300
 @@ -469,6 +469,8 @@
  	;;
  powerpc-*-rtems*)
  	;;
-+powerpc64-*-lv2*)
++powerpc64-ps3-elf)
 +	;;
  powerpc-*-linux* | powerpc64-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-ldbl128 t-softfp"
