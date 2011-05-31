@@ -628,7 +628,7 @@ diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/config.h.in newlib
 +#undef __SYMBOL_PREFIX
 diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/configure newlib-1.19.0-PS3/libgloss/libsysbase/configure
 --- newlib-1.19.0/libgloss/libsysbase/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/configure	2011-05-30 09:42:34.810043017 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/configure	2011-05-31 09:39:50.280031527 -0300
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -2133,7 +2133,7 @@ diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/configure newlib-1
 +_ACEOF
 +
 +   ;;
-+  powerpc64-*-lv2*)
++  powerpc64-ps3-elf)
 +   cat >>confdefs.h <<\_ACEOF
 +#define REENTRANT_SYSCALLS_PROVIDED 1
 +_ACEOF
