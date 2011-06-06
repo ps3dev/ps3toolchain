@@ -9,9 +9,6 @@ if [ ! -d gdb-7.2 ]; then
   ## Unpack the source code.
   tar xfvj gdb-7.2.tar.bz2
 
-  ## Patch the source code.
-  cat ../patches/gdb-7.2-PS3.patch | patch -p1 -d gdb-7.2
-
 fi
 
 if [ ! -d gdb-7.2/build-ppu ]; then
