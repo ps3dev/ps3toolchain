@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# gcc-4.5.2-PPU-stage2.sh by Dan Peori (dan.peori@oopo.net)
+# gcc-4.5.2-SPU-stage1.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d gcc-4.5.2 ]; then
 
@@ -30,31 +30,29 @@ if [ ! -d gcc-4.5.2 ]; then
 
 fi
 
-if [ ! -d gcc-4.5.2/build-ppu ]; then
+if [ ! -d gcc-4.5.2/build-spu ]; then
 
   ## Create the build directory.
-  mkdir gcc-4.5.2/build-ppu
+  mkdir gcc-4.5.2/build-spu
 
 fi
 
 ## Enter the build directory.
-cd gcc-4.5.2/build-ppu
+cd gcc-4.5.2/build-spu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
+../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-dependency-tracking \
-    --disable-libstdcxx-pch \
+    --disable-libssp \
     --disable-multilib \
     --disable-nls \
     --disable-shared \
     --disable-win32-registry \
-    --enable-languages="c,c++,objc,obj-c++" \
-    --enable-long-double-128 \
+    --enable-languages="c" \
     --enable-lto \
     --enable-threads \
-    --with-cpu="cell" \
     --with-newlib \
    
 
 ## Compile and install.
-${MAKE:-make} -j 4 all && ${MAKE:-make} install
+${MAKE:-make} -j 4 all-gcc && ${MAKE:-make} install-gcc

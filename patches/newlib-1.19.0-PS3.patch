@@ -1,30 +1,6 @@
-diff -burN --exclude=.git newlib-1.19.0/config.sub newlib-1.19.0-PS3/config.sub
---- newlib-1.19.0/config.sub	2010-06-01 14:53:40.000000000 -0300
-+++ newlib-1.19.0-PS3/config.sub	2011-03-23 21:38:49.756787923 -0300
-@@ -962,6 +962,10 @@
- 	ppc64le-* | powerpc64little-*)
- 		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
-+	ppu)
-+		basic_machine=powerpc64-unknown
-+		os=-lv2
-+		;;
- 	ps2)
- 		basic_machine=i386-ibm
- 		;;
-@@ -1317,7 +1321,8 @@
- 	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
- 	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
- 	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
--	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es*)
-+	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es* \
-+	      | -lv2*)
- 	# Remember, each alternative MUST END IN *, to match a version number.
- 		;;
- 	-qnx*)
-diff -burN --exclude=.git newlib-1.19.0/libgloss/configure newlib-1.19.0-PS3/libgloss/configure
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/configure newlib-1.19.0-PS3/libgloss/configure
 --- newlib-1.19.0/libgloss/configure	2010-12-02 15:35:47.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/configure	2011-03-23 21:35:45.664293718 -0300
++++ newlib-1.19.0-PS3/libgloss/configure	2011-05-30 09:42:34.790043017 -0300
 @@ -2436,6 +2436,8 @@
  
  config_libnosys=true
@@ -53,9 +29,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/configure newlib-1.19.0-PS3/lib
  DEPDIR="${am__leading_dot}deps"
  
  ac_config_commands="$ac_config_commands depfiles"
-diff -burN --exclude=.git newlib-1.19.0/libgloss/configure.in newlib-1.19.0-PS3/libgloss/configure.in
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/configure.in newlib-1.19.0-PS3/libgloss/configure.in
 --- newlib-1.19.0/libgloss/configure.in	2010-12-02 15:35:47.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/configure.in	2011-03-23 21:35:45.664293718 -0300
++++ newlib-1.19.0-PS3/libgloss/configure.in	2011-05-30 09:42:34.790043017 -0300
 @@ -2,6 +2,7 @@
  AC_PREREQ(2.59)
  AC_INIT([libgloss],[LIBGLOSS_VERSION])
@@ -93,9 +69,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/configure.in newlib-1.19.0-PS3/
  LIB_AC_PROG_CC
  AS=${AS-as}
  AC_SUBST(AS)
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/abort.c newlib-1.19.0-PS3/libgloss/libsysbase/abort.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/abort.c newlib-1.19.0-PS3/libgloss/libsysbase/abort.c
 --- newlib-1.19.0/libgloss/libsysbase/abort.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/abort.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/abort.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,8 @@
 +#include <stdlib.h>
 +#include <unistd.h>
@@ -105,9 +81,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/abort.c newlib-1.19.
 +	write(2, "Abort called.\n", sizeof("Abort called.\n") - 1);
 +	_exit(1);
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/acconfig.h newlib-1.19.0-PS3/libgloss/libsysbase/acconfig.h
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/acconfig.h newlib-1.19.0-PS3/libgloss/libsysbase/acconfig.h
 --- newlib-1.19.0/libgloss/libsysbase/acconfig.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/acconfig.h	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/acconfig.h	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,29 @@
 +/* Name of package.  */
 +#undef PACKAGE
@@ -138,9 +114,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/acconfig.h newlib-1.
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/aclocal.m4 newlib-1.19.0-PS3/libgloss/libsysbase/aclocal.m4
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/aclocal.m4 newlib-1.19.0-PS3/libgloss/libsysbase/aclocal.m4
 --- newlib-1.19.0/libgloss/libsysbase/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/aclocal.m4	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/aclocal.m4	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,344 @@
 +# generated automatically by aclocal 1.9.5 -*- Autoconf -*-
 +
@@ -486,9 +462,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/aclocal.m4 newlib-1.
 +])
 +
 +m4_include([../acinclude.m4])
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/chdir.c newlib-1.19.0-PS3/libgloss/libsysbase/chdir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/chdir.c newlib-1.19.0-PS3/libgloss/libsysbase/chdir.c
 --- newlib-1.19.0/libgloss/libsysbase/chdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/chdir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/chdir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,32 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -522,9 +498,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/chdir.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/chmod.c newlib-1.19.0-PS3/libgloss/libsysbase/chmod.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/chmod.c newlib-1.19.0-PS3/libgloss/libsysbase/chmod.c
 --- newlib-1.19.0/libgloss/libsysbase/chmod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/chmod.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/chmod.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -547,9 +523,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/chmod.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/close.c newlib-1.19.0-PS3/libgloss/libsysbase/close.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/close.c newlib-1.19.0-PS3/libgloss/libsysbase/close.c
 --- newlib-1.19.0/libgloss/libsysbase/close.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/close.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/close.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -576,9 +552,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/close.c newlib-1.19.
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/closedir.c newlib-1.19.0-PS3/libgloss/libsysbase/closedir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/closedir.c newlib-1.19.0-PS3/libgloss/libsysbase/closedir.c
 --- newlib-1.19.0/libgloss/libsysbase/closedir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/closedir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/closedir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,17 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -597,9 +573,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/closedir.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/config.h.in newlib-1.19.0-PS3/libgloss/libsysbase/config.h.in
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/config.h.in newlib-1.19.0-PS3/libgloss/libsysbase/config.h.in
 --- newlib-1.19.0/libgloss/libsysbase/config.h.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/config.h.in	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/config.h.in	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,25 @@
 +/* config.h.in.  Generated automatically from configure.in by autoheader.  */
 +
@@ -626,9 +602,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/config.h.in newlib-1
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/configure newlib-1.19.0-PS3/libgloss/libsysbase/configure
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/configure newlib-1.19.0-PS3/libgloss/libsysbase/configure
 --- newlib-1.19.0/libgloss/libsysbase/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/configure	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/configure	2011-05-31 09:39:50.280031527 -0300
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -2133,7 +2109,7 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/configure newlib-1.1
 +_ACEOF
 +
 +   ;;
-+  powerpc64-*-lv2*)
++  powerpc64-ps3-elf)
 +   cat >>confdefs.h <<\_ACEOF
 +#define REENTRANT_SYSCALLS_PROVIDED 1
 +_ACEOF
@@ -4185,9 +4161,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/configure newlib-1.1
 +
 +
 +
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/configure.in newlib-1.19.0-PS3/libgloss/libsysbase/configure.in
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/configure.in newlib-1.19.0-PS3/libgloss/libsysbase/configure.in
 --- newlib-1.19.0/libgloss/libsysbase/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/configure.in	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/configure.in	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,207 @@
 +# Copyright (c) 1995, 1996 Cygnus Support
 +#
@@ -4396,9 +4372,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/configure.in newlib-
 +AC_OUTPUT
 +
 +
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/dup.c newlib-1.19.0-PS3/libgloss/libsysbase/dup.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/dup.c newlib-1.19.0-PS3/libgloss/libsysbase/dup.c
 --- newlib-1.19.0/libgloss/libsysbase/dup.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/dup.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/dup.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,11 @@
 +#include <errno.h>
 +#include <fcntl.h>
@@ -4411,9 +4387,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/dup.c newlib-1.19.0-
 +	//return fcntl(filedes,F_DUPFD,0);
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/environ.c newlib-1.19.0-PS3/libgloss/libsysbase/environ.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/environ.c newlib-1.19.0-PS3/libgloss/libsysbase/environ.c
 --- newlib-1.19.0/libgloss/libsysbase/environ.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/environ.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/environ.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,6 @@
 +/*
 + * Version of environ for no OS
@@ -4421,9 +4397,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/environ.c newlib-1.1
 +
 +char *__env[1] = {0};
 +char **environ = __env;
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/execve.c newlib-1.19.0-PS3/libgloss/libsysbase/execve.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/execve.c newlib-1.19.0-PS3/libgloss/libsysbase/execve.c
 --- newlib-1.19.0/libgloss/libsysbase/execve.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/execve.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/execve.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4452,9 +4428,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/execve.c newlib-1.19
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/_exit.c newlib-1.19.0-PS3/libgloss/libsysbase/_exit.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/_exit.c newlib-1.19.0-PS3/libgloss/libsysbase/_exit.c
 --- newlib-1.19.0/libgloss/libsysbase/_exit.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/_exit.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/_exit.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,15 @@
 +#include <limits.h>
 +#include "config.h"
@@ -4471,9 +4447,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/_exit.c newlib-1.19.
 +
 +	while(1);
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fork.c newlib-1.19.0-PS3/libgloss/libsysbase/fork.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/fork.c newlib-1.19.0-PS3/libgloss/libsysbase/fork.c
 --- newlib-1.19.0/libgloss/libsysbase/fork.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/fork.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/fork.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4493,9 +4469,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fork.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fstat64.c newlib-1.19.0-PS3/libgloss/libsysbase/fstat64.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/fstat64.c newlib-1.19.0-PS3/libgloss/libsysbase/fstat64.c
 --- newlib-1.19.0/libgloss/libsysbase/fstat64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/fstat64.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/fstat64.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4525,9 +4501,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fstat64.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fstat.c newlib-1.19.0-PS3/libgloss/libsysbase/fstat.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/fstat.c newlib-1.19.0-PS3/libgloss/libsysbase/fstat.c
 --- newlib-1.19.0/libgloss/libsysbase/fstat.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/fstat.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/fstat.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4557,9 +4533,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fstat.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fsync.c newlib-1.19.0-PS3/libgloss/libsysbase/fsync.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/fsync.c newlib-1.19.0-PS3/libgloss/libsysbase/fsync.c
 --- newlib-1.19.0/libgloss/libsysbase/fsync.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/fsync.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/fsync.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4581,9 +4557,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/fsync.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/ftruncate.c newlib-1.19.0-PS3/libgloss/libsysbase/ftruncate.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/ftruncate.c newlib-1.19.0-PS3/libgloss/libsysbase/ftruncate.c
 --- newlib-1.19.0/libgloss/libsysbase/ftruncate.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/ftruncate.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/ftruncate.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4606,9 +4582,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/ftruncate.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/getpid.c newlib-1.19.0-PS3/libgloss/libsysbase/getpid.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/getpid.c newlib-1.19.0-PS3/libgloss/libsysbase/getpid.c
 --- newlib-1.19.0/libgloss/libsysbase/getpid.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/getpid.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/getpid.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,22 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4632,9 +4608,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/getpid.c newlib-1.19
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/getrusage.c newlib-1.19.0-PS3/libgloss/libsysbase/getrusage.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/getrusage.c newlib-1.19.0-PS3/libgloss/libsysbase/getrusage.c
 --- newlib-1.19.0/libgloss/libsysbase/getrusage.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/getrusage.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/getrusage.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4657,9 +4633,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/getrusage.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/gettod.c newlib-1.19.0-PS3/libgloss/libsysbase/gettod.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/gettod.c newlib-1.19.0-PS3/libgloss/libsysbase/gettod.c
 --- newlib-1.19.0/libgloss/libsysbase/gettod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/gettod.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/gettod.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,30 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4691,9 +4667,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/gettod.c newlib-1.19
 +
 +
 +		
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/glob.c newlib-1.19.0-PS3/libgloss/libsysbase/glob.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/glob.c newlib-1.19.0-PS3/libgloss/libsysbase/glob.c
 --- newlib-1.19.0/libgloss/libsysbase/glob.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/glob.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/glob.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,9 @@
 +#include <glob.h>
 +#include <errno.h>
@@ -4704,9 +4680,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/glob.c newlib-1.19.0
 +		errfunc((void*)0,ENOSYS);
 +  return 0;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/globfree.c newlib-1.19.0-PS3/libgloss/libsysbase/globfree.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/globfree.c newlib-1.19.0-PS3/libgloss/libsysbase/globfree.c
 --- newlib-1.19.0/libgloss/libsysbase/globfree.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/globfree.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/globfree.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,6 @@
 +#include <glob.h>
 +
@@ -4714,9 +4690,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/globfree.c newlib-1.
 +{
 +  return;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/isatty.c newlib-1.19.0-PS3/libgloss/libsysbase/isatty.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/isatty.c newlib-1.19.0-PS3/libgloss/libsysbase/isatty.c
 --- newlib-1.19.0/libgloss/libsysbase/isatty.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/isatty.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/isatty.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4742,9 +4718,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/isatty.c newlib-1.19
 +	ptr->_errno = ENOTTY;
 +	return 0;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/kill.c newlib-1.19.0-PS3/libgloss/libsysbase/kill.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/kill.c newlib-1.19.0-PS3/libgloss/libsysbase/kill.c
 --- newlib-1.19.0/libgloss/libsysbase/kill.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/kill.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/kill.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4767,9 +4743,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/kill.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/link.c newlib-1.19.0-PS3/libgloss/libsysbase/link.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/link.c newlib-1.19.0-PS3/libgloss/libsysbase/link.c
 --- newlib-1.19.0/libgloss/libsysbase/link.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/link.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/link.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4797,9 +4773,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/link.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lock.c newlib-1.19.0-PS3/libgloss/libsysbase/lock.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/lock.c newlib-1.19.0-PS3/libgloss/libsysbase/lock.c
 --- newlib-1.19.0/libgloss/libsysbase/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/lock.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/lock.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,64 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4865,9 +4841,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lock.c newlib-1.19.0
 +	return -1;
 +}
 +
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lseek64.c newlib-1.19.0-PS3/libgloss/libsysbase/lseek64.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/lseek64.c newlib-1.19.0-PS3/libgloss/libsysbase/lseek64.c
 --- newlib-1.19.0/libgloss/libsysbase/lseek64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/lseek64.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/lseek64.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4898,9 +4874,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lseek64.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lseek.c newlib-1.19.0-PS3/libgloss/libsysbase/lseek.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/lseek.c newlib-1.19.0-PS3/libgloss/libsysbase/lseek.c
 --- newlib-1.19.0/libgloss/libsysbase/lseek.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/lseek.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/lseek.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4931,9 +4907,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/lseek.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return (_off_t)-1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/Makefile.in newlib-1.19.0-PS3/libgloss/libsysbase/Makefile.in
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/Makefile.in newlib-1.19.0-PS3/libgloss/libsysbase/Makefile.in
 --- newlib-1.19.0/libgloss/libsysbase/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/Makefile.in	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/Makefile.in	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,148 @@
 +# Copyright (c) 1998 Cygnus Support
 +#
@@ -5083,9 +5059,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/Makefile.in newlib-1
 +
 +config.status: configure
 +	$(SHELL) config.status --recheck
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/mkdir.c newlib-1.19.0-PS3/libgloss/libsysbase/mkdir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/mkdir.c newlib-1.19.0-PS3/libgloss/libsysbase/mkdir.c
 --- newlib-1.19.0/libgloss/libsysbase/mkdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/mkdir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/mkdir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5108,9 +5084,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/mkdir.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/open.c newlib-1.19.0-PS3/libgloss/libsysbase/open.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/open.c newlib-1.19.0-PS3/libgloss/libsysbase/open.c
 --- newlib-1.19.0/libgloss/libsysbase/open.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/open.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/open.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,31 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5143,9 +5119,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/open.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/opendir.c newlib-1.19.0-PS3/libgloss/libsysbase/opendir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/opendir.c newlib-1.19.0-PS3/libgloss/libsysbase/opendir.c
 --- newlib-1.19.0/libgloss/libsysbase/opendir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/opendir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/opendir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5166,9 +5142,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/opendir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/read.c newlib-1.19.0-PS3/libgloss/libsysbase/read.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/read.c newlib-1.19.0-PS3/libgloss/libsysbase/read.c
 --- newlib-1.19.0/libgloss/libsysbase/read.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/read.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/read.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5199,9 +5175,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/read.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/readdir.c newlib-1.19.0-PS3/libgloss/libsysbase/readdir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/readdir.c newlib-1.19.0-PS3/libgloss/libsysbase/readdir.c
 --- newlib-1.19.0/libgloss/libsysbase/readdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/readdir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/readdir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5224,9 +5200,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/readdir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/readdir_r.c newlib-1.19.0-PS3/libgloss/libsysbase/readdir_r.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/readdir_r.c newlib-1.19.0-PS3/libgloss/libsysbase/readdir_r.c
 --- newlib-1.19.0/libgloss/libsysbase/readdir_r.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/readdir_r.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/readdir_r.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5247,9 +5223,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/readdir_r.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rename.c newlib-1.19.0-PS3/libgloss/libsysbase/rename.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/rename.c newlib-1.19.0-PS3/libgloss/libsysbase/rename.c
 --- newlib-1.19.0/libgloss/libsysbase/rename.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/rename.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/rename.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5277,9 +5253,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rename.c newlib-1.19
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rewinddir.c newlib-1.19.0-PS3/libgloss/libsysbase/rewinddir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/rewinddir.c newlib-1.19.0-PS3/libgloss/libsysbase/rewinddir.c
 --- newlib-1.19.0/libgloss/libsysbase/rewinddir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/rewinddir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/rewinddir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5299,9 +5275,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rewinddir.c newlib-1
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rmdir.c newlib-1.19.0-PS3/libgloss/libsysbase/rmdir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/rmdir.c newlib-1.19.0-PS3/libgloss/libsysbase/rmdir.c
 --- newlib-1.19.0/libgloss/libsysbase/rmdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/rmdir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/rmdir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5323,9 +5299,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/rmdir.c newlib-1.19.
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/sbrk.c newlib-1.19.0-PS3/libgloss/libsysbase/sbrk.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/sbrk.c newlib-1.19.0-PS3/libgloss/libsysbase/sbrk.c
 --- newlib-1.19.0/libgloss/libsysbase/sbrk.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/sbrk.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/sbrk.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5351,9 +5327,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/sbrk.c newlib-1.19.0
 +		return (caddr_t)-1;
 +	}
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/seekdir.c newlib-1.19.0-PS3/libgloss/libsysbase/seekdir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/seekdir.c newlib-1.19.0-PS3/libgloss/libsysbase/seekdir.c
 --- newlib-1.19.0/libgloss/libsysbase/seekdir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/seekdir.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/seekdir.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5376,9 +5352,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/seekdir.c newlib-1.1
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/settod.c newlib-1.19.0-PS3/libgloss/libsysbase/settod.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/settod.c newlib-1.19.0-PS3/libgloss/libsysbase/settod.c
 --- newlib-1.19.0/libgloss/libsysbase/settod.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/settod.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/settod.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,22 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5402,9 +5378,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/settod.c newlib-1.19
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/sleep.c newlib-1.19.0-PS3/libgloss/libsysbase/sleep.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/sleep.c newlib-1.19.0-PS3/libgloss/libsysbase/sleep.c
 --- newlib-1.19.0/libgloss/libsysbase/sleep.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/sleep.c	2011-03-23 21:38:49.768038295 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/sleep.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,32 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5438,9 +5414,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/sleep.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/stat64.c newlib-1.19.0-PS3/libgloss/libsysbase/stat64.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/stat64.c newlib-1.19.0-PS3/libgloss/libsysbase/stat64.c
 --- newlib-1.19.0/libgloss/libsysbase/stat64.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/stat64.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/stat64.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5470,9 +5446,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/stat64.c newlib-1.19
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/stat.c newlib-1.19.0-PS3/libgloss/libsysbase/stat.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/stat.c newlib-1.19.0-PS3/libgloss/libsysbase/stat.c
 --- newlib-1.19.0/libgloss/libsysbase/stat.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/stat.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/stat.c	2011-05-30 09:42:34.810043017 -0300
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5502,9 +5478,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/stat.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/syscalls.c newlib-1.19.0-PS3/libgloss/libsysbase/syscalls.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/syscalls.c newlib-1.19.0-PS3/libgloss/libsysbase/syscalls.c
 --- newlib-1.19.0/libgloss/libsysbase/syscalls.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/syscalls.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/syscalls.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,50 @@
 +#include <sys/syscalls.h>
 +
@@ -5556,9 +5532,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/syscalls.c newlib-1.
 +	NULL,			//	sys_lwmutex_unlock_r
 +	NULL			//	exit
 +};
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/telldir.c newlib-1.19.0-PS3/libgloss/libsysbase/telldir.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/telldir.c newlib-1.19.0-PS3/libgloss/libsysbase/telldir.c
 --- newlib-1.19.0/libgloss/libsysbase/telldir.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/telldir.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/telldir.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5581,9 +5557,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/telldir.c newlib-1.1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/times.c newlib-1.19.0-PS3/libgloss/libsysbase/times.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/times.c newlib-1.19.0-PS3/libgloss/libsysbase/times.c
 --- newlib-1.19.0/libgloss/libsysbase/times.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/times.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/times.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5610,9 +5586,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/times.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/truncate.c newlib-1.19.0-PS3/libgloss/libsysbase/truncate.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/truncate.c newlib-1.19.0-PS3/libgloss/libsysbase/truncate.c
 --- newlib-1.19.0/libgloss/libsysbase/truncate.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/truncate.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/truncate.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5635,9 +5611,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/truncate.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/umask.c newlib-1.19.0-PS3/libgloss/libsysbase/umask.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/umask.c newlib-1.19.0-PS3/libgloss/libsysbase/umask.c
 --- newlib-1.19.0/libgloss/libsysbase/umask.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/umask.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/umask.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5657,9 +5633,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/umask.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/unlink.c newlib-1.19.0-PS3/libgloss/libsysbase/unlink.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/unlink.c newlib-1.19.0-PS3/libgloss/libsysbase/unlink.c
 --- newlib-1.19.0/libgloss/libsysbase/unlink.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/unlink.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/unlink.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5685,9 +5661,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/unlink.c newlib-1.19
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/utime.c newlib-1.19.0-PS3/libgloss/libsysbase/utime.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/utime.c newlib-1.19.0-PS3/libgloss/libsysbase/utime.c
 --- newlib-1.19.0/libgloss/libsysbase/utime.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/utime.c	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/utime.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5708,9 +5684,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/utime.c newlib-1.19.
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/wait.c newlib-1.19.0-PS3/libgloss/libsysbase/wait.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/wait.c newlib-1.19.0-PS3/libgloss/libsysbase/wait.c
 --- newlib-1.19.0/libgloss/libsysbase/wait.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/wait.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/wait.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5731,9 +5707,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/wait.c newlib-1.19.0
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/warning.h newlib-1.19.0-PS3/libgloss/libsysbase/warning.h
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/warning.h newlib-1.19.0-PS3/libgloss/libsysbase/warning.h
 --- newlib-1.19.0/libgloss/libsysbase/warning.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/warning.h	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/warning.h	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,43 @@
 +#ifndef __WARNING_H__
 +#define __WARNING_H__
@@ -5778,9 +5754,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/warning.h newlib-1.1
 +                "warning: " #name " is not implemented and will always fail")
 +
 +#endif /* __WARNING_H__ */
-diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/write.c newlib-1.19.0-PS3/libgloss/libsysbase/write.c
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/libsysbase/write.c newlib-1.19.0-PS3/libgloss/libsysbase/write.c
 --- newlib-1.19.0/libgloss/libsysbase/write.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/libgloss/libsysbase/write.c	2011-03-23 21:35:45.684293667 -0300
++++ newlib-1.19.0-PS3/libgloss/libsysbase/write.c	2011-05-30 09:42:34.830043017 -0300
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5811,9 +5787,9 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/libsysbase/write.c newlib-1.19.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN --exclude=.git newlib-1.19.0/libgloss/spu/Makefile.in newlib-1.19.0-PS3/libgloss/spu/Makefile.in
+diff -burN '--exclude=.git' newlib-1.19.0/libgloss/spu/Makefile.in newlib-1.19.0-PS3/libgloss/spu/Makefile.in
 --- newlib-1.19.0/libgloss/spu/Makefile.in	2009-05-07 15:07:35.000000000 -0300
-+++ newlib-1.19.0-PS3/libgloss/spu/Makefile.in	2011-03-23 21:35:45.714292741 -0300
++++ newlib-1.19.0-PS3/libgloss/spu/Makefile.in	2011-05-30 09:42:34.870043017 -0300
 @@ -151,7 +151,7 @@
  .PHONY: install info install-info clean-info
  install:
@@ -5823,15 +5799,15 @@ diff -burN --exclude=.git newlib-1.19.0/libgloss/spu/Makefile.in newlib-1.19.0-P
  	done
  
  info:
-diff -burN --exclude=.git newlib-1.19.0/newlib/configure.host newlib-1.19.0-PS3/newlib/configure.host
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/configure.host newlib-1.19.0-PS3/newlib/configure.host
 --- newlib-1.19.0/newlib/configure.host	2010-12-02 15:30:46.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/configure.host	2011-03-23 21:35:45.744293456 -0300
++++ newlib-1.19.0-PS3/newlib/configure.host	2011-05-30 09:46:59.880041580 -0300
 @@ -449,7 +449,10 @@
  	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
  	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
  	;;
 -
-+  *-*-lv2*)
++  *-ps3-*)
 +	sys_dir=lv2
 +	have_crt0="no"
 +	;;
@@ -5842,7 +5818,7 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/configure.host newlib-1.19.0-PS3/
          syscall_dir=syscalls
  	default_newlib_io_long_long="yes"
          ;;
-+  powerpc64-*-lv2*)
++  powerpc64-ps3-elf)
 +	default_newlib_io_long_long="yes"
 +	newlib_cflags="${newlib_cflags} -DREENTRANT_SYSCALLS_PROVIDED"
 +	newlib_cflags="${newlib_cflags} -ffunction-sections -fdata-sections"
@@ -5851,9 +5827,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/configure.host newlib-1.19.0-PS3/
    powerpc*-*-eabialtivec*)
  	default_newlib_io_long_long="yes"
  	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/include/sys/config.h newlib-1.19.0-PS3/newlib/libc/include/sys/config.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/include/sys/config.h newlib-1.19.0-PS3/newlib/libc/include/sys/config.h
 --- newlib-1.19.0/newlib/libc/include/sys/config.h	2010-12-02 15:30:46.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/include/sys/config.h	2011-03-23 21:38:49.778037905 -0300
++++ newlib-1.19.0-PS3/newlib/libc/include/sys/config.h	2011-05-30 09:42:35.010043017 -0300
 @@ -215,6 +215,11 @@
  #define _READ_WRITE_RETURN_TYPE _ssize_t
  #endif
@@ -5866,9 +5842,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/include/sys/config.h newlib-
  #ifndef __EXPORT
  #define __EXPORT
  #endif
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/include/sys/unistd.h newlib-1.19.0-PS3/newlib/libc/include/sys/unistd.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/include/sys/unistd.h newlib-1.19.0-PS3/newlib/libc/include/sys/unistd.h
 --- newlib-1.19.0/newlib/libc/include/sys/unistd.h	2010-10-08 12:28:49.000000000 -0300
-+++ newlib-1.19.0-PS3/newlib/libc/include/sys/unistd.h	2011-03-23 21:35:45.814293272 -0300
++++ newlib-1.19.0-PS3/newlib/libc/include/sys/unistd.h	2011-05-30 09:42:35.010043017 -0300
 @@ -216,7 +216,7 @@
  int     _EXFUN(_execve, (const char *__path, char * const __argv[], char * const __envp[] ));
  #endif
@@ -5878,9 +5854,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/include/sys/unistd.h newlib-
  #if !defined(__INSIDE_CYGWIN__)
  int     _EXFUN(ftruncate, (int __fd, off_t __length));
  int     _EXFUN(truncate, (const char *, off_t __length));
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/configure newlib-1.19.0-PS3/newlib/libc/sys/configure
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/configure newlib-1.19.0-PS3/newlib/libc/sys/configure
 --- newlib-1.19.0/newlib/libc/sys/configure	2010-12-16 17:59:03.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/configure	2011-03-23 21:35:45.914292603 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/configure	2011-05-30 09:42:35.150043017 -0300
 @@ -783,6 +783,7 @@
  h8300hms
  h8500hms
@@ -5898,9 +5874,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/configure newlib-1.19.0-
  	m88kbug) subdirs="$subdirs m88kbug"
   ;;
  	mmixware) subdirs="$subdirs mmixware"
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/configure.in newlib-1.19.0-PS3/newlib/libc/sys/configure.in
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/configure.in newlib-1.19.0-PS3/newlib/libc/sys/configure.in
 --- newlib-1.19.0/newlib/libc/sys/configure.in	2010-02-24 16:59:55.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/configure.in	2011-03-23 21:35:45.914292603 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/configure.in	2011-05-30 09:42:35.150043017 -0300
 @@ -30,6 +30,7 @@
  	h8300hms) AC_CONFIG_SUBDIRS(h8300hms) ;;
  	h8500hms) AC_CONFIG_SUBDIRS(h8500hms) ;;
@@ -5909,9 +5885,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/configure.in newlib-1.19
  	m88kbug) AC_CONFIG_SUBDIRS(m88kbug) ;;
  	mmixware) AC_CONFIG_SUBDIRS(mmixware) ;;
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.19.0-PS3/newlib/libc/sys/lv2/aclocal.m4
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.19.0-PS3/newlib/libc/sys/lv2/aclocal.m4
 --- newlib-1.19.0/newlib/libc/sys/lv2/aclocal.m4	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/aclocal.m4	2011-03-23 21:35:45.994289920 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/aclocal.m4	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,992 @@
 +# generated automatically by aclocal 1.11 -*- Autoconf -*-
 +
@@ -6905,9 +6881,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/configure newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/configure newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure
 --- newlib-1.19.0/newlib/libc/sys/lv2/configure	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure	2011-03-23 21:38:49.794291002 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,4989 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -11898,9 +11874,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/configure newlib-1.1
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/configure.in newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure.in
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/configure.in newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure.in
 --- newlib-1.19.0/newlib/libc/sys/lv2/configure.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure.in	2011-03-23 21:35:45.994289920 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/configure.in	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,13 @@
 +dnl This is the newlib/libc/sys/rtems configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -11915,9 +11891,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/configure.in newlib-
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/getreent.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/getreent.c
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/getreent.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/getreent.c
 --- newlib-1.19.0/newlib/libc/sys/lv2/getreent.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/getreent.c	2011-03-23 21:38:49.794291002 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/getreent.c	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,15 @@
 +#include <reent.h>
 +
@@ -11934,9 +11910,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/getreent.c newlib-1.
 +  }
 +  return r;
 +}
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock.c
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/lock.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock.c
 --- newlib-1.19.0/newlib/libc/sys/lv2/lock.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock.c	2011-03-23 21:38:49.794291002 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock.c	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,37 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -11975,9 +11951,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock.c newlib-1.19.0
 +    __libc_auto_lock_allocate(lock);
 +  return sys_lwmutex_unlock(lock);
 +}
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.c
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.c
 --- newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.c	2011-03-23 21:38:49.794291002 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.c	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,29 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -12008,9 +11984,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.c newl
 +	if(sys_lwmutex_unlock(&metaLock))
 +		abort();
 +}
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.h
 --- newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.h	2011-03-23 21:38:49.794291002 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_internal.h	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,32 @@
 +#ifndef __SYS_LOCK_INTERNAL_H__
 +#define __SYS_LOCK_INTERNAL_H__
@@ -12044,9 +12020,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_internal.h newl
 +extern int32_t sys_lwmutex_unlock(sys_lwmutex_t *lwmutex);
 +
 +#endif
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_recursive.c
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_recursive.c
 --- newlib-1.19.0/newlib/libc/sys/lv2/lock_recursive.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_recursive.c	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/lock_recursive.c	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,37 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -12085,9 +12061,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/lock_recursive.c new
 +    __libc_auto_lock_allocate(lock);
 +  return sys_lwmutex_unlock(lock);
 +}
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/machine/_types.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/machine/_types.h
 --- newlib-1.19.0/newlib/libc/sys/lv2/machine/_types.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/machine/_types.h	2011-03-23 21:35:45.994289920 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/machine/_types.h	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,16 @@
 +#ifndef _MACHINE__TYPES_H
 +#define _MACHINE__TYPES_H
@@ -12105,9 +12081,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/machine/_types.h new
 +typedef long long _off_t;
 +
 +#endif // _MACHINE__TYPES_H
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/Makefile.am newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.am
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/Makefile.am newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.am
 --- newlib-1.19.0/newlib/libc/sys/lv2/Makefile.am	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.am	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.am	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,18 @@
 +## Process this file with automake to generate Makefile.in
 +
@@ -12127,9 +12103,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/Makefile.am newlib-1
 +
 +ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
 +CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/Makefile.in newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.in
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/Makefile.in newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.in
 --- newlib-1.19.0/newlib/libc/sys/lv2/Makefile.in	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.in	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/Makefile.in	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,430 @@
 +# Makefile.in generated by automake 1.11 from Makefile.am.
 +# @configure_input@
@@ -12561,9 +12537,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/Makefile.in newlib-1
 +# Tell versions [3.59,3.63) of GNU make to not export all variables.
 +# Otherwise a system limit (for SysV at least) may be exceeded.
 +.NOEXPORT:
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/dirent.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/dirent.h
 --- newlib-1.19.0/newlib/libc/sys/lv2/sys/dirent.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/dirent.h	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/dirent.h	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,62 @@
 +#ifndef __SYS_DIRENT_H__
 +#define __SYS_DIRENT_H__
@@ -12627,9 +12603,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/sys/dirent.h newlib-
 +#endif
 +
 +#endif //__DIRENT_H__
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/lock.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/lock.h
 --- newlib-1.19.0/newlib/libc/sys/lv2/sys/lock.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/lock.h	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/lock.h	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,47 @@
 +#ifndef __SYS_LOCK_H__
 +#define __SYS_LOCK_H__
@@ -12678,9 +12654,9 @@ diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.
 +#define __lock_release_recursive(NAME) __libc_lock_release_recursive(&(NAME))
 +
 +#endif /* __SYS_LOCK_H__ */
-diff -burN --exclude=.git newlib-1.19.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h
 --- newlib-1.19.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2011-03-23 21:38:49.804288824 -0300
++++ newlib-1.19.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2011-05-30 09:42:35.240043017 -0300
 @@ -0,0 +1,73 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__
