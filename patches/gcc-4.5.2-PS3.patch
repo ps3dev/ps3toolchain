@@ -1,15 +1,3 @@
-diff -burN '--exclude=.git' gcc-4.5.2/config.sub gcc-4.5.2-PS3/config.sub
---- gcc-4.5.2/config.sub	2010-03-23 11:26:40.000000000 -0300
-+++ gcc-4.5.2-PS3/config.sub	2011-06-06 09:26:54.480043025 -0300
-@@ -1315,7 +1315,7 @@
- 	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
- 	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
- 	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
--	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es*)
-+	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es* )
- 	# Remember, each alternative MUST END IN *, to match a version number.
- 		;;
- 	-qnx*)
 diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h
 --- gcc-4.5.2/gcc/config/rs6000/cell64lv2.h	1969-12-31 20:00:00.000000000 -0400
 +++ gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h	2011-06-05 01:40:37.320048783 -0300
