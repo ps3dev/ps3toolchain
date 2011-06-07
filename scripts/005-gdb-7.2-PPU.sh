@@ -1,36 +1,33 @@
-#!/bin/sh
+#!/bin/bash -e
 # gdb-7.2-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d gdb-7.2 ]; then
 
   ## Download the source code.
-  wget --continue ftp://ftp.gnu.org/gnu/gdb/gdb-7.2.tar.bz2 || { exit 1; }
+  wget --continue ftp://ftp.gnu.org/gnu/gdb/gdb-7.2.tar.bz2
 
   ## Unpack the source code.
-  tar xfvj gdb-7.2.tar.bz2 || { exit 1; }
-
-  ## Patch the source code.
-  cat ../patches/gdb-7.2-PS3.patch | patch -p1 -d gdb-7.2 || { exit ; }
+  tar xfvj gdb-7.2.tar.bz2
 
 fi
 
 if [ ! -d gdb-7.2/build-ppu ]; then
 
   ## Create the build directory.
-  mkdir gdb-7.2/build-ppu || { exit 1; }
+  mkdir gdb-7.2/build-ppu
 
 fi
 
 ## Enter the build directory.
-cd gdb-7.2/build-ppu || { exit 1; }
+cd gdb-7.2/build-ppu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="ppu" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
     --disable-multilib \
     --disable-nls \
     --disable-sim \
     --disable-werror \
-    || { exit 1; }
+
 
 ## Compile and install.
-${MAKE:-make} -j 4 && ${MAKE:-make} install || { exit 1; }
+${MAKE:-make} -j 4 && ${MAKE:-make} install
