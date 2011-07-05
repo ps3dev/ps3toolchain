@@ -1,0 +1,15 @@
+diff -burN '--exclude=.git' binutils-2.21.1/ld/emultempl/spuelf.em binutils-2.21.1-PS3/ld/emultempl/spuelf.em
+--- binutils-2.21.1/ld/emultempl/spuelf.em	2009-08-10 04:50:56.000000000 -0300
++++ binutils-2.21.1-PS3/ld/emultempl/spuelf.em	2011-05-25 10:15:21.220050910 -0300
+@@ -396,7 +396,11 @@
+   argv[my_argc++] = "-T";
+   argv[my_argc++] = auto_overlay_file;
+   argv[my_argc] = 0;
++#if defined(_WIN32)
++  execvp (argv[0], (const char* const*) argv);
++#else
+   execvp (argv[0], (char *const *) argv);
++#endif
+   perror (argv[0]);
+   _exit (127);
+ }
