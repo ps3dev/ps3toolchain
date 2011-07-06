@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 # binutils-2.21.1-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d binutils-2.21.1 ]; then
