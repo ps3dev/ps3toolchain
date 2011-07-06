@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 # gcc-4.5.2-SPU-stage1.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d gcc-4.5.2 ]; then

@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 # newlib-1.19.0-SPU.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d newlib-1.19.0 ]; then

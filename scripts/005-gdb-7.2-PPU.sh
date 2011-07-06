@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 # gdb-7.2-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
 if [ ! -d gdb-7.2 ]; then
