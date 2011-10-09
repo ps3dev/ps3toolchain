@@ -12731,3 +12731,82 @@ diff -burN '--exclude=.git' newlib-1.19.0/newlib/libc/sys/lv2/sys/syscalls.h new
 +extern struct __syscalls_t __syscalls;
 +
 +#endif
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libm/mathfp/sf_sine.c newlib-1.19.0-PS3/newlib/libm/mathfp/sf_sine.c
+--- newlib-1.19.0/newlib/libm/mathfp/sf_sine.c	2000-02-17 15:39:52.000000000 -0400
++++ newlib-1.19.0-PS3/newlib/libm/mathfp/sf_sine.c	2011-10-09 08:57:14.834910421 -0400
+@@ -26,6 +26,7 @@
+ 
+ static const float HALF_PI = 1.570796326;
+ static const float ONE_OVER_PI = 0.318309886;
++static const float ONE_OVER_2PI = 0.159154943;
+ static const float r[] = { -0.1666665668,
+                             0.8333025139e-02,
+                            -0.1980741872e-03,
+@@ -50,6 +51,13 @@
+         return (z_notanum_f.f); 
+     }
+ 
++  /* Check for values of x that will overflow here. */
++  if (fabsf (x) > YMAX)
++    {
++      float m = floorf(x * ONE_OVER_2PI);
++      x -= (m * 2 * M_PI);
++    }
++
+   /* Use sin and cos properties to ease computations. */
+   if (cosine)
+     {
+@@ -70,13 +78,6 @@
+         }
+     }
+ 
+-  /* Check for values of y that will overflow here. */
+-  if (y > YMAX)
+-    {
+-      errno = ERANGE;
+-      return (x);
+-    }
+-
+   /* Calculate the exponent. */
+   if (y < 0.0)
+     N = (int) (y * ONE_OVER_PI - 0.5);
+diff -burN '--exclude=.git' newlib-1.19.0/newlib/libm/mathfp/s_sine.c newlib-1.19.0-PS3/newlib/libm/mathfp/s_sine.c
+--- newlib-1.19.0/newlib/libm/mathfp/s_sine.c	2000-02-17 15:39:52.000000000 -0400
++++ newlib-1.19.0-PS3/newlib/libm/mathfp/s_sine.c	2011-10-09 08:57:14.824749869 -0400
+@@ -74,6 +74,7 @@
+ 
+ static const double HALF_PI = 1.57079632679489661923;
+ static const double ONE_OVER_PI = 0.31830988618379067154;
++static const double ONE_OVER_2PI = 0.15915494309189533577;
+ static const double r[] = { -0.16666666666666665052,
+                              0.83333333333331650314e-02,
+                             -0.19841269841201840457e-03,
+@@ -102,6 +103,14 @@
+         return (z_notanum.d); 
+     }
+ 
++
++  /* Check for values of x that will overflow here. */
++  if (fabs (x) > YMAX)
++    {
++      double m = floor(x * ONE_OVER_2PI);
++      x -= (m * 2 * M_PI);
++    }
++
+   /* Use sin and cos properties to ease computations. */
+   if (cosine)
+     {
+@@ -122,13 +131,6 @@
+         }
+     }
+ 
+-  /* Check for values of y that will overflow here. */
+-  if (y > YMAX)
+-    {
+-      errno = ERANGE;
+-      return (x);
+-    }
+-
+   /* Calculate the exponent. */
+   if (y < 0.0)
+     N = (int) (y * ONE_OVER_PI - 0.5);
