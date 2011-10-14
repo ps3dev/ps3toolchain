@@ -48,13 +48,12 @@ cd gcc-4.6.1/build-ppu
     --disable-nls \
     --disable-shared \
     --disable-win32-registry \
-    --enable-languages="c,c++,objc,obj-c++" \
+    --enable-languages="c,c++" \
     --enable-long-double-128 \
     --enable-lto \
     --enable-threads \
     --with-cpu="cell" \
-    --with-newlib \
-
+    --with-newlib
 
 ## Compile and install.
 ${MAKE:-make} -j 4 all-gcc && ${MAKE:-make} install-gcc
