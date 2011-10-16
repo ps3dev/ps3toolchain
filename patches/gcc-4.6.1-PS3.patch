@@ -1,7 +1,7 @@
-diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h
---- gcc-4.5.2/gcc/config/rs6000/cell64lv2.h	1969-12-31 20:00:00.000000000 -0400
-+++ gcc-4.5.2-PS3/gcc/config/rs6000/cell64lv2.h	2011-06-05 01:40:37.320048783 -0300
-@@ -0,0 +1,437 @@
+diff -burN '--exclude=.git' gcc-4.6.1/gcc/config/rs6000/cell64lv2.h gcc-4.6.1-PS3/gcc/config/rs6000/cell64lv2.h
+--- gcc-4.6.1/gcc/config/rs6000/cell64lv2.h	1969-12-31 20:00:00.000000000 -0400
++++ gcc-4.6.1-PS3/gcc/config/rs6000/cell64lv2.h	2011-08-16 00:00:37.444053237 -0300
+@@ -0,0 +1,439 @@
 +/* Definitions of target machine for GNU compiler,
 +   for 64 bit PowerPC linux.
 +   Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008,
@@ -82,8 +82,8 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS
 +#define INVALID_64BIT "-m%s not supported in this configuration"
 +#define INVALID_32BIT INVALID_64BIT
 +
-+#undef	SUBSUBTARGET_OVERRIDE_OPTIONS
-+#define	SUBSUBTARGET_OVERRIDE_OPTIONS				\
++#undef	SUBSUBTARGET_TARGET_OPTION_OVERRIDE
++#define	SUBSUBTARGET_TARGET_OPTION_OVERRIDE				\
 +  do								\
 +    {								\
 +      if (!rs6000_explicit_options.alignment)			\
@@ -127,8 +127,8 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS
 +
 +#ifdef	RS6000_BI_ARCH
 +
-+#undef	OVERRIDE_OPTIONS
-+#define	OVERRIDE_OPTIONS \
++#undef	TARGET_OPTION_OVERRIDE
++#define	TARGET_OPTION_OVERRIDE \
 +  rs6000_override_options (((TARGET_DEFAULT ^ target_flags) & MASK_64BIT) \
 +			   ? (char *) 0 : TARGET_CPU_DEFAULT)
 +
@@ -426,7 +426,9 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS
 +		   && SCALAR_FLOAT_MODE_P (GET_MODE (X))		\
 +		   && BITS_PER_WORD == HOST_BITS_PER_INT)))))
 +
++/* FIXME: TOTALLY UNSURE ABOUT WHY THIS REDEFINE WAS HERE
 +#define TARGET_ASM_FILE_END rs6000_elf_end_indicate_exec_stack
++*/
 +
 +#define POWERPC_LINUX
 +
@@ -439,12 +441,12 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/cell64lv2.h gcc-4.5.2-PS
 +#define RS6000_DEFAULT_LONG_DOUBLE_SIZE 128
 +#endif
 +
-diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/rs6000.c gcc-4.5.2-PS3/gcc/config/rs6000/rs6000.c
---- gcc-4.5.2/gcc/config/rs6000/rs6000.c	2010-11-17 02:09:53.000000000 -0400
-+++ gcc-4.5.2-PS3/gcc/config/rs6000/rs6000.c	2011-05-29 00:23:46.890039503 -0300
-@@ -1172,6 +1172,13 @@
- static bool rs6000_can_eliminate (const int, const int);
+diff -burN '--exclude=.git' gcc-4.6.1/gcc/config/rs6000/rs6000.c gcc-4.6.1-PS3/gcc/config/rs6000/rs6000.c
+--- gcc-4.6.1/gcc/config/rs6000/rs6000.c	2011-06-20 12:12:44.000000000 -0300
++++ gcc-4.6.1-PS3/gcc/config/rs6000/rs6000.c	2011-08-16 00:00:37.454053195 -0300
+@@ -1214,6 +1214,13 @@
  static void rs6000_trampoline_init (rtx, tree, rtx);
+ static bool rs6000_cannot_force_const_mem (rtx);
  
 +
 +#ifdef POWERPC_CELL64LV2
@@ -456,9 +458,9 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/rs6000.c gcc-4.5.2-PS3/g
  /* Hash table stuff for keeping track of TOC entries.  */
  
  struct GTY(()) toc_hash_struct
-@@ -1549,6 +1556,11 @@
- #undef TARGET_FUNCTION_VALUE
- #define TARGET_FUNCTION_VALUE rs6000_function_value
+@@ -1667,6 +1674,11 @@
+ #undef TARGET_SET_CURRENT_FUNCTION
+ #define TARGET_SET_CURRENT_FUNCTION rs6000_set_current_function
  
 +#ifdef POWERPC_CELL64LV2
 +#undef TARGET_VALID_POINTER_MODE
@@ -467,12 +469,11 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/rs6000.c gcc-4.5.2-PS3/g
 +
  struct gcc_target targetm = TARGET_INITIALIZER;
  
- /* Return number of consecutive hard regs needed starting at reg REGNO
-@@ -25811,4 +25823,13 @@
-     }
+ 
+@@ -28257,5 +28269,12 @@
+   return x;
  }
  
-+
 +#ifdef POWERPC_CELL64LV2
 +
 +static bool rs6000_cell64lv2_valid_pointer_mode(enum machine_mode mode)
@@ -480,11 +481,11 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/rs6000.c gcc-4.5.2-PS3/g
 +     return (mode == SImode || (TARGET_64BIT && mode == DImode) || mode == ptr_mode || mode == Pmode);
 +}
 +#endif
-+
+ 
  #include "gt-rs6000.h"
-diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/t-cell64lv2 gcc-4.5.2-PS3/gcc/config/rs6000/t-cell64lv2
---- gcc-4.5.2/gcc/config/rs6000/t-cell64lv2	1969-12-31 20:00:00.000000000 -0400
-+++ gcc-4.5.2-PS3/gcc/config/rs6000/t-cell64lv2	2011-05-29 00:23:46.900039503 -0300
+diff -burN '--exclude=.git' gcc-4.6.1/gcc/config/rs6000/t-cell64lv2 gcc-4.6.1-PS3/gcc/config/rs6000/t-cell64lv2
+--- gcc-4.6.1/gcc/config/rs6000/t-cell64lv2	1969-12-31 20:00:00.000000000 -0400
++++ gcc-4.6.1-PS3/gcc/config/rs6000/t-cell64lv2	2011-08-16 00:00:37.454053195 -0300
 @@ -0,0 +1,25 @@
 +#rs6000/t-cell64lv2
 +
@@ -511,15 +512,15 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config/rs6000/t-cell64lv2 gcc-4.5.2-PS
 +LIB2FUNCS_EXTRA := $(sort $(LIB2FUNCS_EXTRA))
 +
 +TARGET_LIBGCC2_CFLAGS += -mno-minimal-toc
-diff -burN '--exclude=.git' gcc-4.5.2/gcc/config.gcc gcc-4.5.2-PS3/gcc/config.gcc
---- gcc-4.5.2/gcc/config.gcc	2010-10-09 06:35:53.000000000 -0300
-+++ gcc-4.5.2-PS3/gcc/config.gcc	2011-05-29 00:33:14.530039365 -0300
-@@ -1919,6 +1919,15 @@
+diff -burN '--exclude=.git' gcc-4.6.1/gcc/config.gcc gcc-4.6.1-PS3/gcc/config.gcc
+--- gcc-4.6.1/gcc/config.gcc	2011-05-22 17:03:43.000000000 -0300
++++ gcc-4.6.1-PS3/gcc/config.gcc	2011-08-16 00:00:37.454053195 -0300
+@@ -2048,6 +2048,15 @@
  #	tmake_file="${tmake_file} rs6000/t-fprules rs6000/t-fprules-fpbit "
  #	extra_headers=
  #	;;
 +powerpc64-ps3-elf)
-+	tm_file="${tm_file} dbxelf.h elfos.h usegas.h svr4.h freebsd-spec.h rs6000/sysv4.h rs6000/default64.h"
++	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h rs6000/sysv4.h rs6000/default64.h"
 +	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
 +	if test x${enable_secureplt} = xyes; then
 +		tm_file="rs6000/secureplt.h ${tm_file}"
@@ -530,10 +531,10 @@ diff -burN '--exclude=.git' gcc-4.5.2/gcc/config.gcc gcc-4.5.2-PS3/gcc/config.gc
  powerpc-*-darwin*)
  	extra_options="${extra_options} rs6000/darwin.opt"
  	extra_parts="crt2.o"
-diff -burN '--exclude=.git' gcc-4.5.2/libgcc/config.host gcc-4.5.2-PS3/libgcc/config.host
---- gcc-4.5.2/libgcc/config.host	2010-09-12 00:27:09.000000000 -0300
-+++ gcc-4.5.2-PS3/libgcc/config.host	2011-05-31 10:05:54.520033110 -0300
-@@ -469,6 +469,8 @@
+diff -burN '--exclude=.git' gcc-4.6.1/libgcc/config.host gcc-4.6.1-PS3/libgcc/config.host
+--- gcc-4.6.1/libgcc/config.host	2011-03-14 03:06:23.000000000 -0300
++++ gcc-4.6.1-PS3/libgcc/config.host	2011-08-16 00:00:37.454053195 -0300
+@@ -484,6 +484,8 @@
  	;;
  powerpc-*-rtems*)
  	;;
