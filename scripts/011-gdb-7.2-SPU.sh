@@ -4,10 +4,10 @@
 if [ ! -d gdb-7.2 ]; then
 
   ## Download the source code.
-  wget --continue ftp://ftp.gnu.org/gnu/gdb/gdb-7.2.tar.bz2
+  wget --continue ftp://ftp.gnu.org/gnu/gdb/gdb-7.2a.tar.bz2
 
   ## Unpack the source code.
-  tar xfvj gdb-7.2.tar.bz2
+  tar xfvj gdb-7.2a.tar.bz2
 
 fi
 

@@ -1,10 +1,10 @@
 #!/bin/sh -e
-# gcc-4.5.2-PPU-stage1.sh by Dan Peori (dan.peori@oopo.net)
+# gcc-4.6.1-SPU-stage1.sh by Dan Peori (dan.peori@oopo.net)
 
-if [ ! -d gcc-4.5.2 ]; then
+if [ ! -d gcc-4.6.1 ]; then
 
   ## Download the source code.
-  wget --continue ftp://ftp.gnu.org/gnu/gcc/gcc-4.5.2/gcc-4.5.2.tar.bz2
+  wget --continue ftp://ftp.gnu.org/gnu/gcc/gcc-4.6.1/gcc-4.6.1.tar.bz2
 
   ## Downlow the library source code.
   wget --continue ftp://ftp.gmplib.org/pub/gmp-5.0.1/gmp-5.0.1.tar.bz2
@@ -12,13 +12,13 @@ if [ ! -d gcc-4.5.2 ]; then
   wget --continue http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
 
   ## Unpack the source code.
-  rm -Rf gcc-4.5.2 && tar xfvj gcc-4.5.2.tar.bz2
+  rm -Rf gcc-4.6.1 && tar xfvj gcc-4.6.1.tar.bz2
 
   ## Patch the source code.
-  cat ../patches/gcc-4.5.2-PS3.patch | patch -p1 -d gcc-4.5.2
+  cat ../patches/gcc-4.6.1-PS3.patch | patch -p1 -d gcc-4.6.1
 
   ## Enter the source code directory.
-  cd gcc-4.5.2
+  cd gcc-4.6.1
 
   ## Unpack the library source code.
   tar xfvj ../gmp-5.0.1.tar.bz2 && ln -s gmp-5.0.1 gmp
@@ -30,31 +30,29 @@ if [ ! -d gcc-4.5.2 ]; then
 
 fi
 
-if [ ! -d gcc-4.5.2/build-ppu ]; then
+if [ ! -d gcc-4.6.1/build-spu ]; then
 
   ## Create the build directory.
-  mkdir gcc-4.5.2/build-ppu
+  mkdir gcc-4.6.1/build-spu
 
 fi
 
 ## Enter the build directory.
-cd gcc-4.5.2/build-ppu
+cd gcc-4.6.1/build-spu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
+../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-dependency-tracking \
-    --disable-libstdcxx-pch \
+    --disable-libssp \
     --disable-multilib \
     --disable-nls \
     --disable-shared \
     --disable-win32-registry \
-    --enable-languages="c,c++,objc,obj-c++" \
-    --enable-long-double-128 \
+    --enable-languages="c" \
     --enable-lto \
     --enable-threads \
-    --with-cpu="cell" \
     --with-newlib \
-   
+
 
 ## Compile and install.
 ${MAKE:-make} -j 4 all-gcc && ${MAKE:-make} install-gcc
