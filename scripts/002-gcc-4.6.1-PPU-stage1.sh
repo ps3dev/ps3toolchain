@@ -6,11 +6,6 @@ if [ ! -d gcc-4.6.1 ]; then
   ## Download the source code.
   wget --continue ftp://ftp.gnu.org/gnu/gcc/gcc-4.6.1/gcc-4.6.1.tar.bz2
 
-  ## Downlow the library source code.
-  wget --continue ftp://ftp.gmplib.org/pub/gmp-5.0.1/gmp-5.0.1.tar.bz2
-  wget --continue http://www.multiprecision.org/mpc/download/mpc-0.8.2.tar.gz
-  wget --continue http://www.mpfr.org/mpfr-2.4.2/mpfr-2.4.2.tar.bz2
-
   ## Unpack the source code.
   rm -Rf gcc-4.6.1 && tar xfvj gcc-4.6.1.tar.bz2
 
@@ -20,10 +15,8 @@ if [ ! -d gcc-4.6.1 ]; then
   ## Enter the source code directory.
   cd gcc-4.6.1
 
-  ## Unpack the library source code.
-  tar xfvj ../gmp-5.0.1.tar.bz2 && ln -s gmp-5.0.1 gmp
-  tar xfvz ../mpc-0.8.2.tar.gz && ln -s mpc-0.8.2 mpc
-  tar xfvj ../mpfr-2.4.2.tar.bz2 && ln -s mpfr-2.4.2 mpfr
+  ## Download the prerequisites.
+  ./contrib/download_prerequisites
 
   ## Leave the source code directory.
   cd ..
