@@ -1,28 +1,30 @@
 #!/bin/sh -e
-# binutils-2.21.1-SPU.sh by Dan Peori (dan.peori@oopo.net)
+# binutils-SPU.sh by Dan Peori (dan.peori@oopo.net)
 
-if [ ! -d binutils-2.21.1 ]; then
+BINUTILS="binutils-2.22"
+
+if [ ! -d ${BINUTILS} ]; then
 
   ## Download the source code.
-  wget --continue ftp://ftp.gnu.org/gnu/binutils/binutils-2.21.1a.tar.bz2
+  if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue ftp://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2; fi
 
   ## Unpack the source code.
-  tar xfvj binutils-2.21.1a.tar.bz2
+  tar xfvj ${BINUTILS}.tar.bz2
 
   ## Patch the source code.
-  cat ../patches/binutils-2.21.1-PS3.patch | patch -p1 -d binutils-2.21.1
+  cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
 
 fi
 
-if [ ! -d binutils-2.21.1/build-spu ]; then
+if [ ! -d ${BINUTILS}/build-spu ]; then
 
   ## Create the build directory.
-  mkdir binutils-2.21.1/build-spu
+  mkdir ${BINUTILS}/build-spu
 
 fi
 
 ## Enter the build directory.
-cd binutils-2.21.1/build-spu
+cd ${BINUTILS}/build-spu
 
 ## Configure the build.
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
@@ -33,8 +35,7 @@ cd binutils-2.21.1/build-spu
     --disable-werror \
     --with-gcc \
     --with-gnu-as \
-    --with-gnu-ld \
-
+    --with-gnu-ld
 
 ## Compile and install.
 ${MAKE:-make} -j 4 && ${MAKE:-make} install
