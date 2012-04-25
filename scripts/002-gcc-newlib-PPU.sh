@@ -1,19 +1,29 @@
 #!/bin/sh -e
-# gcc-4.6.1-PPU-stage2.sh by Dan Peori (dan.peori@oopo.net)
+# gcc-newlib-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
-if [ ! -d gcc-4.6.1 ]; then
+GCC="gcc-4.7.0"
+NEWLIB="newlib-1.20.0"
+
+if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  wget --continue ftp://ftp.gnu.org/gnu/gcc/gcc-4.6.1/gcc-4.6.1.tar.bz2
+  if [ ! -f ${GCC}.tar.bz2 ]; then wget --continue ftp://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.bz2; fi
+  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue ftp://sources.redhat.com/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
-  rm -Rf gcc-4.6.1 && tar xfvj gcc-4.6.1.tar.bz2
+  rm -Rf ${GCC} && tar xfvj ${GCC}.tar.bz2
+  rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
-  cat ../patches/gcc-4.6.1-PS3.patch | patch -p1 -d gcc-4.6.1
+  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
+  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
   ## Enter the source code directory.
-  cd gcc-4.6.1
+  cd ${GCC}
+
+  ## Create the newlib symlinks.
+  ln -s ../${NEWLIB}/newlib newlib
+  ln -s ../${NEWLIB}/libgloss libgloss
 
   ## Download the prerequisites.
   ./contrib/download_prerequisites
@@ -23,15 +33,15 @@ if [ ! -d gcc-4.6.1 ]; then
 
 fi
 
-if [ ! -d gcc-4.6.1/build-ppu ]; then
+if [ ! -d ${GCC}/build-ppu ]; then
 
   ## Create the build directory.
-  mkdir gcc-4.6.1/build-ppu
+  mkdir ${GCC}/build-ppu
 
 fi
 
 ## Enter the build directory.
-cd gcc-4.6.1/build-ppu
+cd ${GCC}/build-ppu
 
 ## Configure the build.
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
