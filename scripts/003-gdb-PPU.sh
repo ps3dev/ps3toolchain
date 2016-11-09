@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # gdb-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
-GDB="gdb-7.4"
+GDB="gdb-7.5.1"
 
 if [ ! -d ${GDB} ]; then
 
