@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # binutils-SPU.sh by Dan Peori (dan.peori@oopo.net)
 
-BINUTILS="binutils-2.22"
+BINUTILS="binutils-2.27"
 
 if [ ! -d ${BINUTILS} ]; then
 
@@ -10,9 +10,6 @@ if [ ! -d ${BINUTILS} ]; then
 
   ## Unpack the source code.
   tar xfvj ${BINUTILS}.tar.bz2
-
-  ## Patch the source code.
-  cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
 
 fi
 
