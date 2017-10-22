@@ -1,17 +1,17 @@
 #!/bin/sh -e
 # gcc-newlib-PPU.sh by Dan Peori (dan.peori@oopo.net)
 
-GCC="gcc-4.7.4"
+GCC="gcc-7.2.0"
 NEWLIB="newlib-1.20.0"
 
 if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GCC}.tar.bz2 ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.bz2; fi
+  if [ ! -f ${GCC}.tar.xz ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.xz; fi
   if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && tar xfvj ${GCC}.tar.bz2
+  rm -Rf ${GCC} && tar xfvJ ${GCC}.tar.xz
   rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
