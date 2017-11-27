@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# psl1ght.sh by Dan Peori (dan.peori@oopo.net)
+# psl1ght.sh by Naomi Peori (naomi@peori.ca)
 
 ## Download the source code.
 wget --no-check-certificate https://github.com/ps3dev/PSL1GHT/tarball/master -O psl1ght.tar.gz

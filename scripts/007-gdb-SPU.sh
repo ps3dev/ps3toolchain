@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# gdb-SPU.sh by Dan Peori (dan.peori@oopo.net)
+# gdb-SPU.sh by Naomi Peori (naomi@peori.ca)
 
 GDB="gdb-7.5.1"
 

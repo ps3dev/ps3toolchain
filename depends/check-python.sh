@@ -1,5 +1,5 @@
 #!/bin/sh
-# check-python.sh by Dan Peori (dan.peori@oopo.net)
+# check-python.sh by Naomi Peori (naomi@peori.ca)
 
 ## Check for python.
 ( python --version || python -V ) 1>/dev/null 2>&1 || { echo "ERROR: Install python before continuing."; exit 1; }

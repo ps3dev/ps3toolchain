@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# binutils-SPU.sh by Dan Peori (dan.peori@oopo.net)
+# binutils-SPU.sh by Naomi Peori (naomi@peori.ca)
 
 BINUTILS="binutils-2.22"
 

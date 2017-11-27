@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# symlinks-PPU.sh by Dan Peori (dan.peori@oopo.net)
+# symlinks-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the PPU directory.
 cd ${PS3DEV}/ppu

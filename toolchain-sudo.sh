@@ -1,5 +1,5 @@
 #!/bin/sh
-# toolchain-sudo.sh by Dan Peori (dan.peori@oopo.net)
+# toolchain-sudo.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the ps3toolchain directory.
 cd "`dirname $0`" || { echo "ERROR: Could not enter the ps3toolchain directory."; exit 1; }

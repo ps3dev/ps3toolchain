@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# gcc-newlib-PPU.sh by Dan Peori (dan.peori@oopo.net)
+# gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 GCC="gcc-4.7.4"
 NEWLIB="newlib-1.20.0"

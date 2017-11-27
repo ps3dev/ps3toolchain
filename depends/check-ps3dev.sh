@@ -1,5 +1,5 @@
 #!/bin/sh
-# check-ps3dev.sh by Dan Peori (dan.peori@oopo.net)
+# check-ps3dev.sh by Naomi Peori (naomi@peori.ca)
 
 ## Check if $PS3DEV is set.
 if test ! $PS3DEV; then { echo "ERROR: Set \$PS3DEV before continuing."; exit 1; } fi
