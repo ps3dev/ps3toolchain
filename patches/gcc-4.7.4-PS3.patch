@@ -540,3 +540,34 @@ diff -burN '--exclude=.git' gcc-4.7.4/libgcc/config.host gcc-4.7.4-PS3/libgcc/co
  powerpc-*-linux* | powerpc64-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff rs6000/t-linux t-softfp-sfdf t-softfp-excl t-dfprules rs6000/t-ppc64-fp t-softfp t-slibgcc-libgcc"
  	extra_parts="$extra_parts ecrti.o ecrtn.o ncrti.o ncrtn.o"
+diff -burN '--exclude=.git' gcc-4.7.4/gcc/cp/cfns.h gcc-4.7.4-PS3/gcc/cp/cfns.h
+--- gcc-4.7.4/gcc/cp/cfns.h	2009-04-21 15:03:23.000000000 -0400
++++ gcc-4.7.4-PS3/gcc/cp/cfns.h	2016-11-09 12:47:43.416122432 +0100
+@@ -53,6 +53,9 @@
+ static unsigned int hash (const char *, unsigned int);
+ #ifdef __GNUC__
+ __inline
++#ifdef __GNUC_STDC_INLINE__
++__attribute__ ((__gnu_inline__))
++#endif
+ #endif
+ const char * libc_name_p (const char *, unsigned int);
+ /* maximum key range = 391, duplicates = 0 */
+diff -burN '--exclude=.git' gcc-4.7.4/gcc/doc/gcc.texi gcc-4.7.4-PS3/gcc/doc/gcc.texi
+--- gcc-4.7.4/gcc/doc/gcc.texi		2009-04-21 15:03:23.000000000 -0400
++++ gcc-4.7.4-PS3/gcc/doc/gcc.texi	2016-11-09 12:47:43.416122432 +0100
+@@ -83,11 +83,11 @@
+ Published by:
+ @multitable @columnfractions 0.5 0.5
+ @item GNU Press
+-@tab Website: www.gnupress.org
++@tab Website: @uref{http://www.gnupress.org}
+ @item a division of the
+-@tab General: @tex press@@gnu.org @end tex
++@tab General: @email{press@@gnu.org}
+ @item Free Software Foundation
+-@tab Orders:  @tex sales@@gnu.org @end tex
++@tab Orders:  @email{sales@@gnu.org}
+ @item 51 Franklin Street, Fifth Floor
+ @tab Tel 617-542-5942
+ @item Boston, MA 02110-1301 USA
