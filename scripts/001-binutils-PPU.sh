@@ -6,7 +6,7 @@ BINUTILS="binutils-2.22"
 if [ ! -d ${BINUTILS} ]; then
 
   ## Download the source code.
-  if [ ! -f ${BINUTILS}.tar.bz ]; then wget --continue ftp://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2; fi
+  if [ ! -f ${BINUTILS}.tar.bz ]; then wget --continue https://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2; fi
 
   ## Unpack the source code.
   tar xfvj ${BINUTILS}.tar.bz2

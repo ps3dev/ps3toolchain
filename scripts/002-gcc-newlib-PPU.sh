@@ -7,8 +7,8 @@ NEWLIB="newlib-1.20.0"
 if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GCC}.tar.bz2 ]; then wget --continue ftp://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.bz2; fi
-  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue ftp://sources.redhat.com/pub/newlib/${NEWLIB}.tar.gz; fi
+  if [ ! -f ${GCC}.tar.bz2 ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.bz2; fi
+  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
   rm -Rf ${GCC} && tar xfvj ${GCC}.tar.bz2
