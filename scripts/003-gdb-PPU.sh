@@ -38,4 +38,6 @@ cd ${GDB}/build-ppu
     --disable-werror
 
 ## Compile and install.
-${MAKE:-make} -j $(nproc --all) && ${MAKE:-make} install
+PROCS="$(nproc --all 2>&1)" || ret=$?
+if [ ! -z $ret ]; then PROCS=4; fi
+${MAKE:-make} -j $PROCS && ${MAKE:-make} install
