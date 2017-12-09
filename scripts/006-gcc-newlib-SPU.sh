@@ -57,4 +57,4 @@ cd ${GCC}/build-spu
     --with-newlib
 
 ## Compile and install.
-${MAKE:-make} -j 4 all && ${MAKE:-make} install
+${MAKE:-make} -j $(nproc --all) all && ${MAKE:-make} install

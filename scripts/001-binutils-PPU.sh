@@ -46,4 +46,4 @@ cd ${BINUTILS}/build-ppu
     --with-gnu-ld
 
 ## Compile and install.
-${MAKE:-make} -j 4 && ${MAKE:-make} install
+${MAKE:-make} -j $(nproc --all) && ${MAKE:-make} install

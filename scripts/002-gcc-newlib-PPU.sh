@@ -60,4 +60,4 @@ cd ${GCC}/build-ppu
     --with-system-zlib
 
 ## Compile and install.
-${MAKE:-make} -j 4 all && ${MAKE:-make} install
+${MAKE:-make} -j $(nproc --all) all && ${MAKE:-make} install
