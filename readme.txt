@@ -15,14 +15,14 @@
 
   autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
   ncurses, patch, python, subversion, wget, zlib, libtool, python,
-  bzip2, gmp, pkg-config
+  bzip2, gmp, pkg-config, g++, libssl
 
   Specifically on debian-based systems, the following command line should
   be enough to install everything necessary:
 
   apt-get install autoconf automake bison flex gcc libelf-dev make \
     texinfo libncurses5-dev patch python subversion wget zlib1g-dev \
-    libtool python-dev bzip2 libgmp3-dev pkg-config
+    libtool python-dev bzip2 libgmp3-dev pkg-config g++ libssl
 
  2) Add the following to your login script:
 
