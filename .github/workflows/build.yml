@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Ubuntu requirements
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool-bin python-dev bzip2 libgmp3-dev pkg-config
+    
+    - name: Install macOS requirements
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew update
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
+
+    - name: Runs all the stages in the shell
+      run: |
+        mkdir $PWD/ps3dev
+        export PS3DEV=$PWD/ps3dev
+        export PSL1GHT=$PS3DEV
+        export PATH=$PATH:$PS3DEV/bin
+        export PATH=$PATH:$PS3DEV/ppu/bin
+        export PATH=$PATH:$PS3DEV/spu/bin
+        ./toolchain.sh
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+    - name: Compress ps3dev folder
+      run: |
+        tar -zcvf ps3dev.tar.gz ps3dev
+
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: ps3dev-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
+#        path: ps3dev.tar.gz
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{matrix.os}}-${{ steps.slug.outputs.sha8 }}
+        release_name: ps3dev ${{matrix.os}} (${{steps.date.outputs.date}})
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./ps3dev.tar.gz
+        asset_name: ps3dev-${{matrix.os}}-${{steps.date.outputs.date}}.tar.gz
+        asset_content_type: application/gzip
