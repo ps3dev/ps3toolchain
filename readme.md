@@ -1,4 +1,4 @@
-![CI](https://github.com/bucanero/ps3toolchain/workflows/CI/badge.svg) ![License](https://img.shields.io/github/license/bucanero/ps3toolchain.svg)
+![CI](https://github.com/bucanero/ps3toolchain/workflows/CI/badge.svg) [![License](https://img.shields.io/github/license/bucanero/ps3toolchain.svg)](./LICENSE)
 
   What does this do?
  ====================
