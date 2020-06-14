@@ -60,4 +60,6 @@ cd ${GCC}/build-ppu
     --with-system-zlib
 
 ## Compile and install.
-${MAKE:-make} -j 4 all && ${MAKE:-make} install
+PROCS="$(nproc --all 2>&1)" || ret=$?
+if [ ! -z $ret ]; then PROCS=4; fi
+${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
