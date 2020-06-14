@@ -37,4 +37,6 @@ cd ${GDB}/build-spu
     --disable-werror
 
 ## Compile and install.
-${MAKE:-make} -j 4 && ${MAKE:-make} install
+PROCS="$(nproc --all 2>&1)" || ret=$?
+if [ ! -z $ret ]; then PROCS=4; fi
+${MAKE:-make} -j $PROCS && ${MAKE:-make} install
