@@ -552,6 +552,31 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/close.c newlib-1.2
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
+diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/access.c newlib-1.20.0-PS3/libgloss/libsysbase/access.c
+--- newlib-1.20.0/libgloss/libsysbase/access.c	1969-12-31 20:00:00.000000000 -0400
++++ newlib-1.20.0-PS3/libgloss/libsysbase/access.c	2020-06-17 11:25:02.329218821 -0300
+@@ -0,0 +1,21 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++#include <errno.h>
++
++int 
++_DEFUN(access,(name,mode),
++	   const char *name _AND
++	   int mode)
++{
++	struct _reent *r = _REENT;
++
++	if(__syscalls.access_r)
++		return __syscalls.access_r(r,name,mode);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
 diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/closedir.c newlib-1.20.0-PS3/libgloss/libsysbase/closedir.c
 --- newlib-1.20.0/libgloss/libsysbase/closedir.c	1969-12-31 20:00:00.000000000 -0400
 +++ newlib-1.20.0-PS3/libgloss/libsysbase/closedir.c	2012-04-25 15:25:02.329218821 -0300
@@ -4983,7 +5008,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/Makefile.in newlib
 +	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o sleep.o dup.o glob.o \
 +	   getrusage.o globfree.o closedir.o fstat64.o link.o lseek64.o opendir.o readdir.o \
 +	   readdir_r.o rmdir.o rewinddir.o rename.o seekdir.o settod.o stat.o stat64.o telldir.o \
-+	   truncate.o mkdir.o umask.o utime.o times.o
++	   truncate.o mkdir.o umask.o utime.o times.o access.o
 +
 +# Object files specific to particular targets.
 +EVALOBJS = ${OBJS}
