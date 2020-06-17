@@ -42,10 +42,11 @@ jobs:
       id: login
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        PUSH: false
       run: |
-        echo "${DOCKER_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.io
+        [ $PUSH == true ] && echo "${DOCKER_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.io
         echo  "Available target: ${{ steps.buildx.outputs.platforms }}"
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.docker_image }},push=true \
+        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.docker_image }},push=${PUSH} \
           --platform ${{ steps.prepare.outputs.docker_platforms }} \
           --cache-to "type=registry,ref=${{ steps.prepare.outputs.docker_cache }}:${{ steps.prepare.outputs.version }}" \
           --cache-from "type=registry,ref=${{ steps.prepare.outputs.docker_cache }}:${{ steps.prepare.outputs.version }},mode=max" \
