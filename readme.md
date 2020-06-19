@@ -14,7 +14,9 @@
 
   autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
   ncurses, patch, python, subversion, wget, zlib, libtool, python,
-  bzip2, gmp, pkg-config
+  bzip2, gmp, pkg-config, g++, libssl-dev, clang
+
+## Linux
 
   Specifically on debian-based systems, the following command line should
   be enough to install everything necessary:
@@ -22,7 +24,16 @@
 ```bash
   apt-get install autoconf automake bison flex gcc libelf-dev make \
     texinfo libncurses5-dev patch python subversion wget zlib1g-dev \
-    libtool python-dev bzip2 libgmp3-dev pkg-config
+    libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
+```
+
+## macOS
+
+  On macOS systems, if you have [Homebrew](http://brew.sh) package manager, the following command line should
+  be enough to install everything necessary:
+
+```bash
+brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
 ```
 
  2) Add the following to your login script:
