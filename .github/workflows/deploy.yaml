@@ -9,7 +9,7 @@ on:
       - '*'
 
 jobs:
-  deploy:
+  Docker:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -24,39 +24,45 @@ jobs:
       with:
         buildx-version: latest
         qemu-version: latest
-    - name: Available platforms
-      if: success()
-      run: echo ${{ steps.buildx.outputs.platforms }}
     - name: Prepare
       if: success()
       id: prepare
       run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/ppc64le,linux/s390x
+        echo ::set-output name=docker_platforms::linux/amd64,linux/386
         echo ::set-output name=docker_username::miigotu
-        echo ::set-output name=docker_image::docker.io/${GITHUB_REPOSITORY,,}
+        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
         VERSION_TAG=${GITHUB_REF#refs/*/}
         echo ::set-output name=version::${VERSION_TAG%/merge}
-        echo ::set-output name=docker_cache::docker.io/miigotu/${GITHUB_REPOSITORY,,}
+    - name: Available platforms
+      if: success()
+      run: echo ${{ steps.buildx.outputs.platforms }}
     - name: Docker Login and set build command
       if: success()
       id: login
       env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        PUSH: false
+        GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        [ $PUSH == true ] && echo "${DOCKER_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.io
-        echo  "Available target: ${{ steps.buildx.outputs.platforms }}"
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.docker_image }},push=${PUSH} \
-          --platform linux/amd64,linux/arm/v7,linux/ppc64le,linux/s390x \
-          --cache-to "type=registry,ref=${{ steps.prepare.outputs.docker_cache }}:${{ steps.prepare.outputs.version }}" \
-          --cache-from "type=registry,ref=${{ steps.prepare.outputs.docker_cache }}:${{ steps.prepare.outputs.version }},mode=max" \
-          --tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}")
-
+        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
+        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
+          --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
+          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      id: cache
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ steps.prepare.outputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
     - name: Run Buildx (master)
+      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
       run: |
-          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.docker_image }}:latest" --file Dockerfile .
+          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
     - name: Run Buildx (non-master)
-      if: success() && !contains(steps.prepare.outputs.version, 'master')
+      if: success() && steps.prepare.outputs.version != 'master' && github.event_name != 'pull_request'
       run: |
         ${{ steps.login.outputs.buildx }} --file Dockerfile .
-
+    - name: Clear
+      if: always()
+      run: |
+        rm -rf ${HOME}/.docker/config.json

@@ -150,15 +150,15 @@ INSTALL_PACKAGES=
 
 	## Install pkg-config and dependancy dll's
 	if [ ! -f /usr/bin/pkg-config ]; then 
-		wget http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
+		wget https://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/pkg-config_0.25-1_win32.zip
 		unzip -o pkg-config_0.25-1_win32.zip bin/*.exe -d /usr > NUL
 	fi
 	if [ ! -f /usr/bin/intl.dll ]; then 	
-		wget http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip
+		wget https://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/gettext-runtime_0.18.1.1-2_win32.zip
 		unzip -o gettext-runtime_0.18.1.1-2_win32.zip bin/*.dll -d /usr > NUL
 	fi
 	if [ ! -f /usr/bin/libglib-2.0-0.dll ]; then 
-		wget http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26/glib_2.26.1-1_win32.zip
+		wget https://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.26/glib_2.26.1-1_win32.zip
 		unzip -o glib_2.26.1-1_win32.zip bin/*.dll -d /usr > NUL
 	fi
 
