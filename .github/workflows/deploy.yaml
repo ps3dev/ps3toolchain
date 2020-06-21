@@ -28,7 +28,7 @@ jobs:
       if: success()
       id: prepare
       run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/386
+        echo ::set-output name=docker_platforms::linux/amd64
         echo ::set-output name=docker_username::miigotu
         echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
         VERSION_TAG=${GITHUB_REF#refs/*/}
