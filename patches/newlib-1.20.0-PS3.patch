@@ -554,27 +554,88 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/close.c newlib-1.2
 +}
 diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/access.c newlib-1.20.0-PS3/libgloss/libsysbase/access.c
 --- newlib-1.20.0/libgloss/libsysbase/access.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/access.c	2020-06-17 11:25:02.329218821 -0300
-@@ -0,0 +1,21 @@
-+#include "config.h"
-+#include <_ansi.h>
-+#include <_syslist.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/syscalls.h>
++++ newlib-1.20.0-PS3/libgloss/libsysbase/access.c	2020-06-23 12:58:02.329218821 -0300
+@@ -0,0 +1,82 @@
++/* This is file ACCESS.C */
++/*
++ * Copyright (C) 1993 DJ Delorie
++ * All rights reserved.
++ *
++ * Redistribution, modification, and use in source and binary forms is permitted
++ * provided that the above copyright notice and following paragraph are
++ * duplicated in all such forms.
++ *
++ * This file is distributed WITHOUT ANY WARRANTY; without even the implied
++ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ */
++
 +#include <errno.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <unistd.h>
 +
-+int 
-+_DEFUN(access,(name,mode),
-+	   const char *name _AND
-+	   int mode)
++extern int errno;
++
++int access(const char *fn, int flags)
 +{
-+	struct _reent *r = _REENT;
++	struct stat s;
 +
-+	if(__syscalls.access_r)
-+		return __syscalls.access_r(r,name,mode);
++	/* Did the pass us the right flags? */
++	if ( (flags != F_OK) && (flags != R_OK) && (flags != W_OK) && (flags != X_OK) ) {
++		/* Nope. */
++		errno = EINVAL;
++		return -1;
++	}
 +
-+	r->_errno = ENOSYS;
++	if (stat(fn, &s)) {
++		/* return -1 because the file does not exist or pathname is too long. */
++		return -1;
++	}
++
++	if (flags == F_OK) {
++		/* We know the file exists because stat didn't fail. */
++		return 0;
++	}
++
++	if (flags & W_OK) {
++		/* Do we have write permission to the file? */
++		if (s.st_mode & S_IWRITE) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	if (flags & R_OK) {
++		/* Do we have read permission to the file? */
++		if (s.st_mode & S_IREAD) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	if (flags & X_OK) {
++		/* Do we have executable permission to the file? */
++		if (s.st_mode & S_IEXEC) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	/* We should never reach this, ever...in case we do though, lets return -1. */
++	/* and set errno to ENOSYS (Function not implemented */
++	errno = ENOSYS;
 +	return -1;
 +}
 diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/closedir.c newlib-1.20.0-PS3/libgloss/libsysbase/closedir.c
@@ -5505,8 +5566,8 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/stat.c newlib-1.20
 +}
 diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/syscalls.c newlib-1.20.0-PS3/libgloss/libsysbase/syscalls.c
 --- newlib-1.20.0/libgloss/libsysbase/syscalls.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/syscalls.c	2020-06-16 01:42:33.885724979 -0400
-@@ -0,0 +1,51 @@
++++ newlib-1.20.0-PS3/libgloss/libsysbase/syscalls.c	2020-06-23 12:56:33.885724979 -0300
+@@ -0,0 +1,50 @@
 +#include <sys/syscalls.h>
 +
 +struct __syscalls_t __syscalls = {
@@ -5529,7 +5590,6 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/syscalls.c newlib-
 +	NULL,			//	chmod_r
 +	NULL,			//	rename_r
 +	NULL,			//	utime_r
-+	NULL,			//	access_r
 +	NULL,			//	umask_r
 +	NULL,			//	mkdir_r
 +	NULL,			//	rmdir_r
@@ -12682,8 +12742,8 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/lock.h newlib-
 +#endif /* __SYS_LOCK_H__ */
 diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h
 --- newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2020-06-16 01:40:17.926917896 -0400
-@@ -0,0 +1,75 @@
++++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2020-06-23 12:57:17.926917896 -0300
+@@ -0,0 +1,73 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__
 +
@@ -12719,8 +12779,6 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h new
 +	int (*chmod_r)(struct _reent *r,const char *path,mode_t mode);
 +	int (*rename_r)(struct _reent *r,const char *old,const char *new);
 +	int (*utime_r)(struct _reent *r,const char *path,const struct utimbuf *times);
-+
-+	int (*access_r)(struct _reent *r,const char *name,int mode);
 +
 +	mode_t (*umask_r)(struct _reent *r,mode_t cmask);
 +
