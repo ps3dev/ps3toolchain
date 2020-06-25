@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/github/license/bucanero/ps3toolchain.svg)](./LICENSE)
+[![License](https://img.shields.io/github/license/ps3dev/ps3toolchain.svg)](./LICENSE)
 
   What does this do?
  ====================
