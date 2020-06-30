@@ -39,4 +39,4 @@ cd ${GDB}/build-spu
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} install
+${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
