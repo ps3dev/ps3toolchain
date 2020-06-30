@@ -1,5 +1,17 @@
+diff --git a/Makefile.in b/Makefile.in
+index b824e0a0c..5bf0da25e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -25734,7 +25734,6 @@ check-libiberty:
+ .PHONY: install-libiberty maybe-install-libiberty
+ maybe-install-libiberty:
+ @if libiberty
+-maybe-install-libiberty: install-libiberty
+ 
+ install-libiberty: installdirs
+ 	@: $(MAKE); $(unstage)
 diff --git a/gcc/config.gcc b/gcc/config.gcc
-index a9196cd..55b4271 100644
+index a9196cd26..55b4271aa 100644
 --- a/gcc/config.gcc
 +++ b/gcc/config.gcc
 @@ -2330,6 +2330,15 @@ pdp11-*-*)
@@ -20,7 +32,7 @@ index a9196cd..55b4271 100644
  	case ${target} in
 diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
 new file mode 100644
-index 0000000..589a675
+index 000000000..589a67521
 --- /dev/null
 +++ b/gcc/config/rs6000/cell64lv2.h
 @@ -0,0 +1,587 @@
@@ -612,7 +624,7 @@ index 0000000..589a675
 +#undef	TARGET_FLOAT128_ENABLE_TYPE
 +#define TARGET_FLOAT128_ENABLE_TYPE 1
 diff --git a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
-index db9136f..3a29d47 100644
+index db9136f26..3a29d4723 100644
 --- a/gcc/config/rs6000/rs6000.c
 +++ b/gcc/config/rs6000/rs6000.c
 @@ -1349,6 +1349,12 @@ rtl_opt_pass *make_pass_analyze_swaps (gcc::context*);
@@ -650,7 +662,7 @@ index db9136f..3a29d47 100644
  
  #include "gt-rs6000.h"
 diff --git a/libgcc/config.host b/libgcc/config.host
-index bedcf10..8d6c8fe 100644
+index bedcf1017..8d6c8feff 100644
 --- a/libgcc/config.host
 +++ b/libgcc/config.host
 @@ -1043,6 +1043,8 @@ powerpc-*-rtems*)
