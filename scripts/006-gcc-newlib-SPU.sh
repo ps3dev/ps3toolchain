@@ -46,6 +46,7 @@ cd ${GCC}/build-spu
 ## Configure the build.
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-dependency-tracking \
+    --disable-libcc1 \
     --disable-libssp \
     --disable-multilib \
     --disable-nls \

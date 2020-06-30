@@ -46,6 +46,7 @@ cd ${GCC}/build-ppu
 ## Configure the build.
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
     --disable-dependency-tracking \
+    --disable-libcc1 \
     --disable-libstdcxx-pch \
     --disable-multilib \
     --disable-nls \
