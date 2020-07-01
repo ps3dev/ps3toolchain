@@ -1,14 +1,14 @@
 #!/bin/sh -e
 # psl1ght.sh by Naomi Peori (naomi@peori.ca)
 
-## Download the source code.
-wget --no-check-certificate https://github.com/ps3dev/PSL1GHT/tarball/master -O psl1ght.tar.gz
+# Set up our common variables and functions
+. $(git rev-parse --show-toplevel)/scripts/.common.sh
 
-## Unpack the source code.
-rm -Rf psl1ght && mkdir psl1ght && tar --strip-components=1 --directory=psl1ght -xvzf psl1ght.tar.gz
+update_submodule PSL1GHT
 
-## Create the build directory.
-cd psl1ght
+rm -Rf PSL1GHT
+cp -rf ${PS3DEV_SOURCES}/PSL1GHT .
+cd PSL1GHT
 
 ## Compile and install.
-${MAKE:-make} install-ctrl && ${MAKE:-make} && ${MAKE:-make} install
+${MAKE:-make} MAKEINFO=true install-ctrl && ${MAKE:-make} -j${PROC-} MAKEINFO=true && ${MAKE:-make} MAKEINFO=true install

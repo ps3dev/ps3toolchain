@@ -1,50 +1,31 @@
 #!/bin/sh -e
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
-NEWLIB="newlib-1.20.0"
+# Set up our common variables and functions
+. $(git rev-parse --show-toplevel)/scripts/.common.sh
 
-if [ ! -d ${GCC} ]; then
+update_submodule ${GCC}
+update_submodule ${NEWLIB}
 
-  ## Download the source code.
-  if [ ! -f ${GCC}.tar.xz ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.xz; fi
-  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
+cp -rf ${PS3DEV_SOURCES}/${GCC} ${GCC}
 
-  ## Unpack the source code.
-  rm -Rf ${GCC} && tar xfvJ ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
+## Enter the source code directory.
+cd ${GCC}
 
-  ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+## Create the newlib symlinks.
+[ -L newlib ] || ln -sf ${PS3DEV_SOURCES}/${NEWLIB}/newlib newlib
+[ -L libgloss ] || ln -sf ${PS3DEV_SOURCES}/${NEWLIB}/libgloss libgloss
 
-  ## Enter the source code directory.
-  cd ${GCC}
+## Download the prerequisites.
+./contrib/download_prerequisites
 
-  ## Create the newlib symlinks.
-  ln -s ../${NEWLIB}/newlib newlib
-  ln -s ../${NEWLIB}/libgloss libgloss
-
-  ## Download the prerequisites.
-  ./contrib/download_prerequisites
-
-  ## Leave the source code directory.
-  cd ..
-
-fi
-
-if [ ! -d ${GCC}/build-ppu ]; then
-
-  ## Create the build directory.
-  mkdir ${GCC}/build-ppu
-
-fi
-
-## Enter the build directory.
-cd ${GCC}/build-ppu
+## Create and enter the build directory.
+mkdir -p build-ppu && cd build-ppu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
+../configure \
+    --prefix="${PS3DEV}/ppu" \
+    --target="powerpc64-ps3-elf" \
     --disable-dependency-tracking \
     --disable-libcc1 \
     --disable-libstdcxx-pch \
@@ -61,6 +42,4 @@ cd ${GCC}/build-ppu
     --with-system-zlib
 
 ## Compile and install.
-PROCS="$(nproc --all 2>&1)" || ret=$?
-if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+${MAKE:-make} -j${PROC-} MAKEINFO=true && ${MAKE:-make} MAKEINFO=true install
