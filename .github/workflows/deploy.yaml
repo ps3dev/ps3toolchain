@@ -17,6 +17,10 @@ jobs:
       with:
         fetch-depth: 1
         persist-credentials: false
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
+      with:
+        remote: true
     - name: Set up Docker Buildx
       if: success()
       id: buildx

@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:18.04
 LABEL maintainer="miigotu@gmail.com"
 
 ENV PS3DEV /usr/local/ps3dev
@@ -10,14 +10,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN \
   apt-get -y update && \
   apt-get -y install \
-  autoconf bison build-essential ca-certificates flex git libelf-dev\
-  libgmp-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev \
+  autoconf bison build-essential ca-certificates flex git libelf-dev \
+  libgmp3-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev \
   texinfo wget zlib1g-dev && \
   apt-get -y clean autoclean autoremove && \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 RUN mkdir /build
 WORKDIR /build
+
+# Need the git dir for the scripts to work correctly
+COPY .git /build
 COPY . /build
 
 # Fixes certificate errors with letsencrypt in ARMv7
