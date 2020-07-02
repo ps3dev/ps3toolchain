@@ -8,8 +8,10 @@ ENV PS3TOOLCHAIN /ps3_toolchain
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -yq update && \
-    apt-get -y install autoconf bison build-essential flex git libelf-dev pkg-config python-dev texinfo wget zlib1g-dev && \
-    apt-get -y clean autoclean autoremove && find /var/cache/apt/archives /var/lib/apt/lists /var/lib/dpkg /var/log -not -name lock -type f -delete
+    apt-get -y install autoconf bison build-essential flex git libelf-dev \
+    libgmp3-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev texinfo wget zlib1g-dev && \
+    apt-get -y clean autoclean autoremove && \
+    find /var/cache/apt/archives /var/lib/apt/lists /var/lib/dpkg /var/log -not -name lock -type f -delete
 
 RUN mkdir $PS3TOOLCHAIN $PS3DEV
 WORKDIR $PS3TOOLCHAIN
