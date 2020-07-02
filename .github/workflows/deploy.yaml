@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - '*'
-  pull_request:
-    branches:
-      - '*'
 
 jobs:
   Docker:
@@ -15,8 +12,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
+        ref: ${{ github.head_ref }}
         fetch-depth: 1
         persist-credentials: false
+        submodules: recursive
     - name: Checkout submodules
       uses: textbook/git-checkout-submodule-action@master
       with:
@@ -32,7 +31,8 @@ jobs:
       if: success()
       id: prepare
       run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/386
+        # echo ::set-output name=docker_platforms::linux/amd64,linux/386
+        echo ::set-output name=docker_platforms::linux/amd64
         echo ::set-output name=docker_username::miigotu
         echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
         VERSION_TAG=${GITHUB_REF#refs/*/}
@@ -59,11 +59,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-
     - name: Run Buildx (master)
-      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
+      if: success() && steps.prepare.outputs.version == 'master'
       run: |
           ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
     - name: Run Buildx (non-master)
-      if: success() && steps.prepare.outputs.version != 'master' && github.event_name != 'pull_request'
+      if: success() && steps.prepare.outputs.version != 'master'
       run: |
         ${{ steps.login.outputs.buildx }} --file Dockerfile .
     - name: Clear
