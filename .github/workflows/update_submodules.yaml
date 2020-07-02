@@ -1,0 +1,25 @@
+name: Submodule Updater
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "submodules"
+
+jobs:
+  Update-Submodules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
+        with:
+          remote: true
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update submodule references
