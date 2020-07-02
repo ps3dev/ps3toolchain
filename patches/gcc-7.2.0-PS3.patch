@@ -11,7 +11,7 @@ index b824e0a0c..5bf0da25e 100644
  install-libiberty: installdirs
  	@: $(MAKE); $(unstage)
 diff --git a/gcc/config.gcc b/gcc/config.gcc
-index a9196cd26..55b4271aa 100644
+index a9196cd26..f2a94403d 100644
 --- a/gcc/config.gcc
 +++ b/gcc/config.gcc
 @@ -2330,6 +2330,15 @@ pdp11-*-*)
@@ -19,7 +19,7 @@ index a9196cd26..55b4271aa 100644
  #	extra_headers=
  #	;;
 +powerpc64-ps3-elf)
-+	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h rs6000/sysv4.h rs6000/default64.h"
++	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
 +	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
 +	if test x${enable_secureplt} = xyes; then
 +		tm_file="rs6000/secureplt.h ${tm_file}"
