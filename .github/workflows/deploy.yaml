@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - '*'
-  pull_request:
-    branches:
-      - '*'
 
 jobs:
   Docker:
@@ -15,8 +12,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
+        ref: ${{ github.head_ref }}
         fetch-depth: 1
         persist-credentials: false
+        submodules: recursive
+    - name: Checkout submodules
+      uses: textbook/git-checkout-submodule-action@master
+      with:
+        remote: true
     - name: Set up Docker Buildx
       if: success()
       id: buildx
@@ -28,9 +31,11 @@ jobs:
       if: success()
       id: prepare
       run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/386
-        echo ::set-output name=docker_username::miigotu
+        # echo ::set-output name=docker_platforms::linux/amd64,linux/386
+        echo ::set-output name=docker_platforms::linux/amd64
         echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
+        # echo ::set-output name=docker_image::docker.io/${GITHUB_REPOSITORY,,}
+        echo ::set-output name=docker_image::docker.io/ps3dev/ps3dev
         VERSION_TAG=${GITHUB_REF#refs/*/}
         echo ::set-output name=version::${VERSION_TAG%/merge}
     - name: Available platforms
@@ -39,13 +44,12 @@ jobs:
     - name: Docker Login and set build command
       if: success()
       id: login
-      env:
-        GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
+        # echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u "${{ github.actor }}" --password-stdin docker.io
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin docker.io
+        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,push=true \
           --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
-          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
+          --tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}")
     - name: Cache Docker layers
       uses: actions/cache@v2
       id: cache
@@ -55,11 +59,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-
     - name: Run Buildx (master)
-      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
+      if: success() && steps.prepare.outputs.version == 'master'
       run: |
-          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
+          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.docker }}:latest" --file Dockerfile .
     - name: Run Buildx (non-master)
-      if: success() && steps.prepare.outputs.version != 'master' && github.event_name != 'pull_request'
+      if: success() && steps.prepare.outputs.version != 'master'
       run: |
         ${{ steps.login.outputs.buildx }} --file Dockerfile .
     - name: Clear

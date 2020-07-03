@@ -1,0 +1,31 @@
+name: Publish Docker Image to GitHub
+on:
+  push:
+    branches:
+      - "submodules"
+      - "master"
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: recursive
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
+        with:
+          remote: true
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: miigotu/ps3toolchain/ps3dev
+          tag_with_ref: true

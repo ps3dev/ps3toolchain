@@ -1,0 +1,29 @@
+name: Submodule Updater
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "submodules"
+
+jobs:
+  Submodules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: recursive
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
+        with:
+          remote: true
+      - uses: EndBug/add-and-commit@v4
+        with:
+          message: Update submodules
+          add: src
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

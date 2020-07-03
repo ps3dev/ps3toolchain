@@ -1,0 +1,28 @@
+[submodule "newlib"]
+	path = src/newlib-1.20.0
+	url = git://github.com/ps3dev/newlib-1.20.0-PS3.git
+	shallow = true
+[submodule "binutils"]
+	path = src/binutils-2.22
+	url = git://github.com/ps3dev/binutils-2.22-PS3.git
+	shallow = true
+[submodule "PSL1GHT"]
+	path = src/PSL1GHT
+	url = git://github.com/ps3dev/PSL1GHT.git
+	shallow = true
+[submodule "ps3libraries"]
+	path = src/ps3libraries
+	url = git://github.com/ps3dev/ps3libraries.git
+	shallow = true
+[submodule "config"]
+	path = src/config
+	url = git://git.savannah.gnu.org/config.git
+	shallow = true
+[submodule "gdb"]
+	path = src/gdb-7.5.1
+	url = git://github.com/miigotu/gdb-7.5.1-PS3.git
+	shallow = true
+[submodule "gcc"]
+	path = src/gcc-PS3
+	url = git://github.com/ps3dev/gcc-PS3.git
+        shallow = true
