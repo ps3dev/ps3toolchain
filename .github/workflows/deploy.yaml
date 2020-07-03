@@ -34,7 +34,7 @@ jobs:
         # echo ::set-output name=docker_platforms::linux/amd64,linux/386
         echo ::set-output name=docker_platforms::linux/amd64
         echo ::set-output name=docker_username::miigotu
-        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
+        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3toolchain
         VERSION_TAG=${GITHUB_REF#refs/*/}
         echo ::set-output name=version::${VERSION_TAG%/merge}
     - name: Available platforms
@@ -47,7 +47,7 @@ jobs:
         GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
+        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,push=true \
           --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
           --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
     - name: Cache Docker layers
