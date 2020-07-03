@@ -33,8 +33,9 @@ jobs:
       run: |
         # echo ::set-output name=docker_platforms::linux/amd64,linux/386
         echo ::set-output name=docker_platforms::linux/amd64
-        echo ::set-output name=docker_username::miigotu
-        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3toolchain
+        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
+        # echo ::set-output name=docker_image::docker.io/${GITHUB_REPOSITORY,,}
+        echo ::set-output name=docker_image::docker.io/ps3dev/ps3dev
         VERSION_TAG=${GITHUB_REF#refs/*/}
         echo ::set-output name=version::${VERSION_TAG%/merge}
     - name: Available platforms
@@ -44,12 +45,16 @@ jobs:
       if: success()
       id: login
       env:
+        GITHUB_USERNAME: ${{ github.actor }}
         GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       run: |
-        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
+        echo "${GITHUB_PASSWORD}" | docker login --username "${GITHUB_USERNAME}" --password-stdin docker.pkg.github.com
+        echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin docker.io
         echo ::set-output name=buildx::$(echo docker buildx build --output type=image,push=true \
           --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
-          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
+          --tag "${{ steps.prepare.outputs.docker_image }}:${{ steps.prepare.outputs.version }}")
     - name: Cache Docker layers
       uses: actions/cache@v2
       id: cache
@@ -59,11 +64,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-
     - name: Run Buildx (master)
-      if: success() && steps.prepare.outputs.version == 'master'
+      if: secrets.DOCKER_USERNAME && secrets.DOCKER_PASSWORD && success() && steps.prepare.outputs.version == 'master'
       run: |
-          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
+          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.docker }}:latest" --file Dockerfile .
     - name: Run Buildx (non-master)
-      if: success() && steps.prepare.outputs.version != 'master'
+      if: secrets.DOCKER_USERNAME && secrets.DOCKER_PASSWORD && success() && steps.prepare.outputs.version != 'master'
       run: |
         ${{ steps.login.outputs.buildx }} --file Dockerfile .
     - name: Clear
