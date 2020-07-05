@@ -12967,6 +12967,32 @@ index 0000000..66ce33b
 +extern struct __syscalls_t __syscalls;
 +
 +#endif
+diff --git a/newlib/libc/sys/lv2/sys/utime.h b/newlib/libc/sys/lv2/sys/utime.h
+new file mode 100644
+index 0000000..c0d27f1
+--- /dev/null
++++ b/newlib/libc/sys/lv2/sys/utime.h
+@@ -0,0 +1,20 @@
++#ifndef _SYS_UTIME_H
++#define _SYS_UTIME_H
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++struct utimbuf 
++{
++  time_t actime;
++  time_t modtime; 
++};
++
++int utime(const char *path, const struct utimbuf *times);
++
++#ifdef __cplusplus
++};
++#endif
++
++#endif /* _SYS_UTIME_H */
 diff --git a/newlib/libm/mathfp/s_sine.c b/newlib/libm/mathfp/s_sine.c
 index 9642f4a..1669ffb 100644
 --- a/newlib/libm/mathfp/s_sine.c
