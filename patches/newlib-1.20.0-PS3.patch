@@ -1,7 +1,8 @@
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure newlib-1.20.0-PS3/libgloss/configure
---- newlib-1.20.0/libgloss/configure	2020-06-16 01:37:23.446672130 -0400
-+++ newlib-1.20.0-PS3/libgloss/configure	2020-06-16 01:37:57.287876668 -0400
-@@ -2389,6 +2389,8 @@
+diff --git a/libgloss/configure b/libgloss/configure
+index f7c4831..2d00e0b 100755
+--- a/libgloss/configure
++++ b/libgloss/configure
+@@ -2389,6 +2389,8 @@ config_testsuite=true
  
  config_libnosys=true
  
@@ -10,7 +11,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure newlib-1.20.0-PS3/l
  case "${target}" in
    i[3456]86-*-elf* | i[3456]86-*-coff*)
  	subdirs="$subdirs i386"
-@@ -2527,6 +2529,7 @@
+@@ -2527,6 +2529,7 @@ case "${target}" in
  
  	config_testsuite=false
  	config_libnosys=false
@@ -18,7 +19,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure newlib-1.20.0-PS3/l
  	;;
    tic6x-*-*)
  	subdirs="$subdirs tic6x"
-@@ -2545,6 +2548,10 @@
+@@ -2545,6 +2548,10 @@ if test "${config_libnosys}" = "true"; then
  
  fi
  
@@ -29,10 +30,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure newlib-1.20.0-PS3/l
  DEPDIR="${am__leading_dot}deps"
  
  ac_config_commands="$ac_config_commands depfiles"
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure.in newlib-1.20.0-PS3/libgloss/configure.in
---- newlib-1.20.0/libgloss/configure.in	2020-06-16 01:37:23.446672130 -0400
-+++ newlib-1.20.0-PS3/libgloss/configure.in	2020-06-16 01:37:57.287876668 -0400
-@@ -2,6 +2,7 @@
+diff --git a/libgloss/configure.in b/libgloss/configure.in
+index c47768d..b5b374e 100644
+--- a/libgloss/configure.in
++++ b/libgloss/configure.in
+@@ -2,6 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
  AC_PREREQ(2.59)
  AC_INIT([libgloss],[LIBGLOSS_VERSION])
  AC_CONFIG_SRCDIR([libnosys])
@@ -40,7 +42,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure.in newlib-1.20.0-PS
  
  if test "${enable_shared}" = "yes" ; then
      echo "Shared libraries not supported for cross compiling, ignored"
-@@ -33,6 +34,9 @@
+@@ -33,6 +34,9 @@ config_testsuite=true
  dnl indicates whether to run configure within the libnosys subdirectory
  config_libnosys=true
  
@@ -50,7 +52,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure.in newlib-1.20.0-PS
  case "${target}" in
    i[[3456]]86-*-elf* | i[[3456]]86-*-coff*)
  	AC_CONFIG_SUBDIRS([i386])
-@@ -137,6 +141,7 @@
+@@ -137,6 +141,7 @@ case "${target}" in
  	AC_CONFIG_SUBDIRS([spu])
  	config_testsuite=false
  	config_libnosys=false
@@ -58,7 +60,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure.in newlib-1.20.0-PS
  	;;
    tic6x-*-*)
  	AC_CONFIG_SUBDIRS(tic6x)
-@@ -157,6 +162,10 @@
+@@ -157,6 +162,10 @@ if test "${config_libnosys}" = "true"; then
    AC_CONFIG_SUBDIRS([libnosys])
  fi
  
@@ -69,9 +71,186 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/configure.in newlib-1.20.0-PS
  LIB_AC_PROG_CC
  AS=${AS-as}
  AC_SUBST(AS)
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/abort.c newlib-1.20.0-PS3/libgloss/libsysbase/abort.c
---- newlib-1.20.0/libgloss/libsysbase/abort.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/abort.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/Makefile.in b/libgloss/libsysbase/Makefile.in
+new file mode 100644
+index 0000000..1005780
+--- /dev/null
++++ b/libgloss/libsysbase/Makefile.in
+@@ -0,0 +1,148 @@
++# Copyright (c) 1998 Cygnus Support
++#
++# The authors hereby grant permission to use, copy, modify, distribute,
++# and license this software and its documentation for any purpose, provided
++# that existing copyright notices are retained in all copies and that this
++# notice is included verbatim in any distributions. No written agreement,
++# license, or royalty fee is required for any of the authorized uses.
++# Modifications to this software may be copyrighted by their authors
++# and need not follow the licensing terms described here, provided that
++# the new terms are clearly indicated on the first page of each file where
++# they apply.
++
++DESTDIR =
++VPATH = @srcdir@
++srcdir = @srcdir@
++objdir = .
++srcroot = $(srcdir)/../..
++objroot = $(objdir)/../..
++
++prefix = @prefix@
++exec_prefix = @exec_prefix@
++
++host_alias = @host_alias@
++target_alias = @target_alias@
++program_transform_name = @program_transform_name@
++
++bindir = @bindir@
++libdir = @libdir@
++tooldir = $(exec_prefix)/$(target_alias)
++
++# Multilib support variables.
++# TOP is used instead of MULTI{BUILD,SRC}TOP.
++MULTIDIRS =
++MULTISUBDIR =
++MULTIDO = true
++MULTICLEAN = true
++
++INSTALL = @INSTALL@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_DATA = @INSTALL_DATA@
++
++SHELL =	/bin/sh
++
++CC = @CC@
++
++#AS = @AS@
++AS = `if [ -f ${objroot}/../gas/as.new ] ; \
++	then echo ${objroot}/../gas/as.new ; \
++	else echo as ; fi`
++
++AR = @AR@
++
++#LD = @LD@
++LD = `if [ -f ${objroot}/../ld/ld.new ] ; \
++	then echo ${objroot}/../ld/ld.new ; \
++	else echo ld ; fi`
++
++RANLIB = @RANLIB@
++
++OBJDUMP = `if [ -f ${objroot}/../binutils/objdump ] ; \
++	then echo ${objroot}/../binutils/objdump ; \
++	else t='$(program_transform_name)'; echo objdump | sed -e $$t ; fi`
++OBJCOPY = `if [ -f ${objroot}/../binutils/objcopy ] ; \
++	then echo ${objroot}/../binutils/objcopy ; \
++	else t='$(program_transform_name)'; echo objcopy | sed -e $$t ; fi`
++
++# object files needed
++OBJS = abort.o close.o environ.o sbrk.o syscalls.o _exit.o fstat.o isatty.o \
++	   lseek.o open.o read.o write.o lock.o ftruncate.o getpid.o fsync.o chdir.o \
++	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o sleep.o dup.o glob.o \
++	   getrusage.o globfree.o closedir.o fstat64.o link.o lseek64.o opendir.o readdir.o \
++	   readdir_r.o rmdir.o rewinddir.o rename.o seekdir.o settod.o stat.o stat64.o telldir.o \
++	   truncate.o mkdir.o umask.o utime.o times.o access.o
++
++# Object files specific to particular targets.
++EVALOBJS = ${OBJS}
++
++GCC_LDFLAGS = `if [ -d ${objroot}/../gcc ] ; \
++	then echo -L${objroot}/../gcc ; fi`
++
++OUTPUTS = libsysbase.a
++
++NEWLIB_CFLAGS = `if [ -d ${objroot}/newlib ]; then echo -I${objroot}/newlib/targ-include -I${srcroot}/newlib/libc/include; fi`
++NEWLIB_LDFLAGS = `if [ -d ${objroot}/newlib ]; then echo -B${objroot}/newlib/ -L${objroot}/newlib/; fi`
++
++INCLUDES = -I. -I$(srcdir)/..
++# Note that when building the library, ${MULTILIB} is not the way multilib
++# options are passed; they're passed in $(CFLAGS).
++CFLAGS_FOR_TARGET = ${MULTILIB} ${INCLUDES} ${NEWLIB_CFLAGS}
++LDFLAGS_FOR_TARGET = ${MULTILIB} ${NEWLIB_LDFLAGS}
++AR_FLAGS = qc
++
++.c.o:
++	$(CC) $(CFLAGS_FOR_TARGET) -O2 $(INCLUDES) -c $(CFLAGS) $<
++
++.C.o:
++	$(CC) $(CFLAGS_FOR_TARGET) -O2 $(INCLUDES) -c $(CFLAGS) $<
++.s.o:
++	$(AS) $(ASFLAGS_FOR_TARGET) $(INCLUDES) $(ASFLAGS) -o $*.o $<
++
++#
++# GCC knows to run the preprocessor on .S files before it assembles them.
++#
++.S.o:
++	$(CC) $(CFLAGS_FOR_TARGET) $(INCLUDES) $(CFLAGS) -c $<
++
++#
++# this is a bogus target that'll produce an assembler from the
++# C source with the right compiler options. this is so we can
++# track down code generation or debug symbol bugs.
++#
++.c.s:
++	$(CC) $(CFLAGS_FOR_TARGET) -S $(INCLUDES) $(CFLAGS) $<
++
++all: ${OUTPUTS}
++
++#
++# here's where we build the library for each target
++#
++
++libsysbase.a: $(EVALOBJS)
++	${AR} ${ARFLAGS} $@ $(EVALOBJS)
++	${RANLIB} $@
++
++doc:
++
++clean mostlyclean:
++	rm -f $(OUTPUTS) *.i *~ *.o *-test *.srec *.dis *.map *.x
++
++distclean maintainer-clean realclean: clean
++	rm -f Makefile config.status $(OUTPUTS)
++
++.PHONY: install info install-info clean-info
++install:
++	@for outputs in ${OUTPUTS}; do\
++	 mkdir -p $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}; \
++	 $(INSTALL_PROGRAM) $${outputs} $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}; \
++	done
++
++info:
++install-info:
++clean-info:
++
++Makefile: Makefile.in config.status @host_makefile_frag_path@
++	$(SHELL) config.status
++
++config.status: configure
++	$(SHELL) config.status --recheck
+diff --git a/libgloss/libsysbase/_exit.c b/libgloss/libsysbase/_exit.c
+new file mode 100644
+index 0000000..d0f86bb
+--- /dev/null
++++ b/libgloss/libsysbase/_exit.c
+@@ -0,0 +1,15 @@
++#include <limits.h>
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <sys/syscalls.h>
++
++_VOID
++_DEFUN(_exit,(rc),
++	   int rc)
++{
++	if(__syscalls.exit)
++		__syscalls.exit(rc);
++
++	while(1);
++}
+diff --git a/libgloss/libsysbase/abort.c b/libgloss/libsysbase/abort.c
+new file mode 100644
+index 0000000..1b8ab67
+--- /dev/null
++++ b/libgloss/libsysbase/abort.c
 @@ -0,0 +1,8 @@
 +#include <stdlib.h>
 +#include <unistd.h>
@@ -81,9 +260,99 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/abort.c newlib-1.2
 +	write(2, "Abort called.\n", sizeof("Abort called.\n") - 1);
 +	_exit(1);
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/acconfig.h newlib-1.20.0-PS3/libgloss/libsysbase/acconfig.h
---- newlib-1.20.0/libgloss/libsysbase/acconfig.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/acconfig.h	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/access.c b/libgloss/libsysbase/access.c
+new file mode 100644
+index 0000000..beafea9
+--- /dev/null
++++ b/libgloss/libsysbase/access.c
+@@ -0,0 +1,82 @@
++/* This is file ACCESS.C */
++/*
++ * Copyright (C) 1993 DJ Delorie
++ * All rights reserved.
++ *
++ * Redistribution, modification, and use in source and binary forms is permitted
++ * provided that the above copyright notice and following paragraph are
++ * duplicated in all such forms.
++ *
++ * This file is distributed WITHOUT ANY WARRANTY; without even the implied
++ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++extern int errno;
++
++int access(const char *fn, int flags)
++{
++	struct stat s;
++
++	/* Did the pass us the right flags? */
++	if ( (flags != F_OK) && (flags != R_OK) && (flags != W_OK) && (flags != X_OK) ) {
++		/* Nope. */
++		errno = EINVAL;
++		return -1;
++	}
++
++	if (stat(fn, &s)) {
++		/* return -1 because the file does not exist or pathname is too long. */
++		return -1;
++	}
++
++	if (flags == F_OK) {
++		/* We know the file exists because stat didn't fail. */
++		return 0;
++	}
++
++	if (flags & W_OK) {
++		/* Do we have write permission to the file? */
++		if (s.st_mode & S_IWRITE) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	if (flags & R_OK) {
++		/* Do we have read permission to the file? */
++		if (s.st_mode & S_IREAD) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	if (flags & X_OK) {
++		/* Do we have executable permission to the file? */
++		if (s.st_mode & S_IEXEC) {
++			/* We do. */
++			return 0;
++		}
++
++		/* Nope. */
++		errno = EACCES;
++		return -1;
++	}
++
++	/* We should never reach this, ever...in case we do though, lets return -1. */
++	/* and set errno to ENOSYS (Function not implemented */
++	errno = ENOSYS;
++	return -1;
++}
+diff --git a/libgloss/libsysbase/acconfig.h b/libgloss/libsysbase/acconfig.h
+new file mode 100644
+index 0000000..200ea78
+--- /dev/null
++++ b/libgloss/libsysbase/acconfig.h
 @@ -0,0 +1,29 @@
 +/* Name of package.  */
 +#undef PACKAGE
@@ -114,9 +383,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/acconfig.h newlib-
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/aclocal.m4 newlib-1.20.0-PS3/libgloss/libsysbase/aclocal.m4
---- newlib-1.20.0/libgloss/libsysbase/aclocal.m4	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/aclocal.m4	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/aclocal.m4 b/libgloss/libsysbase/aclocal.m4
+new file mode 100644
+index 0000000..b6cdfae
+--- /dev/null
++++ b/libgloss/libsysbase/aclocal.m4
 @@ -0,0 +1,344 @@
 +# generated automatically by aclocal 1.9.5 -*- Autoconf -*-
 +
@@ -462,9 +733,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/aclocal.m4 newlib-
 +])
 +
 +m4_include([../acinclude.m4])
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/chdir.c newlib-1.20.0-PS3/libgloss/libsysbase/chdir.c
---- newlib-1.20.0/libgloss/libsysbase/chdir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/chdir.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/chdir.c b/libgloss/libsysbase/chdir.c
+new file mode 100644
+index 0000000..ce4e064
+--- /dev/null
++++ b/libgloss/libsysbase/chdir.c
 @@ -0,0 +1,32 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -498,9 +771,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/chdir.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/chmod.c newlib-1.20.0-PS3/libgloss/libsysbase/chmod.c
---- newlib-1.20.0/libgloss/libsysbase/chmod.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/chmod.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/chmod.c b/libgloss/libsysbase/chmod.c
+new file mode 100644
+index 0000000..a2a1e09
+--- /dev/null
++++ b/libgloss/libsysbase/chmod.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -523,9 +798,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/chmod.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/close.c newlib-1.20.0-PS3/libgloss/libsysbase/close.c
---- newlib-1.20.0/libgloss/libsysbase/close.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/close.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/close.c b/libgloss/libsysbase/close.c
+new file mode 100644
+index 0000000..6446721
+--- /dev/null
++++ b/libgloss/libsysbase/close.c
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -552,95 +829,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/close.c newlib-1.2
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/access.c newlib-1.20.0-PS3/libgloss/libsysbase/access.c
---- newlib-1.20.0/libgloss/libsysbase/access.c	1969-12-31 20:00:00.000000000 -0400
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/access.c	2020-06-23 12:58:02.329218821 -0300
-@@ -0,0 +1,82 @@
-+/* This is file ACCESS.C */
-+/*
-+ * Copyright (C) 1993 DJ Delorie
-+ * All rights reserved.
-+ *
-+ * Redistribution, modification, and use in source and binary forms is permitted
-+ * provided that the above copyright notice and following paragraph are
-+ * duplicated in all such forms.
-+ *
-+ * This file is distributed WITHOUT ANY WARRANTY; without even the implied
-+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
-+
-+extern int errno;
-+
-+int access(const char *fn, int flags)
-+{
-+	struct stat s;
-+
-+	/* Did the pass us the right flags? */
-+	if ( (flags != F_OK) && (flags != R_OK) && (flags != W_OK) && (flags != X_OK) ) {
-+		/* Nope. */
-+		errno = EINVAL;
-+		return -1;
-+	}
-+
-+	if (stat(fn, &s)) {
-+		/* return -1 because the file does not exist or pathname is too long. */
-+		return -1;
-+	}
-+
-+	if (flags == F_OK) {
-+		/* We know the file exists because stat didn't fail. */
-+		return 0;
-+	}
-+
-+	if (flags & W_OK) {
-+		/* Do we have write permission to the file? */
-+		if (s.st_mode & S_IWRITE) {
-+			/* We do. */
-+			return 0;
-+		}
-+
-+		/* Nope. */
-+		errno = EACCES;
-+		return -1;
-+	}
-+
-+	if (flags & R_OK) {
-+		/* Do we have read permission to the file? */
-+		if (s.st_mode & S_IREAD) {
-+			/* We do. */
-+			return 0;
-+		}
-+
-+		/* Nope. */
-+		errno = EACCES;
-+		return -1;
-+	}
-+
-+	if (flags & X_OK) {
-+		/* Do we have executable permission to the file? */
-+		if (s.st_mode & S_IEXEC) {
-+			/* We do. */
-+			return 0;
-+		}
-+
-+		/* Nope. */
-+		errno = EACCES;
-+		return -1;
-+	}
-+
-+	/* We should never reach this, ever...in case we do though, lets return -1. */
-+	/* and set errno to ENOSYS (Function not implemented */
-+	errno = ENOSYS;
-+	return -1;
-+}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/closedir.c newlib-1.20.0-PS3/libgloss/libsysbase/closedir.c
---- newlib-1.20.0/libgloss/libsysbase/closedir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/closedir.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/closedir.c b/libgloss/libsysbase/closedir.c
+new file mode 100644
+index 0000000..aa5e6e0
+--- /dev/null
++++ b/libgloss/libsysbase/closedir.c
 @@ -0,0 +1,17 @@
 +#include <unistd.h>
 +#include <reent.h>
@@ -659,9 +852,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/closedir.c newlib-
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/config.h.in newlib-1.20.0-PS3/libgloss/libsysbase/config.h.in
---- newlib-1.20.0/libgloss/libsysbase/config.h.in	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/config.h.in	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/config.h.in b/libgloss/libsysbase/config.h.in
+new file mode 100644
+index 0000000..48ce950
+--- /dev/null
++++ b/libgloss/libsysbase/config.h.in
 @@ -0,0 +1,25 @@
 +/* config.h.in.  Generated automatically from configure.in by autoheader.  */
 +
@@ -688,9 +883,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/config.h.in newlib
 +
 +/* symbol prefix */
 +#undef __SYMBOL_PREFIX
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/configure newlib-1.20.0-PS3/libgloss/libsysbase/configure
---- newlib-1.20.0/libgloss/libsysbase/configure	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/configure	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/configure b/libgloss/libsysbase/configure
+new file mode 100644
+index 0000000..f07aa07
+--- /dev/null
++++ b/libgloss/libsysbase/configure
 @@ -0,0 +1,3555 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -4247,9 +4444,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/configure newlib-1
 +
 +
 +
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/configure.in newlib-1.20.0-PS3/libgloss/libsysbase/configure.in
---- newlib-1.20.0/libgloss/libsysbase/configure.in	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/configure.in	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/configure.in b/libgloss/libsysbase/configure.in
+new file mode 100644
+index 0000000..fb32ef4
+--- /dev/null
++++ b/libgloss/libsysbase/configure.in
 @@ -0,0 +1,207 @@
 +# Copyright (c) 1995, 1996 Cygnus Support
 +#
@@ -4458,9 +4657,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/configure.in newli
 +AC_OUTPUT
 +
 +
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/dup.c newlib-1.20.0-PS3/libgloss/libsysbase/dup.c
---- newlib-1.20.0/libgloss/libsysbase/dup.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/dup.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/dup.c b/libgloss/libsysbase/dup.c
+new file mode 100644
+index 0000000..292ad65
+--- /dev/null
++++ b/libgloss/libsysbase/dup.c
 @@ -0,0 +1,11 @@
 +#include <errno.h>
 +#include <fcntl.h>
@@ -4473,9 +4674,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/dup.c newlib-1.20.
 +	//return fcntl(filedes,F_DUPFD,0);
 +  return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/environ.c newlib-1.20.0-PS3/libgloss/libsysbase/environ.c
---- newlib-1.20.0/libgloss/libsysbase/environ.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/environ.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/environ.c b/libgloss/libsysbase/environ.c
+new file mode 100644
+index 0000000..4565f69
+--- /dev/null
++++ b/libgloss/libsysbase/environ.c
 @@ -0,0 +1,6 @@
 +/*
 + * Version of environ for no OS
@@ -4483,9 +4686,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/environ.c newlib-1
 +
 +char *__env[1] = {0};
 +char **environ = __env;
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/execve.c newlib-1.20.0-PS3/libgloss/libsysbase/execve.c
---- newlib-1.20.0/libgloss/libsysbase/execve.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/execve.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/execve.c b/libgloss/libsysbase/execve.c
+new file mode 100644
+index 0000000..19f66ef
+--- /dev/null
++++ b/libgloss/libsysbase/execve.c
 @@ -0,0 +1,27 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4514,28 +4719,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/execve.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/_exit.c newlib-1.20.0-PS3/libgloss/libsysbase/_exit.c
---- newlib-1.20.0/libgloss/libsysbase/_exit.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/_exit.c	2020-06-16 01:37:57.287876668 -0400
-@@ -0,0 +1,15 @@
-+#include <limits.h>
-+#include "config.h"
-+#include <_ansi.h>
-+#include <_syslist.h>
-+#include <sys/syscalls.h>
-+
-+_VOID
-+_DEFUN(_exit,(rc),
-+	   int rc)
-+{
-+	if(__syscalls.exit)
-+		__syscalls.exit(rc);
-+
-+	while(1);
-+}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fork.c newlib-1.20.0-PS3/libgloss/libsysbase/fork.c
---- newlib-1.20.0/libgloss/libsysbase/fork.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/fork.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/fork.c b/libgloss/libsysbase/fork.c
+new file mode 100644
+index 0000000..52c699a
+--- /dev/null
++++ b/libgloss/libsysbase/fork.c
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4555,41 +4743,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fork.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fstat64.c newlib-1.20.0-PS3/libgloss/libsysbase/fstat64.c
---- newlib-1.20.0/libgloss/libsysbase/fstat64.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/fstat64.c	2020-06-16 01:37:57.287876668 -0400
-@@ -0,0 +1,28 @@
-+#include "config.h"
-+#include <_ansi.h>
-+#include <_syslist.h>
-+#include <reent.h>
-+#include <errno.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/syscalls.h>
-+
-+#ifdef REENTRANT_SYSCALLS_PROVIDED
-+int
-+_DEFUN(_fstat64_r,(r,fd,st),
-+	   struct _reent *r _AND
-+	   int fd _AND
-+	   struct stat *st) {
-+#else
-+int
-+_DEFUN(_fstat64,(fd,st),
-+	   int fd _AND
-+	   struct stat *st) {
-+	struct _reent *r = _REENT;
-+#endif
-+	if(__syscalls.fstat64_r)
-+		return __syscalls.fstat64_r(r,fd,st);
-+
-+	r->_errno = ENOSYS;
-+	return -1;
-+}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fstat.c newlib-1.20.0-PS3/libgloss/libsysbase/fstat.c
---- newlib-1.20.0/libgloss/libsysbase/fstat.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/fstat.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/fstat.c b/libgloss/libsysbase/fstat.c
+new file mode 100644
+index 0000000..fb6f710
+--- /dev/null
++++ b/libgloss/libsysbase/fstat.c
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4619,9 +4777,45 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fstat.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fsync.c newlib-1.20.0-PS3/libgloss/libsysbase/fsync.c
---- newlib-1.20.0/libgloss/libsysbase/fsync.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/fsync.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/fstat64.c b/libgloss/libsysbase/fstat64.c
+new file mode 100644
+index 0000000..ca90a40
+--- /dev/null
++++ b/libgloss/libsysbase/fstat64.c
+@@ -0,0 +1,28 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <reent.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_fstat64_r,(r,fd,st),
++	   struct _reent *r _AND
++	   int fd _AND
++	   struct stat *st) {
++#else
++int
++_DEFUN(_fstat64,(fd,st),
++	   int fd _AND
++	   struct stat *st) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.fstat64_r)
++		return __syscalls.fstat64_r(r,fd,st);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff --git a/libgloss/libsysbase/fsync.c b/libgloss/libsysbase/fsync.c
+new file mode 100644
+index 0000000..e4b2c23
+--- /dev/null
++++ b/libgloss/libsysbase/fsync.c
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4643,9 +4837,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/fsync.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/ftruncate.c newlib-1.20.0-PS3/libgloss/libsysbase/ftruncate.c
---- newlib-1.20.0/libgloss/libsysbase/ftruncate.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/ftruncate.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/ftruncate.c b/libgloss/libsysbase/ftruncate.c
+new file mode 100644
+index 0000000..af53a46
+--- /dev/null
++++ b/libgloss/libsysbase/ftruncate.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4668,9 +4864,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/ftruncate.c newlib
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/getpid.c newlib-1.20.0-PS3/libgloss/libsysbase/getpid.c
---- newlib-1.20.0/libgloss/libsysbase/getpid.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/getpid.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/getpid.c b/libgloss/libsysbase/getpid.c
+new file mode 100644
+index 0000000..c83fb52
+--- /dev/null
++++ b/libgloss/libsysbase/getpid.c
 @@ -0,0 +1,22 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4694,9 +4892,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/getpid.c newlib-1.
 +	ptr->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/getrusage.c newlib-1.20.0-PS3/libgloss/libsysbase/getrusage.c
---- newlib-1.20.0/libgloss/libsysbase/getrusage.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/getrusage.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/getrusage.c b/libgloss/libsysbase/getrusage.c
+new file mode 100644
+index 0000000..5d23d07
+--- /dev/null
++++ b/libgloss/libsysbase/getrusage.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4719,9 +4919,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/getrusage.c newlib
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/gettod.c newlib-1.20.0-PS3/libgloss/libsysbase/gettod.c
---- newlib-1.20.0/libgloss/libsysbase/gettod.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/gettod.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/gettod.c b/libgloss/libsysbase/gettod.c
+new file mode 100644
+index 0000000..c9f0e44
+--- /dev/null
++++ b/libgloss/libsysbase/gettod.c
 @@ -0,0 +1,30 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4753,9 +4955,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/gettod.c newlib-1.
 +
 +
 +		
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/glob.c newlib-1.20.0-PS3/libgloss/libsysbase/glob.c
---- newlib-1.20.0/libgloss/libsysbase/glob.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/glob.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/glob.c b/libgloss/libsysbase/glob.c
+new file mode 100644
+index 0000000..d69c434
+--- /dev/null
++++ b/libgloss/libsysbase/glob.c
 @@ -0,0 +1,9 @@
 +#include <glob.h>
 +#include <errno.h>
@@ -4766,9 +4970,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/glob.c newlib-1.20
 +		errfunc((void*)0,ENOSYS);
 +  return 0;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/globfree.c newlib-1.20.0-PS3/libgloss/libsysbase/globfree.c
---- newlib-1.20.0/libgloss/libsysbase/globfree.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/globfree.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/globfree.c b/libgloss/libsysbase/globfree.c
+new file mode 100644
+index 0000000..cc93242
+--- /dev/null
++++ b/libgloss/libsysbase/globfree.c
 @@ -0,0 +1,6 @@
 +#include <glob.h>
 +
@@ -4776,9 +4982,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/globfree.c newlib-
 +{
 +  return;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/isatty.c newlib-1.20.0-PS3/libgloss/libsysbase/isatty.c
---- newlib-1.20.0/libgloss/libsysbase/isatty.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/isatty.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/isatty.c b/libgloss/libsysbase/isatty.c
+new file mode 100644
+index 0000000..fbb2e49
+--- /dev/null
++++ b/libgloss/libsysbase/isatty.c
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4804,9 +5012,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/isatty.c newlib-1.
 +	ptr->_errno = ENOTTY;
 +	return 0;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/kill.c newlib-1.20.0-PS3/libgloss/libsysbase/kill.c
---- newlib-1.20.0/libgloss/libsysbase/kill.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/kill.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/kill.c b/libgloss/libsysbase/kill.c
+new file mode 100644
+index 0000000..a1fb374
+--- /dev/null
++++ b/libgloss/libsysbase/kill.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4829,9 +5039,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/kill.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/link.c newlib-1.20.0-PS3/libgloss/libsysbase/link.c
---- newlib-1.20.0/libgloss/libsysbase/link.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/link.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/link.c b/libgloss/libsysbase/link.c
+new file mode 100644
+index 0000000..11fa237
+--- /dev/null
++++ b/libgloss/libsysbase/link.c
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4859,9 +5071,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/link.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/lock.c newlib-1.20.0-PS3/libgloss/libsysbase/lock.c
---- newlib-1.20.0/libgloss/libsysbase/lock.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/lock.c	2020-06-16 01:37:57.287876668 -0400
+diff --git a/libgloss/libsysbase/lock.c b/libgloss/libsysbase/lock.c
+new file mode 100644
+index 0000000..e65d4dc
+--- /dev/null
++++ b/libgloss/libsysbase/lock.c
 @@ -0,0 +1,64 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4927,42 +5141,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/lock.c newlib-1.20
 +	return -1;
 +}
 +
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/lseek64.c newlib-1.20.0-PS3/libgloss/libsysbase/lseek64.c
---- newlib-1.20.0/libgloss/libsysbase/lseek64.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/lseek64.c	2020-06-16 01:37:57.287876668 -0400
-@@ -0,0 +1,29 @@
-+#include "config.h"
-+#include <_ansi.h>
-+#include <_syslist.h>
-+#include <stdio.h>
-+#include <reent.h>
-+#include <errno.h>
-+#include <sys/syscalls.h>
-+
-+#ifdef REENTRANT_SYSCALLS_PROVIDED
-+_off64_t
-+_DEFUN(_lseek64_r,(r,fd,pos,dir),
-+	   struct _reent *r _AND
-+		   int fd _AND
-+		   _off64_t pos _AND
-+		   int dir) {
-+#else
-+_off64_t
-+_DEFUN(_lseek64,(fd,pos,dir),
-+	   int fd _AND
-+	   _off64_t pos _AND
-+	   int dir) {
-+	struct _reent *r = _REENT;
-+#endif
-+	if(__syscalls.lseek64_r)
-+		return __syscalls.lseek64_r(r,fd,pos,dir);
-+
-+	r->_errno = ENOSYS;
-+	return -1;
-+}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/lseek.c newlib-1.20.0-PS3/libgloss/libsysbase/lseek.c
---- newlib-1.20.0/libgloss/libsysbase/lseek.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/lseek.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/lseek.c b/libgloss/libsysbase/lseek.c
+new file mode 100644
+index 0000000..be95f84
+--- /dev/null
++++ b/libgloss/libsysbase/lseek.c
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -4993,161 +5176,46 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/lseek.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return (_off_t)-1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/Makefile.in newlib-1.20.0-PS3/libgloss/libsysbase/Makefile.in
---- newlib-1.20.0/libgloss/libsysbase/Makefile.in	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/Makefile.in	2020-06-16 01:37:57.291877163 -0400
-@@ -0,0 +1,148 @@
-+# Copyright (c) 1998 Cygnus Support
-+#
-+# The authors hereby grant permission to use, copy, modify, distribute,
-+# and license this software and its documentation for any purpose, provided
-+# that existing copyright notices are retained in all copies and that this
-+# notice is included verbatim in any distributions. No written agreement,
-+# license, or royalty fee is required for any of the authorized uses.
-+# Modifications to this software may be copyrighted by their authors
-+# and need not follow the licensing terms described here, provided that
-+# the new terms are clearly indicated on the first page of each file where
-+# they apply.
+diff --git a/libgloss/libsysbase/lseek64.c b/libgloss/libsysbase/lseek64.c
+new file mode 100644
+index 0000000..ddda0c0
+--- /dev/null
++++ b/libgloss/libsysbase/lseek64.c
+@@ -0,0 +1,29 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <stdio.h>
++#include <reent.h>
++#include <errno.h>
++#include <sys/syscalls.h>
 +
-+DESTDIR =
-+VPATH = @srcdir@
-+srcdir = @srcdir@
-+objdir = .
-+srcroot = $(srcdir)/../..
-+objroot = $(objdir)/../..
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++_off64_t
++_DEFUN(_lseek64_r,(r,fd,pos,dir),
++	   struct _reent *r _AND
++		   int fd _AND
++		   _off64_t pos _AND
++		   int dir) {
++#else
++_off64_t
++_DEFUN(_lseek64,(fd,pos,dir),
++	   int fd _AND
++	   _off64_t pos _AND
++	   int dir) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.lseek64_r)
++		return __syscalls.lseek64_r(r,fd,pos,dir);
 +
-+prefix = @prefix@
-+exec_prefix = @exec_prefix@
-+
-+host_alias = @host_alias@
-+target_alias = @target_alias@
-+program_transform_name = @program_transform_name@
-+
-+bindir = @bindir@
-+libdir = @libdir@
-+tooldir = $(exec_prefix)/$(target_alias)
-+
-+# Multilib support variables.
-+# TOP is used instead of MULTI{BUILD,SRC}TOP.
-+MULTIDIRS =
-+MULTISUBDIR =
-+MULTIDO = true
-+MULTICLEAN = true
-+
-+INSTALL = @INSTALL@
-+INSTALL_PROGRAM = @INSTALL_PROGRAM@
-+INSTALL_DATA = @INSTALL_DATA@
-+
-+SHELL =	/bin/sh
-+
-+CC = @CC@
-+
-+#AS = @AS@
-+AS = `if [ -f ${objroot}/../gas/as.new ] ; \
-+	then echo ${objroot}/../gas/as.new ; \
-+	else echo as ; fi`
-+
-+AR = @AR@
-+
-+#LD = @LD@
-+LD = `if [ -f ${objroot}/../ld/ld.new ] ; \
-+	then echo ${objroot}/../ld/ld.new ; \
-+	else echo ld ; fi`
-+
-+RANLIB = @RANLIB@
-+
-+OBJDUMP = `if [ -f ${objroot}/../binutils/objdump ] ; \
-+	then echo ${objroot}/../binutils/objdump ; \
-+	else t='$(program_transform_name)'; echo objdump | sed -e $$t ; fi`
-+OBJCOPY = `if [ -f ${objroot}/../binutils/objcopy ] ; \
-+	then echo ${objroot}/../binutils/objcopy ; \
-+	else t='$(program_transform_name)'; echo objcopy | sed -e $$t ; fi`
-+
-+# object files needed
-+OBJS = abort.o close.o environ.o sbrk.o syscalls.o _exit.o fstat.o isatty.o \
-+	   lseek.o open.o read.o write.o lock.o ftruncate.o getpid.o fsync.o chdir.o \
-+	   wait.o unlink.o execve.o kill.o gettod.o fork.o chmod.o sleep.o dup.o glob.o \
-+	   getrusage.o globfree.o closedir.o fstat64.o link.o lseek64.o opendir.o readdir.o \
-+	   readdir_r.o rmdir.o rewinddir.o rename.o seekdir.o settod.o stat.o stat64.o telldir.o \
-+	   truncate.o mkdir.o umask.o utime.o times.o access.o
-+
-+# Object files specific to particular targets.
-+EVALOBJS = ${OBJS}
-+
-+GCC_LDFLAGS = `if [ -d ${objroot}/../gcc ] ; \
-+	then echo -L${objroot}/../gcc ; fi`
-+
-+OUTPUTS = libsysbase.a
-+
-+NEWLIB_CFLAGS = `if [ -d ${objroot}/newlib ]; then echo -I${objroot}/newlib/targ-include -I${srcroot}/newlib/libc/include; fi`
-+NEWLIB_LDFLAGS = `if [ -d ${objroot}/newlib ]; then echo -B${objroot}/newlib/ -L${objroot}/newlib/; fi`
-+
-+INCLUDES = -I. -I$(srcdir)/..
-+# Note that when building the library, ${MULTILIB} is not the way multilib
-+# options are passed; they're passed in $(CFLAGS).
-+CFLAGS_FOR_TARGET = ${MULTILIB} ${INCLUDES} ${NEWLIB_CFLAGS}
-+LDFLAGS_FOR_TARGET = ${MULTILIB} ${NEWLIB_LDFLAGS}
-+AR_FLAGS = qc
-+
-+.c.o:
-+	$(CC) $(CFLAGS_FOR_TARGET) -O2 $(INCLUDES) -c $(CFLAGS) $<
-+
-+.C.o:
-+	$(CC) $(CFLAGS_FOR_TARGET) -O2 $(INCLUDES) -c $(CFLAGS) $<
-+.s.o:
-+	$(AS) $(ASFLAGS_FOR_TARGET) $(INCLUDES) $(ASFLAGS) -o $*.o $<
-+
-+#
-+# GCC knows to run the preprocessor on .S files before it assembles them.
-+#
-+.S.o:
-+	$(CC) $(CFLAGS_FOR_TARGET) $(INCLUDES) $(CFLAGS) -c $<
-+
-+#
-+# this is a bogus target that'll produce an assembler from the
-+# C source with the right compiler options. this is so we can
-+# track down code generation or debug symbol bugs.
-+#
-+.c.s:
-+	$(CC) $(CFLAGS_FOR_TARGET) -S $(INCLUDES) $(CFLAGS) $<
-+
-+all: ${OUTPUTS}
-+
-+#
-+# here's where we build the library for each target
-+#
-+
-+libsysbase.a: $(EVALOBJS)
-+	${AR} ${ARFLAGS} $@ $(EVALOBJS)
-+	${RANLIB} $@
-+
-+doc:
-+
-+clean mostlyclean:
-+	rm -f $(OUTPUTS) *.i *~ *.o *-test *.srec *.dis *.map *.x
-+
-+distclean maintainer-clean realclean: clean
-+	rm -f Makefile config.status $(OUTPUTS)
-+
-+.PHONY: install info install-info clean-info
-+install:
-+	@for outputs in ${OUTPUTS}; do\
-+	 mkdir -p $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}; \
-+	 $(INSTALL_PROGRAM) $${outputs} $(DESTDIR)$(tooldir)/lib${MULTISUBDIR}; \
-+	done
-+
-+info:
-+install-info:
-+clean-info:
-+
-+Makefile: Makefile.in config.status @host_makefile_frag_path@
-+	$(SHELL) config.status
-+
-+config.status: configure
-+	$(SHELL) config.status --recheck
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/mkdir.c newlib-1.20.0-PS3/libgloss/libsysbase/mkdir.c
---- newlib-1.20.0/libgloss/libsysbase/mkdir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/mkdir.c	2020-06-16 01:37:57.291877163 -0400
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff --git a/libgloss/libsysbase/mkdir.c b/libgloss/libsysbase/mkdir.c
+new file mode 100644
+index 0000000..c99b128
+--- /dev/null
++++ b/libgloss/libsysbase/mkdir.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5170,9 +5238,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/mkdir.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/open.c newlib-1.20.0-PS3/libgloss/libsysbase/open.c
---- newlib-1.20.0/libgloss/libsysbase/open.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/open.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/open.c b/libgloss/libsysbase/open.c
+new file mode 100644
+index 0000000..74d0b46
+--- /dev/null
++++ b/libgloss/libsysbase/open.c
 @@ -0,0 +1,31 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5205,9 +5275,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/open.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/opendir.c newlib-1.20.0-PS3/libgloss/libsysbase/opendir.c
---- newlib-1.20.0/libgloss/libsysbase/opendir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/opendir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/opendir.c b/libgloss/libsysbase/opendir.c
+new file mode 100644
+index 0000000..e236ab2
+--- /dev/null
++++ b/libgloss/libsysbase/opendir.c
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5228,9 +5300,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/opendir.c newlib-1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/read.c newlib-1.20.0-PS3/libgloss/libsysbase/read.c
---- newlib-1.20.0/libgloss/libsysbase/read.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/read.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/read.c b/libgloss/libsysbase/read.c
+new file mode 100644
+index 0000000..98a3fca
+--- /dev/null
++++ b/libgloss/libsysbase/read.c
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5261,9 +5335,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/read.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/readdir.c newlib-1.20.0-PS3/libgloss/libsysbase/readdir.c
---- newlib-1.20.0/libgloss/libsysbase/readdir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/readdir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/readdir.c b/libgloss/libsysbase/readdir.c
+new file mode 100644
+index 0000000..121e9e5
+--- /dev/null
++++ b/libgloss/libsysbase/readdir.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5286,9 +5362,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/readdir.c newlib-1
 +	r->_errno = ENOSYS;
 +	return NULL;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/readdir_r.c newlib-1.20.0-PS3/libgloss/libsysbase/readdir_r.c
---- newlib-1.20.0/libgloss/libsysbase/readdir_r.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/readdir_r.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/readdir_r.c b/libgloss/libsysbase/readdir_r.c
+new file mode 100644
+index 0000000..10613bf
+--- /dev/null
++++ b/libgloss/libsysbase/readdir_r.c
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5309,9 +5387,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/readdir_r.c newlib
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rename.c newlib-1.20.0-PS3/libgloss/libsysbase/rename.c
---- newlib-1.20.0/libgloss/libsysbase/rename.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/rename.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/rename.c b/libgloss/libsysbase/rename.c
+new file mode 100644
+index 0000000..544d3c4
+--- /dev/null
++++ b/libgloss/libsysbase/rename.c
 @@ -0,0 +1,26 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5339,9 +5419,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rename.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rewinddir.c newlib-1.20.0-PS3/libgloss/libsysbase/rewinddir.c
---- newlib-1.20.0/libgloss/libsysbase/rewinddir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/rewinddir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/rewinddir.c b/libgloss/libsysbase/rewinddir.c
+new file mode 100644
+index 0000000..bc28277
+--- /dev/null
++++ b/libgloss/libsysbase/rewinddir.c
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5361,9 +5443,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rewinddir.c newlib
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rmdir.c newlib-1.20.0-PS3/libgloss/libsysbase/rmdir.c
---- newlib-1.20.0/libgloss/libsysbase/rmdir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/rmdir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/rmdir.c b/libgloss/libsysbase/rmdir.c
+new file mode 100644
+index 0000000..b4ec5f6
+--- /dev/null
++++ b/libgloss/libsysbase/rmdir.c
 @@ -0,0 +1,20 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5385,9 +5469,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/rmdir.c newlib-1.2
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/sbrk.c newlib-1.20.0-PS3/libgloss/libsysbase/sbrk.c
---- newlib-1.20.0/libgloss/libsysbase/sbrk.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/sbrk.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/sbrk.c b/libgloss/libsysbase/sbrk.c
+new file mode 100644
+index 0000000..6b2cdda
+--- /dev/null
++++ b/libgloss/libsysbase/sbrk.c
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5413,9 +5499,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/sbrk.c newlib-1.20
 +		return (caddr_t)-1;
 +	}
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/seekdir.c newlib-1.20.0-PS3/libgloss/libsysbase/seekdir.c
---- newlib-1.20.0/libgloss/libsysbase/seekdir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/seekdir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/seekdir.c b/libgloss/libsysbase/seekdir.c
+new file mode 100644
+index 0000000..6437207
+--- /dev/null
++++ b/libgloss/libsysbase/seekdir.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5438,9 +5526,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/seekdir.c newlib-1
 +	else
 +		r->_errno = ENOSYS;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/settod.c newlib-1.20.0-PS3/libgloss/libsysbase/settod.c
---- newlib-1.20.0/libgloss/libsysbase/settod.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/settod.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/settod.c b/libgloss/libsysbase/settod.c
+new file mode 100644
+index 0000000..e5d4058
+--- /dev/null
++++ b/libgloss/libsysbase/settod.c
 @@ -0,0 +1,22 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5464,9 +5554,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/settod.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/sleep.c newlib-1.20.0-PS3/libgloss/libsysbase/sleep.c
---- newlib-1.20.0/libgloss/libsysbase/sleep.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/sleep.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/sleep.c b/libgloss/libsysbase/sleep.c
+new file mode 100644
+index 0000000..12c6d87
+--- /dev/null
++++ b/libgloss/libsysbase/sleep.c
 @@ -0,0 +1,32 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5500,41 +5592,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/sleep.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/stat64.c newlib-1.20.0-PS3/libgloss/libsysbase/stat64.c
---- newlib-1.20.0/libgloss/libsysbase/stat64.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/stat64.c	2020-06-16 01:37:57.291877163 -0400
-@@ -0,0 +1,28 @@
-+#include "config.h"
-+#include <_ansi.h>
-+#include <_syslist.h>
-+#include <reent.h>
-+#include <errno.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+#include <sys/syscalls.h>
-+
-+#ifdef REENTRANT_SYSCALLS_PROVIDED
-+int
-+_DEFUN(_stat64_r,(r,path,st),
-+	   struct _reent *r _AND
-+	   const char *path _AND
-+	   struct stat *st) {
-+#else
-+int
-+_DEFUN(_stat64,(path,st),
-+	   const char *path _AND
-+	   struct stat *st) {
-+	struct _reent *r = _REENT;
-+#endif
-+	if(__syscalls.stat64_r)
-+		return __syscalls.stat64_r(r,path,st);
-+
-+	r->_errno = ENOSYS;
-+	return -1;
-+}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/stat.c newlib-1.20.0-PS3/libgloss/libsysbase/stat.c
---- newlib-1.20.0/libgloss/libsysbase/stat.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/stat.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/stat.c b/libgloss/libsysbase/stat.c
+new file mode 100644
+index 0000000..e0b372f
+--- /dev/null
++++ b/libgloss/libsysbase/stat.c
 @@ -0,0 +1,28 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5564,9 +5626,45 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/stat.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/syscalls.c newlib-1.20.0-PS3/libgloss/libsysbase/syscalls.c
---- newlib-1.20.0/libgloss/libsysbase/syscalls.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/syscalls.c	2020-06-23 12:56:33.885724979 -0300
+diff --git a/libgloss/libsysbase/stat64.c b/libgloss/libsysbase/stat64.c
+new file mode 100644
+index 0000000..5673d61
+--- /dev/null
++++ b/libgloss/libsysbase/stat64.c
+@@ -0,0 +1,28 @@
++#include "config.h"
++#include <_ansi.h>
++#include <_syslist.h>
++#include <reent.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/syscalls.h>
++
++#ifdef REENTRANT_SYSCALLS_PROVIDED
++int
++_DEFUN(_stat64_r,(r,path,st),
++	   struct _reent *r _AND
++	   const char *path _AND
++	   struct stat *st) {
++#else
++int
++_DEFUN(_stat64,(path,st),
++	   const char *path _AND
++	   struct stat *st) {
++	struct _reent *r = _REENT;
++#endif
++	if(__syscalls.stat64_r)
++		return __syscalls.stat64_r(r,path,st);
++
++	r->_errno = ENOSYS;
++	return -1;
++}
+diff --git a/libgloss/libsysbase/syscalls.c b/libgloss/libsysbase/syscalls.c
+new file mode 100644
+index 0000000..07df3ef
+--- /dev/null
++++ b/libgloss/libsysbase/syscalls.c
 @@ -0,0 +1,50 @@
 +#include <sys/syscalls.h>
 +
@@ -5611,16 +5709,18 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/syscalls.c newlib-
 +	NULL,			//	getrusage_r
 +	NULL,			//	sleep_r
 +	NULL,			//	times_r
-+	NULL,			//	sys_lwmutex_create_r
++	NULL,			//  sys_lwmutex_create_r
 +	NULL,			//	sys_lwmutex_destroy_r
 +	NULL,			//	sys_lwmutex_lock_r
 +	NULL,			//	sys_lwmutex_trylock_r
 +	NULL,			//	sys_lwmutex_unlock_r
 +	NULL			//	exit
 +};
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/telldir.c newlib-1.20.0-PS3/libgloss/libsysbase/telldir.c
---- newlib-1.20.0/libgloss/libsysbase/telldir.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/telldir.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/telldir.c b/libgloss/libsysbase/telldir.c
+new file mode 100644
+index 0000000..b974301
+--- /dev/null
++++ b/libgloss/libsysbase/telldir.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5643,9 +5743,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/telldir.c newlib-1
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/times.c newlib-1.20.0-PS3/libgloss/libsysbase/times.c
---- newlib-1.20.0/libgloss/libsysbase/times.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/times.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/times.c b/libgloss/libsysbase/times.c
+new file mode 100644
+index 0000000..dc01ba5
+--- /dev/null
++++ b/libgloss/libsysbase/times.c
 @@ -0,0 +1,25 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5672,9 +5774,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/times.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/truncate.c newlib-1.20.0-PS3/libgloss/libsysbase/truncate.c
---- newlib-1.20.0/libgloss/libsysbase/truncate.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/truncate.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/truncate.c b/libgloss/libsysbase/truncate.c
+new file mode 100644
+index 0000000..26cb641
+--- /dev/null
++++ b/libgloss/libsysbase/truncate.c
 @@ -0,0 +1,21 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5697,9 +5801,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/truncate.c newlib-
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/umask.c newlib-1.20.0-PS3/libgloss/libsysbase/umask.c
---- newlib-1.20.0/libgloss/libsysbase/umask.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/umask.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/umask.c b/libgloss/libsysbase/umask.c
+new file mode 100644
+index 0000000..fd45a5e
+--- /dev/null
++++ b/libgloss/libsysbase/umask.c
 @@ -0,0 +1,18 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5719,9 +5825,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/umask.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/unlink.c newlib-1.20.0-PS3/libgloss/libsysbase/unlink.c
---- newlib-1.20.0/libgloss/libsysbase/unlink.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/unlink.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/unlink.c b/libgloss/libsysbase/unlink.c
+new file mode 100644
+index 0000000..0de7540
+--- /dev/null
++++ b/libgloss/libsysbase/unlink.c
 @@ -0,0 +1,24 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5747,9 +5855,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/unlink.c newlib-1.
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/utime.c newlib-1.20.0-PS3/libgloss/libsysbase/utime.c
---- newlib-1.20.0/libgloss/libsysbase/utime.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/utime.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/utime.c b/libgloss/libsysbase/utime.c
+new file mode 100644
+index 0000000..33f3bb8
+--- /dev/null
++++ b/libgloss/libsysbase/utime.c
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5770,9 +5880,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/utime.c newlib-1.2
 +  r->_errno = ENOSYS;
 +  return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/wait.c newlib-1.20.0-PS3/libgloss/libsysbase/wait.c
---- newlib-1.20.0/libgloss/libsysbase/wait.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/wait.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/wait.c b/libgloss/libsysbase/wait.c
+new file mode 100644
+index 0000000..f4720a0
+--- /dev/null
++++ b/libgloss/libsysbase/wait.c
 @@ -0,0 +1,19 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5793,9 +5905,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/wait.c newlib-1.20
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/warning.h newlib-1.20.0-PS3/libgloss/libsysbase/warning.h
---- newlib-1.20.0/libgloss/libsysbase/warning.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/warning.h	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/warning.h b/libgloss/libsysbase/warning.h
+new file mode 100644
+index 0000000..2c29982
+--- /dev/null
++++ b/libgloss/libsysbase/warning.h
 @@ -0,0 +1,43 @@
 +#ifndef __WARNING_H__
 +#define __WARNING_H__
@@ -5840,9 +5954,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/warning.h newlib-1
 +                "warning: " #name " is not implemented and will always fail")
 +
 +#endif /* __WARNING_H__ */
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/write.c newlib-1.20.0-PS3/libgloss/libsysbase/write.c
---- newlib-1.20.0/libgloss/libsysbase/write.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/libgloss/libsysbase/write.c	2020-06-16 01:37:57.291877163 -0400
+diff --git a/libgloss/libsysbase/write.c b/libgloss/libsysbase/write.c
+new file mode 100644
+index 0000000..2075972
+--- /dev/null
++++ b/libgloss/libsysbase/write.c
 @@ -0,0 +1,29 @@
 +#include "config.h"
 +#include <_ansi.h>
@@ -5873,10 +5989,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/libsysbase/write.c newlib-1.2
 +	r->_errno = ENOSYS;
 +	return -1;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/libgloss/spu/Makefile.in newlib-1.20.0-PS3/libgloss/spu/Makefile.in
---- newlib-1.20.0/libgloss/spu/Makefile.in	2020-06-16 01:37:23.482671045 -0400
-+++ newlib-1.20.0-PS3/libgloss/spu/Makefile.in	2020-06-16 01:37:57.291877163 -0400
-@@ -151,7 +151,7 @@
+diff --git a/libgloss/spu/Makefile.in b/libgloss/spu/Makefile.in
+index c7d8f7e..ec46400 100644
+--- a/libgloss/spu/Makefile.in
++++ b/libgloss/spu/Makefile.in
+@@ -151,7 +151,7 @@ distclean maintainer-clean realclean: clean
  .PHONY: install info install-info clean-info
  install:
  	for outputs in ${OUTPUTS}; do\
@@ -5885,10 +6002,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/libgloss/spu/Makefile.in newlib-1.20.0
  	done
  
  info:
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/configure.host newlib-1.20.0-PS3/newlib/configure.host
---- newlib-1.20.0/newlib/configure.host	2020-06-16 01:37:23.486670923 -0400
-+++ newlib-1.20.0-PS3/newlib/configure.host	2020-06-16 01:37:57.291877163 -0400
-@@ -437,7 +437,10 @@
+diff --git a/newlib/configure.host b/newlib/configure.host
+index ef73fd0..6dcb23d 100644
+--- a/newlib/configure.host
++++ b/newlib/configure.host
+@@ -437,7 +437,10 @@ case "${host}" in
  	##newlib_cflags="${newlib_cflags} -I`newlib-flags --kernel-dir`/include"
  	##newlib_cflags="${newlib_cflags} -idirafter ${gcc_dir}include"
  	;;
@@ -5900,7 +6018,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/configure.host newlib-1.20.0-PS
    m68hc11-*-*|m6811-*-*|m6812-*-*|m68hc12-*-*)
  	;;
  
-@@ -682,6 +685,12 @@
+@@ -682,6 +685,12 @@ case "${host}" in
          syscall_dir=syscalls
  	default_newlib_io_long_long="yes"
          ;;
@@ -5913,9 +6031,10 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/configure.host newlib-1.20.0-PS
    powerpc*-*-eabialtivec*)
  	default_newlib_io_long_long="yes"
  	newlib_cflags="${newlib_cflags} -DMISSING_SYSCALL_NAMES"
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/include/sys/config.h newlib-1.20.0-PS3/newlib/libc/include/sys/config.h
---- newlib-1.20.0/newlib/libc/include/sys/config.h	2020-06-16 01:37:23.602667426 -0400
-+++ newlib-1.20.0-PS3/newlib/libc/include/sys/config.h	2020-06-16 01:37:57.291877163 -0400
+diff --git a/newlib/libc/include/sys/config.h b/newlib/libc/include/sys/config.h
+index 49c81f9..fd0c11a 100644
+--- a/newlib/libc/include/sys/config.h
++++ b/newlib/libc/include/sys/config.h
 @@ -215,6 +215,11 @@
  #define _READ_WRITE_RETURN_TYPE _ssize_t
  #endif
@@ -5928,10 +6047,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/include/sys/config.h newli
  #ifndef __EXPORT
  #define __EXPORT
  #endif
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/include/sys/unistd.h newlib-1.20.0-PS3/newlib/libc/include/sys/unistd.h
---- newlib-1.20.0/newlib/libc/include/sys/unistd.h	2020-06-16 01:37:23.602667426 -0400
-+++ newlib-1.20.0-PS3/newlib/libc/include/sys/unistd.h	2020-06-16 01:37:57.291877163 -0400
-@@ -219,7 +219,7 @@
+diff --git a/newlib/libc/include/sys/unistd.h b/newlib/libc/include/sys/unistd.h
+index 900faa7..7bd0089 100644
+--- a/newlib/libc/include/sys/unistd.h
++++ b/newlib/libc/include/sys/unistd.h
+@@ -219,7 +219,7 @@ _READ_WRITE_RETURN_TYPE _EXFUN(_write, (int __fd, const void *__buf, size_t __nb
  int     _EXFUN(_execve, (const char *__path, char * const __argv[], char * const __envp[] ));
  #endif
  
@@ -5940,10 +6060,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/include/sys/unistd.h newli
  #if !defined(__INSIDE_CYGWIN__)
  int     _EXFUN(ftruncate, (int __fd, off_t __length));
  int     _EXFUN(truncate, (const char *, off_t __length));
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/configure newlib-1.20.0-PS3/newlib/libc/sys/configure
---- newlib-1.20.0/newlib/libc/sys/configure	2020-06-16 01:37:23.514670079 -0400
-+++ newlib-1.20.0-PS3/newlib/libc/sys/configure	2020-06-16 01:37:57.295877657 -0400
-@@ -792,6 +792,7 @@
+diff --git a/newlib/libc/sys/configure b/newlib/libc/sys/configure
+index f1635da..875ae25 100755
+--- a/newlib/libc/sys/configure
++++ b/newlib/libc/sys/configure
+@@ -792,6 +792,7 @@ decstation
  h8300hms
  h8500hms
  linux
@@ -5951,19 +6072,20 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/configure newlib-1.20.
  m88kbug
  mmixware
  netware
-@@ -11800,6 +11801,8 @@
+@@ -11799,6 +11800,8 @@ subdirs="$subdirs a29khif"
+ 	h8500hms) subdirs="$subdirs h8500hms"
   ;;
  	linux) subdirs="$subdirs linux"
-  ;;
-+	lv2) subdirs="$subdirs lv2"
 + ;;
++	lv2) subdirs="$subdirs lv2"
+  ;;
  	m88kbug) subdirs="$subdirs m88kbug"
   ;;
- 	mmixware) subdirs="$subdirs mmixware"
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/configure.in newlib-1.20.0-PS3/newlib/libc/sys/configure.in
---- newlib-1.20.0/newlib/libc/sys/configure.in	2020-06-16 01:37:23.514670079 -0400
-+++ newlib-1.20.0-PS3/newlib/libc/sys/configure.in	2020-06-16 01:37:57.295877657 -0400
-@@ -30,6 +30,7 @@
+diff --git a/newlib/libc/sys/configure.in b/newlib/libc/sys/configure.in
+index 5a2b121..f2dd437 100644
+--- a/newlib/libc/sys/configure.in
++++ b/newlib/libc/sys/configure.in
+@@ -30,6 +30,7 @@ if test -n "${sys_dir}"; then
  	h8300hms) AC_CONFIG_SUBDIRS(h8300hms) ;;
  	h8500hms) AC_CONFIG_SUBDIRS(h8500hms) ;;
  	linux) AC_CONFIG_SUBDIRS(linux) ;;
@@ -5971,9 +6093,471 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/configure.in newlib-1.
  	m88kbug) AC_CONFIG_SUBDIRS(m88kbug) ;;
  	mmixware) AC_CONFIG_SUBDIRS(mmixware) ;;
  	netware) AC_CONFIG_SUBDIRS(netware) ;;
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/aclocal.m4 newlib-1.20.0-PS3/newlib/libc/sys/lv2/aclocal.m4
---- newlib-1.20.0/newlib/libc/sys/lv2/aclocal.m4	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/aclocal.m4	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/Makefile.am b/newlib/libc/sys/lv2/Makefile.am
+new file mode 100644
+index 0000000..eba84cc
+--- /dev/null
++++ b/newlib/libc/sys/lv2/Makefile.am
+@@ -0,0 +1,18 @@
++## Process this file with automake to generate Makefile.in
++
++AUTOMAKE_OPTIONS = cygnus
++
++INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
++
++AM_CCASFLAGS = $(INCLUDES)
++
++noinst_LIBRARIES = lib.a
++
++lib_a_SOURCES = getreent.c lock.c lock_recursive.c lock_internal.c
++lib_a_CCASFLAGS = $(AM_CCASFLAGS)
++lib_a_CFLAGS = $(AM_CFLAGS)
++
++all-local: crt0.o
++
++ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
++CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
+diff --git a/newlib/libc/sys/lv2/Makefile.in b/newlib/libc/sys/lv2/Makefile.in
+new file mode 100644
+index 0000000..b17cf08
+--- /dev/null
++++ b/newlib/libc/sys/lv2/Makefile.in
+@@ -0,0 +1,430 @@
++# Makefile.in generated by automake 1.11 from Makefile.am.
++# @configure_input@
++
++# Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
++# 2003, 2004, 2005, 2006, 2007, 2008, 2009  Free Software Foundation,
++# Inc.
++# This Makefile.in is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
++# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
++# PARTICULAR PURPOSE.
++
++@SET_MAKE@
++
++VPATH = @srcdir@
++pkgdatadir = $(datadir)/@PACKAGE@
++pkgincludedir = $(includedir)/@PACKAGE@
++pkglibdir = $(libdir)/@PACKAGE@
++pkglibexecdir = $(libexecdir)/@PACKAGE@
++am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
++install_sh_DATA = $(install_sh) -c -m 644
++install_sh_PROGRAM = $(install_sh) -c
++install_sh_SCRIPT = $(install_sh) -c
++INSTALL_HEADER = $(INSTALL_DATA)
++transform = $(program_transform_name)
++NORMAL_INSTALL = :
++PRE_INSTALL = :
++POST_INSTALL = :
++NORMAL_UNINSTALL = :
++PRE_UNINSTALL = :
++POST_UNINSTALL = :
++build_triplet = @build@
++host_triplet = @host@
++subdir = .
++DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
++	$(top_srcdir)/configure $(am__configure_deps) \
++	$(srcdir)/../../../../mkinstalldirs
++ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
++am__aclocal_m4_deps = $(top_srcdir)/../../../acinclude.m4 \
++	$(top_srcdir)/configure.in
++am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
++	$(ACLOCAL_M4)
++am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
++ configure.lineno config.status.lineno
++mkinstalldirs = $(SHELL) $(top_srcdir)/../../../../mkinstalldirs
++CONFIG_CLEAN_FILES =
++CONFIG_CLEAN_VPATH_FILES =
++LIBRARIES = $(noinst_LIBRARIES)
++ARFLAGS = cru
++lib_a_AR = $(AR) $(ARFLAGS)
++lib_a_LIBADD =
++am_lib_a_OBJECTS = lib_a-getreent.$(OBJEXT) lib_a-lock.$(OBJEXT) \
++				   lib_a-lock_recursive.$(OBJEXT) lib_a-lock_internal.$(OBJEXT)
++lib_a_OBJECTS = $(am_lib_a_OBJECTS)
++DEFAULT_INCLUDES = -I.@am__isrc@
++depcomp =
++am__depfiles_maybe =
++COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
++CCLD = $(CC)
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++SOURCES = $(lib_a_SOURCES)
++ETAGS = etags
++CTAGS = ctags
++ACLOCAL = @ACLOCAL@
++AMTAR = @AMTAR@
++AR = @AR@
++AS = @AS@
++AUTOCONF = @AUTOCONF@
++AUTOHEADER = @AUTOHEADER@
++AUTOMAKE = @AUTOMAKE@
++AWK = @AWK@
++CC = @CC@
++CCAS = @CCAS@
++CCASFLAGS = @CCASFLAGS@
++CCDEPMODE = @CCDEPMODE@
++CYGPATH_W = @CYGPATH_W@
++DEFS = @DEFS@
++DEPDIR = @DEPDIR@
++ECHO_C = @ECHO_C@
++ECHO_N = @ECHO_N@
++ECHO_T = @ECHO_T@
++INSTALL = @INSTALL@
++INSTALL_DATA = @INSTALL_DATA@
++INSTALL_PROGRAM = @INSTALL_PROGRAM@
++INSTALL_SCRIPT = @INSTALL_SCRIPT@
++INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
++LDFLAGS = @LDFLAGS@
++LIBOBJS = @LIBOBJS@
++LIBS = @LIBS@
++LTLIBOBJS = @LTLIBOBJS@
++MAINT = @MAINT@
++MAKEINFO = @MAKEINFO@
++MKDIR_P = @MKDIR_P@
++NEWLIB_CFLAGS = @NEWLIB_CFLAGS@
++OBJEXT = @OBJEXT@
++PACKAGE = @PACKAGE@
++PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
++PACKAGE_NAME = @PACKAGE_NAME@
++PACKAGE_STRING = @PACKAGE_STRING@
++PACKAGE_TARNAME = @PACKAGE_TARNAME@
++PACKAGE_VERSION = @PACKAGE_VERSION@
++PATH_SEPARATOR = @PATH_SEPARATOR@
++RANLIB = @RANLIB@
++READELF = @READELF@
++SET_MAKE = @SET_MAKE@
++SHELL = @SHELL@
++STRIP = @STRIP@
++VERSION = @VERSION@
++abs_builddir = @abs_builddir@
++abs_srcdir = @abs_srcdir@
++abs_top_builddir = @abs_top_builddir@
++abs_top_srcdir = @abs_top_srcdir@
++aext = @aext@
++am__include = @am__include@
++am__leading_dot = @am__leading_dot@
++am__quote = @am__quote@
++am__tar = @am__tar@
++am__untar = @am__untar@
++bindir = @bindir@
++build = @build@
++build_alias = @build_alias@
++build_cpu = @build_cpu@
++build_os = @build_os@
++build_vendor = @build_vendor@
++builddir = @builddir@
++datadir = @datadir@
++datarootdir = @datarootdir@
++docdir = @docdir@
++dvidir = @dvidir@
++exec_prefix = @exec_prefix@
++host = @host@
++host_alias = @host_alias@
++host_cpu = @host_cpu@
++host_os = @host_os@
++host_vendor = @host_vendor@
++htmldir = @htmldir@
++includedir = @includedir@
++infodir = @infodir@
++install_sh = @install_sh@
++libdir = @libdir@
++libexecdir = @libexecdir@
++libm_machine_dir = @libm_machine_dir@
++localedir = @localedir@
++localstatedir = @localstatedir@
++lpfx = @lpfx@
++machine_dir = @machine_dir@
++mandir = @mandir@
++mkdir_p = @mkdir_p@
++newlib_basedir = @newlib_basedir@
++oext = @oext@
++oldincludedir = @oldincludedir@
++pdfdir = @pdfdir@
++prefix = @prefix@
++program_transform_name = @program_transform_name@
++psdir = @psdir@
++sbindir = @sbindir@
++sharedstatedir = @sharedstatedir@
++srcdir = @srcdir@
++sys_dir = @sys_dir@
++sysconfdir = @sysconfdir@
++target_alias = @target_alias@
++top_build_prefix = @top_build_prefix@
++top_builddir = @top_builddir@
++top_srcdir = @top_srcdir@
++AUTOMAKE_OPTIONS = cygnus
++INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
++AM_CCASFLAGS = $(INCLUDES)
++noinst_LIBRARIES = lib.a
++lib_a_SOURCES = getreent.c lock.c lock_recursive.c lock_internal.c
++lib_a_CCASFLAGS = $(AM_CCASFLAGS)
++lib_a_CFLAGS = $(AM_CFLAGS)
++ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
++CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
++all: all-am
++
++.SUFFIXES:
++.SUFFIXES: .c .o .obj
++am--refresh:
++	@:
++$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
++	@for dep in $?; do \
++	  case '$(am__configure_deps)' in \
++	    *$$dep*) \
++	      echo ' cd $(srcdir) && $(AUTOMAKE) --cygnus'; \
++	      $(am__cd) $(srcdir) && $(AUTOMAKE) --cygnus \
++		&& exit 0; \
++	      exit 1;; \
++	  esac; \
++	done; \
++	echo ' cd $(top_srcdir) && $(AUTOMAKE) --cygnus Makefile'; \
++	$(am__cd) $(top_srcdir) && \
++	  $(AUTOMAKE) --cygnus Makefile
++.PRECIOUS: Makefile
++Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
++	@case '$?' in \
++	  *config.status*) \
++	    echo ' $(SHELL) ./config.status'; \
++	    $(SHELL) ./config.status;; \
++	  *) \
++	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)'; \
++	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe);; \
++	esac;
++
++$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
++	$(SHELL) ./config.status --recheck
++
++$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
++	$(am__cd) $(srcdir) && $(AUTOCONF)
++$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
++	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
++$(am__aclocal_m4_deps):
++
++clean-noinstLIBRARIES:
++	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
++lib.a: $(lib_a_OBJECTS) $(lib_a_DEPENDENCIES) 
++	-rm -f lib.a
++	$(lib_a_AR) lib.a $(lib_a_OBJECTS) $(lib_a_LIBADD)
++	$(RANLIB) lib.a
++
++mostlyclean-compile:
++	-rm -f *.$(OBJEXT)
++
++distclean-compile:
++	-rm -f *.tab.c
++
++.c.o:
++	$(COMPILE) -c $<
++
++.c.obj:
++	$(COMPILE) -c `$(CYGPATH_W) '$<'`
++
++lib_a-getreent.o: getreent.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.o `test -f 'getreent.c' || echo '$(srcdir)/'`getreent.c
++
++lib_a-getreent.obj: getreent.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.obj `if test -f 'getreent.c'; then $(CYGPATH_W) 'getreent.c'; else $(CYGPATH_W) '$(srcdir)/getreent.c'; fi`
++
++lib_a-lock.o: lock.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock.o `test -f 'lock.c' || echo '$(srcdir)/'`lock.c
++
++lib_a-lock.obj: lock.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock.obj `if test -f 'lock.c'; then $(CYGPATH_W) 'lock.c'; else $(CYGPATH_W) '$(srcdir)/lock.c'; fi`
++
++lib_a-lock_recursive.o: lock_recursive.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_recursive.o `test -f 'lock_recursive.c' || echo '$(srcdir)/'`lock_recursive.c
++
++lib_a-lock_recursive.obj: lock_recursive.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_recursive.obj `if test -f 'lock_recursive.c'; then $(CYGPATH_W) 'lock_recursive.c'; else $(CYGPATH_W) '$(srcdir)/lock_recursive.c'; fi`
++
++lib_a-lock_internal.o: lock_internal.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_internal.o `test -f 'lock_internal.c' || echo '$(srcdir)/'`lock_internal.c
++
++lib_a-lock_internal.obj: lock_internal.c
++	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_internal.obj `if test -f 'lock_internal.c'; then $(CYGPATH_W) 'lock_internal.c'; else $(CYGPATH_W) '$(srcdir)/lock_internal.c'; fi`
++
++ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
++	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	mkid -fID $$unique
++tags: TAGS
++
++TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
++		$(TAGS_FILES) $(LISP)
++	set x; \
++	here=`pwd`; \
++	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	shift; \
++	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
++	  test -n "$$unique" || unique=$$empty_fix; \
++	  if test $$# -gt 0; then \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      "$$@" $$unique; \
++	  else \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      $$unique; \
++	  fi; \
++	fi
++ctags: CTAGS
++CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
++		$(TAGS_FILES) $(LISP)
++	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	test -z "$(CTAGS_ARGS)$$unique" \
++	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
++	     $$unique
++
++GTAGS:
++	here=`$(am__cd) $(top_builddir) && pwd` \
++	  && $(am__cd) $(top_srcdir) \
++	  && gtags -i $(GTAGS_ARGS) "$$here"
++
++distclean-tags:
++	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
++check-am:
++check: check-am
++all-am: Makefile $(LIBRARIES)
++installdirs:
++install: install-am
++install-exec: install-exec-am
++install-data: install-data-am
++uninstall: uninstall-am
++
++install-am: all-am
++	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
++
++installcheck: installcheck-am
++install-strip:
++	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
++	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
++	  `test -z '$(STRIP)' || \
++	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
++mostlyclean-generic:
++
++clean-generic:
++
++distclean-generic:
++	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
++	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
++
++maintainer-clean-generic:
++	@echo "This command is intended for maintainers to use"
++	@echo "it deletes files that may require special tools to rebuild."
++clean: clean-am
++
++clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
++
++distclean: distclean-am
++	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
++	-rm -f Makefile
++distclean-am: clean-am distclean-compile distclean-generic \
++	distclean-tags
++
++dvi: dvi-am
++
++dvi-am:
++
++html: html-am
++
++html-am:
++
++info: info-am
++
++info-am:
++
++install-data-am:
++
++install-dvi: install-dvi-am
++
++install-dvi-am:
++
++install-exec-am:
++
++install-html: install-html-am
++
++install-html-am:
++
++install-info: install-info-am
++
++install-info-am:
++
++install-man:
++
++install-pdf: install-pdf-am
++
++install-pdf-am:
++
++install-ps: install-ps-am
++
++install-ps-am:
++
++installcheck-am:
++
++maintainer-clean: maintainer-clean-am
++	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
++	-rm -rf $(top_srcdir)/autom4te.cache
++	-rm -f Makefile
++maintainer-clean-am: distclean-am maintainer-clean-generic
++
++mostlyclean: mostlyclean-am
++
++mostlyclean-am: mostlyclean-compile mostlyclean-generic
++
++pdf: pdf-am
++
++pdf-am:
++
++ps: ps-am
++
++ps-am:
++
++uninstall-am:
++
++.MAKE: install-am install-strip
++
++.PHONY: CTAGS GTAGS all all-am all-local am--refresh check check-am \
++	clean clean-generic clean-noinstLIBRARIES ctags distclean \
++	distclean-compile distclean-generic distclean-tags dvi dvi-am \
++	html html-am info info-am install install-am install-data \
++	install-data-am install-dvi install-dvi-am install-exec \
++	install-exec-am install-html install-html-am install-info \
++	install-info-am install-man install-pdf install-pdf-am \
++	install-ps install-ps-am install-strip installcheck \
++	installcheck-am installdirs maintainer-clean \
++	maintainer-clean-generic mostlyclean mostlyclean-compile \
++	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
++	uninstall-am
++
++
++all-local: crt0.o
++
++# Tell versions [3.59,3.63) of GNU make to not export all variables.
++# Otherwise a system limit (for SysV at least) may be exceeded.
++.NOEXPORT:
+diff --git a/newlib/libc/sys/lv2/aclocal.m4 b/newlib/libc/sys/lv2/aclocal.m4
+new file mode 100644
+index 0000000..9eff3d3
+--- /dev/null
++++ b/newlib/libc/sys/lv2/aclocal.m4
 @@ -0,0 +1,992 @@
 +# generated automatically by aclocal 1.11 -*- Autoconf -*-
 +
@@ -6967,9 +7551,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/aclocal.m4 newlib-
 +]) # _AM_PROG_TAR
 +
 +m4_include([../../../acinclude.m4])
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/configure newlib-1.20.0-PS3/newlib/libc/sys/lv2/configure
---- newlib-1.20.0/newlib/libc/sys/lv2/configure	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/configure	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/configure b/newlib/libc/sys/lv2/configure
+new file mode 100644
+index 0000000..60fb38c
+--- /dev/null
++++ b/newlib/libc/sys/lv2/configure
 @@ -0,0 +1,4989 @@
 +#! /bin/sh
 +# Guess values for system-dependent variables and create Makefiles.
@@ -11960,9 +12546,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/configure newlib-1
 +$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 +fi
 +
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/configure.in newlib-1.20.0-PS3/newlib/libc/sys/lv2/configure.in
---- newlib-1.20.0/newlib/libc/sys/lv2/configure.in	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/configure.in	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/configure.in b/newlib/libc/sys/lv2/configure.in
+new file mode 100644
+index 0000000..8f596b3
+--- /dev/null
++++ b/newlib/libc/sys/lv2/configure.in
 @@ -0,0 +1,13 @@
 +dnl This is the newlib/libc/sys/rtems configure.in file.
 +dnl Process this file with autoconf to produce a configure script.
@@ -11977,9 +12565,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/configure.in newli
 +
 +AC_CONFIG_FILES([Makefile])
 +AC_OUTPUT
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/getreent.c newlib-1.20.0-PS3/newlib/libc/sys/lv2/getreent.c
---- newlib-1.20.0/newlib/libc/sys/lv2/getreent.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/getreent.c	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/getreent.c b/newlib/libc/sys/lv2/getreent.c
+new file mode 100644
+index 0000000..7a85ef4
+--- /dev/null
++++ b/newlib/libc/sys/lv2/getreent.c
 @@ -0,0 +1,15 @@
 +#include <reent.h>
 +
@@ -11996,9 +12586,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/getreent.c newlib-
 +  }
 +  return r;
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock.c newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock.c
---- newlib-1.20.0/newlib/libc/sys/lv2/lock.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock.c	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/lock.c b/newlib/libc/sys/lv2/lock.c
+new file mode 100644
+index 0000000..093be97
+--- /dev/null
++++ b/newlib/libc/sys/lv2/lock.c
 @@ -0,0 +1,37 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -12037,9 +12629,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock.c newlib-1.20
 +    __libc_auto_lock_allocate(lock);
 +  return sys_lwmutex_unlock(lock);
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.c newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_internal.c
---- newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_internal.c	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/lock_internal.c b/newlib/libc/sys/lv2/lock_internal.c
+new file mode 100644
+index 0000000..ca7fdb2
+--- /dev/null
++++ b/newlib/libc/sys/lv2/lock_internal.c
 @@ -0,0 +1,29 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -12070,9 +12664,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.c ne
 +	if(sys_lwmutex_unlock(&metaLock))
 +		abort();
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_internal.h
---- newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_internal.h	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/lock_internal.h b/newlib/libc/sys/lv2/lock_internal.h
+new file mode 100644
+index 0000000..302e15d
+--- /dev/null
++++ b/newlib/libc/sys/lv2/lock_internal.h
 @@ -0,0 +1,32 @@
 +#ifndef __SYS_LOCK_INTERNAL_H__
 +#define __SYS_LOCK_INTERNAL_H__
@@ -12106,9 +12702,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_internal.h ne
 +extern int32_t sys_lwmutex_unlock(sys_lwmutex_t *lwmutex);
 +
 +#endif
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_recursive.c newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_recursive.c
---- newlib-1.20.0/newlib/libc/sys/lv2/lock_recursive.c	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/lock_recursive.c	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/lock_recursive.c b/newlib/libc/sys/lv2/lock_recursive.c
+new file mode 100644
+index 0000000..5b88e1f
+--- /dev/null
++++ b/newlib/libc/sys/lv2/lock_recursive.c
 @@ -0,0 +1,37 @@
 +#include <stdint.h>
 +#include <stdlib.h>
@@ -12147,9 +12745,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/lock_recursive.c n
 +    __libc_auto_lock_allocate(lock);
 +  return sys_lwmutex_unlock(lock);
 +}
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/machine/_types.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/machine/_types.h
---- newlib-1.20.0/newlib/libc/sys/lv2/machine/_types.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/machine/_types.h	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/machine/_types.h b/newlib/libc/sys/lv2/machine/_types.h
+new file mode 100644
+index 0000000..f1240c1
+--- /dev/null
++++ b/newlib/libc/sys/lv2/machine/_types.h
 @@ -0,0 +1,16 @@
 +#ifndef _MACHINE__TYPES_H
 +#define _MACHINE__TYPES_H
@@ -12167,465 +12767,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/machine/_types.h n
 +typedef long long _off_t;
 +
 +#endif // _MACHINE__TYPES_H
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/Makefile.am newlib-1.20.0-PS3/newlib/libc/sys/lv2/Makefile.am
---- newlib-1.20.0/newlib/libc/sys/lv2/Makefile.am	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/Makefile.am	2020-06-16 01:37:57.295877657 -0400
-@@ -0,0 +1,18 @@
-+## Process this file with automake to generate Makefile.in
-+
-+AUTOMAKE_OPTIONS = cygnus
-+
-+INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
-+
-+AM_CCASFLAGS = $(INCLUDES)
-+
-+noinst_LIBRARIES = lib.a
-+
-+lib_a_SOURCES = getreent.c lock.c lock_recursive.c lock_internal.c
-+lib_a_CCASFLAGS = $(AM_CCASFLAGS)
-+lib_a_CFLAGS = $(AM_CFLAGS)
-+
-+all-local: crt0.o
-+
-+ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
-+CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/Makefile.in newlib-1.20.0-PS3/newlib/libc/sys/lv2/Makefile.in
---- newlib-1.20.0/newlib/libc/sys/lv2/Makefile.in	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/Makefile.in	2020-06-16 01:37:57.295877657 -0400
-@@ -0,0 +1,430 @@
-+# Makefile.in generated by automake 1.11 from Makefile.am.
-+# @configure_input@
-+
-+# Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
-+# 2003, 2004, 2005, 2006, 2007, 2008, 2009  Free Software Foundation,
-+# Inc.
-+# This Makefile.in is free software; the Free Software Foundation
-+# gives unlimited permission to copy and/or distribute it,
-+# with or without modifications, as long as this notice is preserved.
-+
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
-+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-+# PARTICULAR PURPOSE.
-+
-+@SET_MAKE@
-+
-+VPATH = @srcdir@
-+pkgdatadir = $(datadir)/@PACKAGE@
-+pkgincludedir = $(includedir)/@PACKAGE@
-+pkglibdir = $(libdir)/@PACKAGE@
-+pkglibexecdir = $(libexecdir)/@PACKAGE@
-+am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
-+install_sh_DATA = $(install_sh) -c -m 644
-+install_sh_PROGRAM = $(install_sh) -c
-+install_sh_SCRIPT = $(install_sh) -c
-+INSTALL_HEADER = $(INSTALL_DATA)
-+transform = $(program_transform_name)
-+NORMAL_INSTALL = :
-+PRE_INSTALL = :
-+POST_INSTALL = :
-+NORMAL_UNINSTALL = :
-+PRE_UNINSTALL = :
-+POST_UNINSTALL = :
-+build_triplet = @build@
-+host_triplet = @host@
-+subdir = .
-+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-+	$(top_srcdir)/configure $(am__configure_deps) \
-+	$(srcdir)/../../../../mkinstalldirs
-+ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-+am__aclocal_m4_deps = $(top_srcdir)/../../../acinclude.m4 \
-+	$(top_srcdir)/configure.in
-+am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
-+	$(ACLOCAL_M4)
-+am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
-+ configure.lineno config.status.lineno
-+mkinstalldirs = $(SHELL) $(top_srcdir)/../../../../mkinstalldirs
-+CONFIG_CLEAN_FILES =
-+CONFIG_CLEAN_VPATH_FILES =
-+LIBRARIES = $(noinst_LIBRARIES)
-+ARFLAGS = cru
-+lib_a_AR = $(AR) $(ARFLAGS)
-+lib_a_LIBADD =
-+am_lib_a_OBJECTS = lib_a-getreent.$(OBJEXT) lib_a-lock.$(OBJEXT) \
-+				   lib_a-lock_recursive.$(OBJEXT) lib_a-lock_internal.$(OBJEXT)
-+lib_a_OBJECTS = $(am_lib_a_OBJECTS)
-+DEFAULT_INCLUDES = -I.@am__isrc@
-+depcomp =
-+am__depfiles_maybe =
-+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-+CCLD = $(CC)
-+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-+SOURCES = $(lib_a_SOURCES)
-+ETAGS = etags
-+CTAGS = ctags
-+ACLOCAL = @ACLOCAL@
-+AMTAR = @AMTAR@
-+AR = @AR@
-+AS = @AS@
-+AUTOCONF = @AUTOCONF@
-+AUTOHEADER = @AUTOHEADER@
-+AUTOMAKE = @AUTOMAKE@
-+AWK = @AWK@
-+CC = @CC@
-+CCAS = @CCAS@
-+CCASFLAGS = @CCASFLAGS@
-+CCDEPMODE = @CCDEPMODE@
-+CYGPATH_W = @CYGPATH_W@
-+DEFS = @DEFS@
-+DEPDIR = @DEPDIR@
-+ECHO_C = @ECHO_C@
-+ECHO_N = @ECHO_N@
-+ECHO_T = @ECHO_T@
-+INSTALL = @INSTALL@
-+INSTALL_DATA = @INSTALL_DATA@
-+INSTALL_PROGRAM = @INSTALL_PROGRAM@
-+INSTALL_SCRIPT = @INSTALL_SCRIPT@
-+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-+LDFLAGS = @LDFLAGS@
-+LIBOBJS = @LIBOBJS@
-+LIBS = @LIBS@
-+LTLIBOBJS = @LTLIBOBJS@
-+MAINT = @MAINT@
-+MAKEINFO = @MAKEINFO@
-+MKDIR_P = @MKDIR_P@
-+NEWLIB_CFLAGS = @NEWLIB_CFLAGS@
-+OBJEXT = @OBJEXT@
-+PACKAGE = @PACKAGE@
-+PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
-+PACKAGE_NAME = @PACKAGE_NAME@
-+PACKAGE_STRING = @PACKAGE_STRING@
-+PACKAGE_TARNAME = @PACKAGE_TARNAME@
-+PACKAGE_VERSION = @PACKAGE_VERSION@
-+PATH_SEPARATOR = @PATH_SEPARATOR@
-+RANLIB = @RANLIB@
-+READELF = @READELF@
-+SET_MAKE = @SET_MAKE@
-+SHELL = @SHELL@
-+STRIP = @STRIP@
-+VERSION = @VERSION@
-+abs_builddir = @abs_builddir@
-+abs_srcdir = @abs_srcdir@
-+abs_top_builddir = @abs_top_builddir@
-+abs_top_srcdir = @abs_top_srcdir@
-+aext = @aext@
-+am__include = @am__include@
-+am__leading_dot = @am__leading_dot@
-+am__quote = @am__quote@
-+am__tar = @am__tar@
-+am__untar = @am__untar@
-+bindir = @bindir@
-+build = @build@
-+build_alias = @build_alias@
-+build_cpu = @build_cpu@
-+build_os = @build_os@
-+build_vendor = @build_vendor@
-+builddir = @builddir@
-+datadir = @datadir@
-+datarootdir = @datarootdir@
-+docdir = @docdir@
-+dvidir = @dvidir@
-+exec_prefix = @exec_prefix@
-+host = @host@
-+host_alias = @host_alias@
-+host_cpu = @host_cpu@
-+host_os = @host_os@
-+host_vendor = @host_vendor@
-+htmldir = @htmldir@
-+includedir = @includedir@
-+infodir = @infodir@
-+install_sh = @install_sh@
-+libdir = @libdir@
-+libexecdir = @libexecdir@
-+libm_machine_dir = @libm_machine_dir@
-+localedir = @localedir@
-+localstatedir = @localstatedir@
-+lpfx = @lpfx@
-+machine_dir = @machine_dir@
-+mandir = @mandir@
-+mkdir_p = @mkdir_p@
-+newlib_basedir = @newlib_basedir@
-+oext = @oext@
-+oldincludedir = @oldincludedir@
-+pdfdir = @pdfdir@
-+prefix = @prefix@
-+program_transform_name = @program_transform_name@
-+psdir = @psdir@
-+sbindir = @sbindir@
-+sharedstatedir = @sharedstatedir@
-+srcdir = @srcdir@
-+sys_dir = @sys_dir@
-+sysconfdir = @sysconfdir@
-+target_alias = @target_alias@
-+top_build_prefix = @top_build_prefix@
-+top_builddir = @top_builddir@
-+top_srcdir = @top_srcdir@
-+AUTOMAKE_OPTIONS = cygnus
-+INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
-+AM_CCASFLAGS = $(INCLUDES)
-+noinst_LIBRARIES = lib.a
-+lib_a_SOURCES = getreent.c lock.c lock_recursive.c lock_internal.c
-+lib_a_CCASFLAGS = $(AM_CCASFLAGS)
-+lib_a_CFLAGS = $(AM_CFLAGS)
-+ACLOCAL_AMFLAGS = -I ../../.. -I ../../../..
-+CONFIG_STATUS_DEPENDENCIES = $(newlib_basedir)/configure.host
-+all: all-am
-+
-+.SUFFIXES:
-+.SUFFIXES: .c .o .obj
-+am--refresh:
-+	@:
-+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
-+	@for dep in $?; do \
-+	  case '$(am__configure_deps)' in \
-+	    *$$dep*) \
-+	      echo ' cd $(srcdir) && $(AUTOMAKE) --cygnus'; \
-+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --cygnus \
-+		&& exit 0; \
-+	      exit 1;; \
-+	  esac; \
-+	done; \
-+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --cygnus Makefile'; \
-+	$(am__cd) $(top_srcdir) && \
-+	  $(AUTOMAKE) --cygnus Makefile
-+.PRECIOUS: Makefile
-+Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
-+	@case '$?' in \
-+	  *config.status*) \
-+	    echo ' $(SHELL) ./config.status'; \
-+	    $(SHELL) ./config.status;; \
-+	  *) \
-+	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe)'; \
-+	    cd $(top_builddir) && $(SHELL) ./config.status $@ $(am__depfiles_maybe);; \
-+	esac;
-+
-+$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
-+	$(SHELL) ./config.status --recheck
-+
-+$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
-+	$(am__cd) $(srcdir) && $(AUTOCONF)
-+$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
-+	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
-+$(am__aclocal_m4_deps):
-+
-+clean-noinstLIBRARIES:
-+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-+lib.a: $(lib_a_OBJECTS) $(lib_a_DEPENDENCIES) 
-+	-rm -f lib.a
-+	$(lib_a_AR) lib.a $(lib_a_OBJECTS) $(lib_a_LIBADD)
-+	$(RANLIB) lib.a
-+
-+mostlyclean-compile:
-+	-rm -f *.$(OBJEXT)
-+
-+distclean-compile:
-+	-rm -f *.tab.c
-+
-+.c.o:
-+	$(COMPILE) -c $<
-+
-+.c.obj:
-+	$(COMPILE) -c `$(CYGPATH_W) '$<'`
-+
-+lib_a-getreent.o: getreent.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.o `test -f 'getreent.c' || echo '$(srcdir)/'`getreent.c
-+
-+lib_a-getreent.obj: getreent.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-getreent.obj `if test -f 'getreent.c'; then $(CYGPATH_W) 'getreent.c'; else $(CYGPATH_W) '$(srcdir)/getreent.c'; fi`
-+
-+lib_a-lock.o: lock.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock.o `test -f 'lock.c' || echo '$(srcdir)/'`lock.c
-+
-+lib_a-lock.obj: lock.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock.obj `if test -f 'lock.c'; then $(CYGPATH_W) 'lock.c'; else $(CYGPATH_W) '$(srcdir)/lock.c'; fi`
-+
-+lib_a-lock_recursive.o: lock_recursive.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_recursive.o `test -f 'lock_recursive.c' || echo '$(srcdir)/'`lock_recursive.c
-+
-+lib_a-lock_recursive.obj: lock_recursive.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_recursive.obj `if test -f 'lock_recursive.c'; then $(CYGPATH_W) 'lock_recursive.c'; else $(CYGPATH_W) '$(srcdir)/lock_recursive.c'; fi`
-+
-+lib_a-lock_internal.o: lock_internal.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_internal.o `test -f 'lock_internal.c' || echo '$(srcdir)/'`lock_internal.c
-+
-+lib_a-lock_internal.obj: lock_internal.c
-+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-lock_internal.obj `if test -f 'lock_internal.c'; then $(CYGPATH_W) 'lock_internal.c'; else $(CYGPATH_W) '$(srcdir)/lock_internal.c'; fi`
-+
-+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
-+	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
-+	unique=`for i in $$list; do \
-+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-+	  done | \
-+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-+	mkid -fID $$unique
-+tags: TAGS
-+
-+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-+		$(TAGS_FILES) $(LISP)
-+	set x; \
-+	here=`pwd`; \
-+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-+	unique=`for i in $$list; do \
-+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-+	  done | \
-+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-+	shift; \
-+	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
-+	  test -n "$$unique" || unique=$$empty_fix; \
-+	  if test $$# -gt 0; then \
-+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-+	      "$$@" $$unique; \
-+	  else \
-+	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
-+	      $$unique; \
-+	  fi; \
-+	fi
-+ctags: CTAGS
-+CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
-+		$(TAGS_FILES) $(LISP)
-+	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
-+	unique=`for i in $$list; do \
-+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
-+	  done | \
-+	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
-+	      END { if (nonempty) { for (i in files) print i; }; }'`; \
-+	test -z "$(CTAGS_ARGS)$$unique" \
-+	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
-+	     $$unique
-+
-+GTAGS:
-+	here=`$(am__cd) $(top_builddir) && pwd` \
-+	  && $(am__cd) $(top_srcdir) \
-+	  && gtags -i $(GTAGS_ARGS) "$$here"
-+
-+distclean-tags:
-+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
-+check-am:
-+check: check-am
-+all-am: Makefile $(LIBRARIES)
-+installdirs:
-+install: install-am
-+install-exec: install-exec-am
-+install-data: install-data-am
-+uninstall: uninstall-am
-+
-+install-am: all-am
-+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
-+
-+installcheck: installcheck-am
-+install-strip:
-+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
-+	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
-+	  `test -z '$(STRIP)' || \
-+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
-+mostlyclean-generic:
-+
-+clean-generic:
-+
-+distclean-generic:
-+	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
-+	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-+
-+maintainer-clean-generic:
-+	@echo "This command is intended for maintainers to use"
-+	@echo "it deletes files that may require special tools to rebuild."
-+clean: clean-am
-+
-+clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
-+
-+distclean: distclean-am
-+	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-+	-rm -f Makefile
-+distclean-am: clean-am distclean-compile distclean-generic \
-+	distclean-tags
-+
-+dvi: dvi-am
-+
-+dvi-am:
-+
-+html: html-am
-+
-+html-am:
-+
-+info: info-am
-+
-+info-am:
-+
-+install-data-am:
-+
-+install-dvi: install-dvi-am
-+
-+install-dvi-am:
-+
-+install-exec-am:
-+
-+install-html: install-html-am
-+
-+install-html-am:
-+
-+install-info: install-info-am
-+
-+install-info-am:
-+
-+install-man:
-+
-+install-pdf: install-pdf-am
-+
-+install-pdf-am:
-+
-+install-ps: install-ps-am
-+
-+install-ps-am:
-+
-+installcheck-am:
-+
-+maintainer-clean: maintainer-clean-am
-+	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
-+	-rm -rf $(top_srcdir)/autom4te.cache
-+	-rm -f Makefile
-+maintainer-clean-am: distclean-am maintainer-clean-generic
-+
-+mostlyclean: mostlyclean-am
-+
-+mostlyclean-am: mostlyclean-compile mostlyclean-generic
-+
-+pdf: pdf-am
-+
-+pdf-am:
-+
-+ps: ps-am
-+
-+ps-am:
-+
-+uninstall-am:
-+
-+.MAKE: install-am install-strip
-+
-+.PHONY: CTAGS GTAGS all all-am all-local am--refresh check check-am \
-+	clean clean-generic clean-noinstLIBRARIES ctags distclean \
-+	distclean-compile distclean-generic distclean-tags dvi dvi-am \
-+	html html-am info info-am install install-am install-data \
-+	install-data-am install-dvi install-dvi-am install-exec \
-+	install-exec-am install-html install-html-am install-info \
-+	install-info-am install-man install-pdf install-pdf-am \
-+	install-ps install-ps-am install-strip installcheck \
-+	installcheck-am installdirs maintainer-clean \
-+	maintainer-clean-generic mostlyclean mostlyclean-compile \
-+	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
-+	uninstall-am
-+
-+
-+all-local: crt0.o
-+
-+# Tell versions [3.59,3.63) of GNU make to not export all variables.
-+# Otherwise a system limit (for SysV at least) may be exceeded.
-+.NOEXPORT:
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/dirent.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/dirent.h
---- newlib-1.20.0/newlib/libc/sys/lv2/sys/dirent.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/dirent.h	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/sys/dirent.h b/newlib/libc/sys/lv2/sys/dirent.h
+new file mode 100644
+index 0000000..84780e9
+--- /dev/null
++++ b/newlib/libc/sys/lv2/sys/dirent.h
 @@ -0,0 +1,62 @@
 +#ifndef __SYS_DIRENT_H__
 +#define __SYS_DIRENT_H__
@@ -12689,9 +12835,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/dirent.h newli
 +#endif
 +
 +#endif //__DIRENT_H__
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/lock.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/lock.h
---- newlib-1.20.0/newlib/libc/sys/lv2/sys/lock.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/lock.h	2020-06-16 01:37:57.295877657 -0400
+diff --git a/newlib/libc/sys/lv2/sys/lock.h b/newlib/libc/sys/lv2/sys/lock.h
+new file mode 100644
+index 0000000..ec6ab32
+--- /dev/null
++++ b/newlib/libc/sys/lv2/sys/lock.h
 @@ -0,0 +1,47 @@
 +#ifndef __SYS_LOCK_H__
 +#define __SYS_LOCK_H__
@@ -12740,9 +12888,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/lock.h newlib-
 +#define __lock_release_recursive(NAME) __libc_lock_release_recursive(&(NAME))
 +
 +#endif /* __SYS_LOCK_H__ */
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h
---- newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h	1969-12-31 19:00:00.000000000 -0500
-+++ newlib-1.20.0-PS3/newlib/libc/sys/lv2/sys/syscalls.h	2020-06-23 12:57:17.926917896 -0300
+diff --git a/newlib/libc/sys/lv2/sys/syscalls.h b/newlib/libc/sys/lv2/sys/syscalls.h
+new file mode 100644
+index 0000000..66ce33b
+--- /dev/null
++++ b/newlib/libc/sys/lv2/sys/syscalls.h
 @@ -0,0 +1,73 @@
 +#ifndef __SYSCALLS_H__
 +#define __SYSCALLS_H__
@@ -12817,49 +12967,11 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libc/sys/lv2/sys/syscalls.h new
 +extern struct __syscalls_t __syscalls;
 +
 +#endif
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libm/mathfp/sf_sine.c newlib-1.20.0-PS3/newlib/libm/mathfp/sf_sine.c
---- newlib-1.20.0/newlib/libm/mathfp/sf_sine.c	2020-06-16 01:37:23.510670201 -0400
-+++ newlib-1.20.0-PS3/newlib/libm/mathfp/sf_sine.c	2020-06-16 01:37:57.295877657 -0400
-@@ -26,6 +26,7 @@
- 
- static const float HALF_PI = 1.570796326;
- static const float ONE_OVER_PI = 0.318309886;
-+static const float ONE_OVER_2PI = 0.159154943;
- static const float r[] = { -0.1666665668,
-                             0.8333025139e-02,
-                            -0.1980741872e-03,
-@@ -50,6 +51,13 @@
-         return (z_notanum_f.f); 
-     }
- 
-+  /* Check for values of x that will overflow here. */
-+  if (fabsf (x) > YMAX)
-+    {
-+      float m = floorf(x * ONE_OVER_2PI);
-+      x -= (m * 2 * M_PI);
-+    }
-+
-   /* Use sin and cos properties to ease computations. */
-   if (cosine)
-     {
-@@ -70,13 +78,6 @@
-         }
-     }
- 
--  /* Check for values of y that will overflow here. */
--  if (y > YMAX)
--    {
--      errno = ERANGE;
--      return (x);
--    }
--
-   /* Calculate the exponent. */
-   if (y < 0.0)
-     N = (int) (y * ONE_OVER_PI - 0.5);
-diff -burN '--exclude=.git' newlib-1.20.0/newlib/libm/mathfp/s_sine.c newlib-1.20.0-PS3/newlib/libm/mathfp/s_sine.c
---- newlib-1.20.0/newlib/libm/mathfp/s_sine.c	2020-06-16 01:37:23.510670201 -0400
-+++ newlib-1.20.0-PS3/newlib/libm/mathfp/s_sine.c	2020-06-16 01:37:57.295877657 -0400
-@@ -74,6 +74,7 @@
+diff --git a/newlib/libm/mathfp/s_sine.c b/newlib/libm/mathfp/s_sine.c
+index 9642f4a..1669ffb 100644
+--- a/newlib/libm/mathfp/s_sine.c
++++ b/newlib/libm/mathfp/s_sine.c
+@@ -74,6 +74,7 @@ QUICKREF
  
  static const double HALF_PI = 1.57079632679489661923;
  static const double ONE_OVER_PI = 0.31830988618379067154;
@@ -12867,7 +12979,7 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libm/mathfp/s_sine.c newlib-1.2
  static const double r[] = { -0.16666666666666665052,
                               0.83333333333331650314e-02,
                              -0.19841269841201840457e-03,
-@@ -102,6 +103,14 @@
+@@ -102,6 +103,14 @@ _DEFUN (sine, (double, int),
          return (z_notanum.d); 
      }
  
@@ -12882,7 +12994,47 @@ diff -burN '--exclude=.git' newlib-1.20.0/newlib/libm/mathfp/s_sine.c newlib-1.2
    /* Use sin and cos properties to ease computations. */
    if (cosine)
      {
-@@ -122,13 +131,6 @@
+@@ -122,13 +131,6 @@ _DEFUN (sine, (double, int),
+         }
+     }
+ 
+-  /* Check for values of y that will overflow here. */
+-  if (y > YMAX)
+-    {
+-      errno = ERANGE;
+-      return (x);
+-    }
+-
+   /* Calculate the exponent. */
+   if (y < 0.0)
+     N = (int) (y * ONE_OVER_PI - 0.5);
+diff --git a/newlib/libm/mathfp/sf_sine.c b/newlib/libm/mathfp/sf_sine.c
+index 6932de2..4c8bdbb 100644
+--- a/newlib/libm/mathfp/sf_sine.c
++++ b/newlib/libm/mathfp/sf_sine.c
+@@ -26,6 +26,7 @@
+ 
+ static const float HALF_PI = 1.570796326;
+ static const float ONE_OVER_PI = 0.318309886;
++static const float ONE_OVER_2PI = 0.159154943;
+ static const float r[] = { -0.1666665668,
+                             0.8333025139e-02,
+                            -0.1980741872e-03,
+@@ -50,6 +51,13 @@ _DEFUN (sinef, (float, int),
+         return (z_notanum_f.f); 
+     }
+ 
++  /* Check for values of x that will overflow here. */
++  if (fabsf (x) > YMAX)
++    {
++      float m = floorf(x * ONE_OVER_2PI);
++      x -= (m * 2 * M_PI);
++    }
++
+   /* Use sin and cos properties to ease computations. */
+   if (cosine)
+     {
+@@ -70,13 +78,6 @@ _DEFUN (sinef, (float, int),
          }
      }
  
