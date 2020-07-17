@@ -32,7 +32,7 @@ index a9196cd26..f2a94403d 100644
  	case ${target} in
 diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
 new file mode 100644
-index 000000000..589a67521
+index 000000000..438c51f69
 --- /dev/null
 +++ b/gcc/config/rs6000/cell64lv2.h
 @@ -0,0 +1,587 @@
@@ -119,7 +119,7 @@ index 000000000..589a67521
 +  (rs6000_isa_flags & rs6000_isa_flags_explicit & OPTION_MASK_RELOCATABLE)
 +
 +#undef	RS6000_ABI_NAME
-+#define	RS6000_ABI_NAME "aixdesc"
++#define	RS6000_ABI_NAME "linux"
 +
 +#define INVALID_64BIT "-m%s not supported in this configuration"
 +#define INVALID_32BIT INVALID_64BIT
@@ -661,6 +661,44 @@ index db9136f26..3a29d4723 100644
  struct gcc_target targetm = TARGET_INITIALIZER;
  
  #include "gt-rs6000.h"
+diff --git a/gcc/configure b/gcc/configure
+index 50ccc2a0f..6b503988a 100755
+--- a/gcc/configure
++++ b/gcc/configure
+@@ -28598,12 +28598,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
+ esac
+ 
+ case "$target:$tm_file" in
+-  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc*-*-linux*rs6000/biarch64.h*)
++  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc64-ps3-elf* | powerpc*-*-linux*rs6000/biarch64.h*)
+   case "$target" in
+      *le-*-linux*)
+      emul_name="-melf64lppc"
+       ;;
+-     *-*-linux*)
++     *-*-linux* | *-ps3-elf*)
+      emul_name="-melf64ppc"
+       ;;
+      *-*-freebsd*)
+diff --git a/gcc/configure.ac b/gcc/configure.ac
+index 1d5a9d7c6..e568cb3f8 100644
+--- a/gcc/configure.ac
++++ b/gcc/configure.ac
+@@ -5462,12 +5462,12 @@ EOF
+ esac
+ 
+ case "$target:$tm_file" in
+-  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc*-*-linux*rs6000/biarch64.h*)
++  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc64-ps3-elf* | powerpc*-*-linux*rs6000/biarch64.h*)
+   case "$target" in
+      *le-*-linux*)
+      emul_name="-melf64lppc"
+       ;;
+-     *-*-linux*)
++     *-*-linux* | *-ps3-elf*)
+      emul_name="-melf64ppc"
+       ;;
+      *-*-freebsd*)
 diff --git a/libgcc/config.host b/libgcc/config.host
 index bedcf1017..8d6c8feff 100644
 --- a/libgcc/config.host
