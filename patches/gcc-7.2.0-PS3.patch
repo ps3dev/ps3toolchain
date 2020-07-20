@@ -32,7 +32,7 @@ index a9196cd26..f2a94403d 100644
  	case ${target} in
 diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
 new file mode 100644
-index 000000000..438c51f69
+index 000000000..86da868b5
 --- /dev/null
 +++ b/gcc/config/rs6000/cell64lv2.h
 @@ -0,0 +1,587 @@
@@ -181,7 +181,7 @@ index 000000000..438c51f69
 +	  else							\
 +	    {							\
 +	      if (!global_options_set.x_rs6000_current_cmodel)	\
-+		SET_CMODEL (CMODEL_MEDIUM);			\
++		SET_CMODEL (CMODEL_SMALL);			\
 +	      if (rs6000_current_cmodel != CMODEL_SMALL)	\
 +		{						\
 +		  if (!global_options_set.x_TARGET_NO_FP_IN_TOC) \
