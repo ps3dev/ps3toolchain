@@ -1,0 +1,71 @@
+diff --git a/psl1ght/tools/cgcomp/Makefile b/psl1ght/tools/cgcomp/Makefile
+index 610a285..1aca3b1 100644
+--- a/psl1ght/tools/cgcomp/Makefile
++++ b/psl1ght/tools/cgcomp/Makefile
+@@ -60,9 +60,9 @@ endif
+
+ ifneq (,$(findstring Darwin,$(UNAME)))
+ 	SDK		:= $(shell xcrun --show-sdk-path)
+-	OSX_MIN		:= $(shell defaults read $(shell xcrun --show-sdk-platform-path)/Info MinimumSDKVersion 2> /dev/null || 10.4)
++	OSX_MIN		:= $(shell defaults read $(shell xcrun --show-sdk-platform-path 2> /dev/null)/Info MinimumSDKVersion 2> /dev/null || xcrun --show-sdk-version 2> /dev/null || echo 10.4)
+ 	OSXCFLAGS	:= -mmacosx-version-min=$(OSX_MIN)
+-	OSXCXXFLAGS	:=	$(OSXCFLAGS)
+-	CXXFLAGS	+=	-fvisibility=hidden
++	OSXCXXFLAGS	:= $(OSXCFLAGS)
++	CXXFLAGS	+= -fvisibility=hidden
+ 	LDFLAGS += -mmacosx-version-min=$(OSX_MIN) -Wl,-syslibroot,$(SDK)
+ endif
+diff --git a/psl1ght/tools/fself/Makefile b/psl1ght/tools/fself/Makefile
+index 1807942..89dd7d7 100644
+--- a/psl1ght/tools/fself/Makefile
++++ b/psl1ght/tools/fself/Makefile
+@@ -47,7 +47,7 @@ endif
+
+ ifneq (,$(findstring Darwin,$(UNAME)))
+ 	SDK			:= $(shell xcrun --show-sdk-path)
+-	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path)/Info MinimumSDKVersion 2> /dev/null || 10.4)
++	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path 2> /dev/null)/Info MinimumSDKVersion 2> /dev/null || xcrun --show-sdk-version 2> /dev/null || echo 10.4)
+ 	OSXCFLAGS	:= -mmacosx-version-min=$(OSX_MIN)
+ 	OSXCXXFLAGS	:=	$(OSXCFLAGS)
+ 	CXXFLAGS	+=	-fvisibility=hidden
+diff --git a/psl1ght/tools/generic/Makefile b/psl1ght/tools/generic/Makefile
+index 0ce8b58..b8e1c5c 100644
+--- a/psl1ght/tools/generic/Makefile
++++ b/psl1ght/tools/generic/Makefile
+@@ -29,7 +29,7 @@ endif
+
+ ifneq (,$(findstring Darwin,$(shell uname -s)))
+ 	SDK	:=	$(shell xcrun --show-sdk-path)
+-	OSX_MIN := $(shell defaults read $(shell xcrun --show-sdk-platform-path)/Info MinimumSDKVersion 2> /dev/null || 10.4)
++	OSX_MIN := $(shell defaults read $(shell xcrun --show-sdk-platform-path 2> /dev/null)/Info MinimumSDKVersion 2> /dev/null || xcrun --show-sdk-version 2> /dev/null || echo 10.4)
+ 	CFLAGS += -mmacosx-version-min=$(OSX_MIN) -isysroot $(SDK) -Wl,-syslibroot,$(SDK)
+ endif
+
+diff --git a/psl1ght/tools/geohot/Makefile b/psl1ght/tools/geohot/Makefile
+index 18086e6..a6e2823 100644
+--- a/psl1ght/tools/geohot/Makefile
++++ b/psl1ght/tools/geohot/Makefile
+@@ -34,7 +34,7 @@ endif
+
+ ifneq (,$(findstring Darwin,$(UNAME)))
+ 	SDK			:= $(shell xcrun --show-sdk-path)
+-	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path)/Info MinimumSDKVersion 2> /dev/null || 10.4)
++	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path 2> /dev/null)/Info MinimumSDKVersion 2> /dev/null || xcrun --show-sdk-version 2> /dev/null || echo 10.4)
+ 	OSXCFLAGS	:= -mmacosx-version-min=$(OSX_MIN)
+ 	OSXCXXFLAGS	:=	$(OSXCFLAGS)
+ 	CXXFLAGS	+=	-fvisibility=hidden
+diff --git a/psl1ght/tools/ps3load/Makefile b/psl1ght/tools/ps3load/Makefile
+index d59ddb8..e05e8cb 100644
+--- a/psl1ght/tools/ps3load/Makefile
++++ b/psl1ght/tools/ps3load/Makefile
+@@ -38,8 +38,8 @@ ifneq (,$(findstring MINGW,$(UNAME)))
+ endif
+
+ ifneq (,$(findstring Darwin,$(shell uname -s)))
+-	SDK	:=	$(shell xcrun --show-sdk-path)
+-	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path)/Info MinimumSDKVersion 2> /dev/null || 10.4)
++	SDK		:= $(shell xcrun --show-sdk-path)
++	OSX_MIN 	:= $(shell defaults read $(shell xcrun --show-sdk-platform-path 2> /dev/null)/Info MinimumSDKVersion 2> /dev/null || xcrun --show-sdk-versin 2> /dev/null || echo 10.4)
+ 	OSXCFLAGS	:= -mmacosx-version-min=$(OSX_MIN) -isysroot $(SDK)
+ 	OSXCXXFLAGS	:=	$(OSXCFLAGS)
+ 	CXXFLAGS	+=	-fvisibility=hidden
