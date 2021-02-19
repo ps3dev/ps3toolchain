@@ -44,6 +44,7 @@ fi
 cd ${GCC}/build-ppu
 
 ## Configure the build.
+CFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" \
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
     --disable-dependency-tracking \
     --disable-libcc1 \
@@ -58,6 +59,8 @@ cd ${GCC}/build-ppu
     --enable-threads \
     --with-cpu="cell" \
     --with-newlib \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
     --with-system-zlib
 
 ## Compile and install.
