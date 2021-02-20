@@ -44,7 +44,6 @@ fi
 cd ${GCC}/build-spu
 
 ## Configure the build.
-CFLAGS_FOR_TARGET="-O2" LDFLAGS_FOR_TARGET="" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-dependency-tracking \
     --disable-libcc1 \
