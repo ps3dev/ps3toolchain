@@ -58,6 +58,8 @@ cd ${GCC}/build-ppu
     --enable-threads \
     --with-cpu="cell" \
     --with-newlib \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
     --with-system-zlib
 
 ## Compile and install.

@@ -55,7 +55,9 @@ cd ${GCC}/build-spu
     --enable-languages="c,c++" \
     --enable-lto \
     --enable-threads \
-    --with-newlib
+    --with-newlib \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp 
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
