@@ -1,0 +1,30 @@
+--- gdb-7.5.1.orig/readline/rltty.c	2011-05-12 01:38:39.000000000 +0200
++++ gdb-7.5.1/readline/rltty.c	2021-01-28 17:15:19.470653400 +0100
+@@ -39,7 +39,13 @@
+ 
+ #if defined (GWINSZ_IN_SYS_IOCTL)
+ #  include <sys/ioctl.h>
+-#endif /* GWINSZ_IN_SYS_IOCTL */
++#endif
++
++#ifdef __APPLE__
++int ioctl(int, unsigned long, ...); /* For Darwin, ioctl() is in "sys/ioctl.h",
++                                      but except for special control commands,
++                                      we do not want to include it.  */
++#endif
+ 
+ #include "rltty.h"
+ #include "readline.h"
+--- gdb-7.5.1.orig/readline/terminal.c	2011-05-12 01:38:39.000000000 +0200
++++ gdb-7.5.1/readline/terminal.c	2021-01-28 16:44:32.392817299 +0100
+@@ -55,6 +55,10 @@
+ #  include <sys/ioctl.h>
+ #endif /* GWINSZ_IN_SYS_IOCTL && !TIOCGWINSZ */
+ 
++#ifdef __APPLE__
++#include <sys/ioctl.h>
++#endif
++
+ #ifdef __MSDOS__
+ # include <pc.h>
+ #endif
