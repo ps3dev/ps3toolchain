@@ -36,7 +36,7 @@ fi
 cd ${BINUTILS}/build-spu
 
 ## Configure the build.
-CFLAGS="-g -Os" CXXFLAGS="-g -Os" CCFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGET="-g -Os" \
+CFLAGS="-Os" CXXFLAGS="-Os" CCFLAGS_FOR_TARGET="-Os" CXXFLAGS_FOR_TARGET="-Os" \
 ../configure --prefix="$PS3DEV/spu" --target="spu-ps3-elf" --disable-nls --disable-shared --disable-debug --disable-dependency-tracking \
              --disable-werror --with-gcc --with-gnu-as --with-gnu-ld
 
