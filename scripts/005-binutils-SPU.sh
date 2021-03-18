@@ -43,4 +43,4 @@ CFLAGS="-g -Os" CXXFLAGS="-g -Os" CCFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGE
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install -j $PROCS
