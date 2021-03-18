@@ -5,21 +5,20 @@
 
 GCC="gcc-7.2.0"
 NEWLIB="newlib-1.20.0"
-PS3="-PS3"
 
 if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GCC}.tar.gz ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.gz; fi
+  if [ ! -f ${GCC}.tar.xz ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.xz; fi
   if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && pigz -dc ${GCC}.tar.gz | tar -xvf -
+  rm -Rf ${GCC} && tar -xvJf ${GCC}.tar.xz
   rm -Rf ${NEWLIB} && pigz -dc ${NEWLIB}.tar.gz | tar -xvf -
 
   ## Patch the source code.
-  cat ../patches/${GCC}${PS3}.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}${PS3}.patch | patch -p1 -d ${NEWLIB}
+  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
+  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -47,30 +46,11 @@ fi
 cd ${GCC}/build-ppu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-    --disable-dependency-tracking \
-    --disable-libcc1 \
-    --disable-libstdcxx-pch \
-    --disable-multilib \
-    --disable-nls \
-    --disable-shared \
-    --disable-win32-registry \
-    --enable-languages="c,c++" \
-    --enable-long-double-128 \
-    --enable-lto \
-    --enable-threads \
-    --with-cpu="cell" \
-    --with-newlib \
-    --enable-newlib-multithread \
-    --enable-newlib-hw-fp \
-    --with-system-zlib \
-    --with-tune="cell" \
-    CFLAGS="-O3" \
-    CXXFLAGS="-g -O3" \
-    CCFLAGS_FOR_TARGET="-g -O3" \
-    CXXFLAGS_FOR_TARGET="-g -O3" \
-    GOCFLAGS_FOR_TARGET="-O3 -g" \
-    BOOT_CFLAGS="-g -O3" \
+CFLAGS="-g -O3" CXXFLAGS="-g -O3" CCFLAGS_FOR_TARGET="-g -O3" GOCFLAGS_FOR_TARGET="-g -O3" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-dependency-tracking --disable-libcc1 --disable-libstdcxx-pch \
+             --disable-multilib --disable-nls --disable-shared --disable-win32-registry --enable-languages="c,c++" \
+             --enable-long-double-128 --enable-lto --enable-threads --with-cpu="cell" --with-newlib --enable-newlib-multithread \
+             --enable-newlib-hw-fp --with-system-zlib --with-tune="cell" \
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

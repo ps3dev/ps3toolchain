@@ -28,7 +28,7 @@ videogame system.
   be enough to install everything necessary:
 
 ```bash
-  sudo apt install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang pigz
+  sudo apt install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool libtool-bin python-dev lbzip2 libgmp3-dev pkg-config g++ libssl-dev clang pigz
 ```
 
 #### macOS
@@ -36,7 +36,7 @@ videogame system.
 - On macOS systems, if you have [Homebrew](http://brew.sh) package manager, the following command line should be enough to install everything necessary:
 
 ```bash
-brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config pigz
+brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config pigz lbzip2
 ```
 
 ### Install toolchain

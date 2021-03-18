@@ -8,14 +8,14 @@ BINUTILS="binutils-2.22"
 if [ ! -d ${BINUTILS} ]; then
 
   ## Download the source code.
-  if [ ! -f ${BINUTILS}.tar.gz ]; then wget --continue https://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.gz; fi
+  if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue https://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2; fi
 
   ## Download an up-to-date config.guess and config.sub
   if [ ! -f config.guess ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
   if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
 
   ## Unpack the source code.
-  pigz -dc ${BINUTILS}.tar.gz | tar -xvf -
+  tar -I lbzip2 -xvf ${BINUTILS}.tar.bz2
 
   ## Patch the source code.
   cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
@@ -36,21 +36,9 @@ fi
 cd ${BINUTILS}/build-spu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/spu" --target="spu" \
-    --disable-nls \
-    --disable-shared \
-    --disable-debug \
-    --disable-dependency-tracking \
-    --disable-werror \
-    --with-gcc \
-    --with-gnu-as \
-    --with-gnu-ld \
-    CFLAGS="-O3" \
-    CXXFLAGS="-g -O3" \
-    CCFLAGS_FOR_TARGET="-g -O3" \
-    CXXFLAGS_FOR_TARGET="-g -O3" \
-    GOCFLAGS_FOR_TARGET="-O3 -g" \
-    BOOT_CFLAGS="-g -O3" \
+CFLAGS="-g -Os" CXXFLAGS="-g -Os" CCFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGET="-g -Os" \
+../configure --prefix="$PS3DEV/spu" --target="spu-ps3-elf" --disable-nls --disable-shared --disable-debug --disable-dependency-tracking \
+             --disable-werror --with-gcc --with-gnu-as --with-gnu-ld
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
