@@ -44,6 +44,7 @@ fi
 cd ${GCC}/build-spu
 
 ## Configure the build.
+CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fschedule-insns -mdual-nops -mwarn-reloc" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-dependency-tracking \
     --disable-libcc1 \
@@ -57,7 +58,8 @@ cd ${GCC}/build-spu
     --enable-threads \
     --with-newlib \
     --enable-newlib-multithread \
-    --enable-newlib-hw-fp 
+    --enable-newlib-hw-fp \
+    --with-pic
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
