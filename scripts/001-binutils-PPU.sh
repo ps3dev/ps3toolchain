@@ -36,11 +36,11 @@ fi
 cd ${BINUTILS}/build-ppu
 
 ## Configure the build.
-CFLAGS="-O3" CXXFLAGS="-O3" CCFLAGS_FOR_TARGET="-O3" CXXFLAGS_FOR_TARGET="-O3" \
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-nls --disable-shared --disable-debug \
-             --disable-dependency-tracking --disable-werror --enable-64-bit-bfd --with-gcc --with-gnu-as --with-gnu-ld \
+CFLAGS="-O3" CXXFLAGS="-O3" CFLAGS_FOR_TARGET="-O3" CXXFLAGS_FOR_TARGET="-O3" BOOT_CFLAGS="-O3" GOCFLAGS_FOR_TARGET="-O3" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-nls --disable-shared --disable-debug --disable-dependency-tracking \
+             --disable-werror --enable-64-bit-bfd --with-gcc --with-gnu-as --with-gnu-ld --with-cpu="cell" --with-tune="cell" \
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS --no-print-directory && ${MAKE:-make} libdir=host-libs/lib install -j $PROCS --no-print-directory
+${MAKE:-make} -j $PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j $PROCS --no-print-directory

@@ -46,12 +46,12 @@ fi
 cd ${GCC}/build-spu
 
 ## Configure the build.
-CFLAGS="-g -Os" CXXFLAGS="-g -Os" CCFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGET="-g -Os" \
-../configure --prefix="$PS3DEV/spu" --target="spu-ps3-elf" --disable-dependency-tracking --disable-libcc1 --disable-libssp \
-             --disable-multilib --disable-nls --disable-shared --disable-win32-registry --enable-languages="c,c++" --enable-lto \
-             --enable-threads --with-newlib --enable-newlib-multithread --enable-newlib-hw-fp \
+CFLAGS="-g -Os" CXXFLAGS="-g -Os" CFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGET="-g -Os" GOCFLAGS_FOR_TARGET="-g -Os" BOOT_CFLAGS="-g -Os" \
+../configure --prefix="$PS3DEV/spu" --target="spu" --disable-dependency-tracking --disable-libcc1 --disable-libssp --disable-multilib \
+             --disable-nls --disable-shared --disable-win32-registry --enable-languages="c,c++" --enable-lto --enable-threads --with-newlib \
+             --enable-newlib-multithread --enable-newlib-hw-fp --with-tune="cell" --with-endian="big" \
     
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} all -j $PROCS && ${MAKE:-make} install -j $PROCS
+${MAKE:-make} all -j $PROCS --no-print-directory && ${MAKE:-make} install -j $PROCS --no-print-directory

@@ -18,7 +18,14 @@ videogame system.
   export PATH=$PATH:$PS3DEV/spu/bin
 ```
 
-2. Update the shell for it with the new variables (on Linux the command is `source ~/.bashrc`)
+2. Give yourself permission to write files to the folder yourself (Linux example)
+
+```bash
+sudo mkdir $PS3DEV
+sudo chown -R $USER:$USER $PS3DEV
+```
+
+3. Update the shell for it with the new variables (on Linux the command is `source ~/.bashrc`)
 
 ### Install dependencies
 
