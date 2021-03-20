@@ -1,4 +1,5 @@
 #!/bin/bash
+#
 # toolchain-mingw.sh by Miigotu (miigotu@hotmail.com)
 
 MINGW32EXPORTS=\

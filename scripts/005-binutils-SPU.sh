@@ -1,5 +1,7 @@
 #!/bin/sh -e
+#
 # binutils-SPU.sh by Naomi Peori (naomi@peori.ca)
+# Modified by luizfernandonb (luizfernando.nb@outlook.com)
 
 BINUTILS="binutils-2.22"
 
@@ -13,7 +15,7 @@ if [ ! -d ${BINUTILS} ]; then
   if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
 
   ## Unpack the source code.
-  tar xfvj ${BINUTILS}.tar.bz2
+  tar -xvjf ${BINUTILS}.tar.bz2
 
   ## Patch the source code.
   cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
@@ -34,17 +36,11 @@ fi
 cd ${BINUTILS}/build-spu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/spu" --target="spu" \
-    --disable-nls \
-    --disable-shared \
-    --disable-debug \
-    --disable-dependency-tracking \
-    --disable-werror \
-    --with-gcc \
-    --with-gnu-as \
-    --with-gnu-ld
+CFLAGS="-Os" CXXFLAGS="-Os" CFLAGS_FOR_TARGET="-Os" CXXFLAGS_FOR_TARGET="-Os" GOCFLAGS_FOR_TARGET="-Os" BOOT_CFLAGS="-Os" \
+../configure --prefix="$PS3DEV/spu" --target="spu" --disable-nls --disable-shared --disable-debug --disable-dependency-tracking --disable-werror \
+             --with-gcc --with-gnu-as --with-gnu-ld -with-cpu="cell" --with-tune="cell" --with-endian="big" \
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+${MAKE:-make} -j $PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j $PROCS --no-print-directory

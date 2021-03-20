@@ -1,4 +1,5 @@
 #!/bin/sh -e
+#
 # symlinks-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the PPU directory.
@@ -18,4 +19,3 @@ for i in `ls powerpc64-ps3-elf-* | cut -c19-`; do
     ln -s powerpc64-ps3-elf-${i} ppu-${i}
   fi
 done
-

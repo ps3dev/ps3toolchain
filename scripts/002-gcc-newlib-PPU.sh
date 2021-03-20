@@ -1,5 +1,7 @@
 #!/bin/sh -e
+#
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
+# Modified by luizfernandonb (luizfernando.nb@outlook.com)
 
 GCC="gcc-7.2.0"
 NEWLIB="newlib-1.20.0"
@@ -11,8 +13,8 @@ if [ ! -d ${GCC} ]; then
   if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && tar xfvJ ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
+  rm -Rf ${GCC} && tar -xvJf ${GCC}.tar.xz
+  rm -Rf ${NEWLIB} && tar -xvf ${NEWLIB}.tar.gz
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
@@ -44,25 +46,14 @@ fi
 cd ${GCC}/build-ppu
 
 ## Configure the build.
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-    --disable-dependency-tracking \
-    --disable-libcc1 \
-    --disable-libstdcxx-pch \
-    --disable-multilib \
-    --disable-nls \
-    --disable-shared \
-    --disable-win32-registry \
-    --enable-languages="c,c++" \
-    --enable-long-double-128 \
-    --enable-lto \
-    --enable-threads \
-    --with-cpu="cell" \
-    --with-newlib \
-    --enable-newlib-multithread \
-    --enable-newlib-hw-fp \
-    --with-system-zlib
+CFLAGS="-g -O3" CXXFLAGS="-g -O3" CFLAGS_FOR_TARGET="-g -O3" CXXFLAGS_FOR_TARGET="-g -O3" GOCFLAGS_FOR_TARGET="-g -O3" BOOT_CFLAGS="-g -O3" \
+GOCFLAGS_FOR_TARGET="-g -O3" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-dependency-tracking --disable-libcc1 --disable-libstdcxx-pch \
+             --disable-multilib --disable-nls --disable-shared --disable-win32-registry --enable-languages="c,c++" --enable-long-double-128 \
+             --enable-lto --enable-threads --with-cpu="cell" --with-newlib --enable-newlib-multithread --enable-newlib-hw-fp --with-system-zlib \
+             --with-tune="cell" \
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+${MAKE:-make} all -j $PROCS --no-print-directory && ${MAKE:-make} install -j $PROCS --no-print-directory
