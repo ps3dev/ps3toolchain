@@ -7,3 +7,4 @@
 [ -f /opt/local/include/libelf/libelf.h ] ||
 [ -f /usr/local/include/libelf/libelf.h ] ||
 { echo "ERROR: Install libelf before continuing."; exit 1; }
+# sudo apt-get install libelf-dev

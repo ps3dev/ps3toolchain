@@ -8,3 +8,4 @@
 [ -f /mingw/include/curses.h ] ||
 [ -f /usr/local/opt/ncurses/include/ncurses.h ] ||
 { echo "ERROR: Install ncurses before continuing."; exit 1; }
+# sudo apt-get install libncurses5-dev

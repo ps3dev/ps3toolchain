@@ -6,7 +6,7 @@ cd "$(dirname "$0")" ||
 { echo "ERROR: Could not enter the ps3toolchain directory."; exit 1; }
 
 ## Create the build directory.
-(mkdir -p build && cd build) ||
+{ mkdir -p build && cd build;} ||
 { echo "ERROR: Could not create the build directory."; exit 1; }
 
 ## Use gmake if available

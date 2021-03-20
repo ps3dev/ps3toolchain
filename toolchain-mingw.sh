@@ -137,7 +137,8 @@ if [ "$MSYSTEM" == MINGW32 ]; then
   fi
 
   ## Create the build directory.
-  (mkdir -p build && cd build) || { env echo "ERROR: Could not create the build directory."; exit 1; }
+  { mkdir -p build && cd build; } ||
+  { env echo "ERROR: Could not create the build directory."; exit 1; }
 
   ## Install libelf
   if [ ! -f /mingw/include/libelf.h ]; then

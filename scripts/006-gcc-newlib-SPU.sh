@@ -15,8 +15,8 @@ if [ ! -d ${GCC} ]; then
   rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+  patch -p1 -d ${GCC} < ../patches/${GCC}-PS3.patch
+  patch -p1 -d ${NEWLIB} < ../patches/${NEWLIB}-PS3.patch
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -62,6 +62,6 @@ CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fsched
     --with-pic
 
 ## Compile and install.
-PROCS="$(nproc --all 2>&1)" || ret=$?
-if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+PROCESSORS="$(nproc --all 2>&1)"
+[ -n "$PROCESSORS" ] && [ "$PROCESSORS" -gt 0 ] || PROCESSORS=4
+${MAKE:-make} -j $PROCESSORS all && ${MAKE:-make} install

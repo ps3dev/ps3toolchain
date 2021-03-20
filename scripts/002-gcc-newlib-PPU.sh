@@ -15,15 +15,15 @@ if [ ! -d ${GCC} ]; then
   rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+  patch -p1 -d ${GCC} < ../patches/${GCC}-PS3.patch
+  patch -p1 -d ${NEWLIB} < ../patches/${NEWLIB}-PS3.patch
 
   ## Enter the source code directory.
-  cd ${GCC}
+  cd "${GCC}"
 
   ## Create the newlib symlinks.
-  ln -s ../${NEWLIB}/newlib newlib
-  ln -s ../${NEWLIB}/libgloss libgloss
+  ln -s "../${NEWLIB}/newlib" newlib
+  ln -s "../${NEWLIB}/libgloss" libgloss
 
   ## Download the prerequisites.
   ./contrib/download_prerequisites
@@ -63,6 +63,6 @@ cd ${GCC}/build-ppu
     --with-system-zlib
 
 ## Compile and install.
-PROCS="$(nproc --all 2>&1)" || ret=$?
-if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+PROCESSORS="$(nproc --all 2>&1)"
+[ -n "$PROCESSORS" ] && [ "$PROCESSORS" -gt 0 ] || PROCESSORS=4
+${MAKE:-make} -j $PROCESSORS all && ${MAKE:-make} install

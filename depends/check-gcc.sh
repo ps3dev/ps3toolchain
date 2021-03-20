@@ -4,3 +4,4 @@
 ## Check for gcc.
 gcc --version 1>/dev/null 2>&1 ||
 { echo "ERROR: Install gcc before continuing."; exit 1; }
+# sudo apt-get install gcc
