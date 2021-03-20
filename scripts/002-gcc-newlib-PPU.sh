@@ -14,7 +14,7 @@ if [ ! -d ${GCC} ]; then
 
   ## Unpack the source code.
   rm -Rf ${GCC} && tar -xvJf ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && pigz -dc ${NEWLIB}.tar.gz | tar -xvf -
+  rm -Rf ${NEWLIB} && tar -xvf ${NEWLIB}.tar.gz
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
