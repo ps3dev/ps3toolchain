@@ -2,39 +2,43 @@
 # toolchain.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the ps3toolchain directory.
-cd "`dirname $0`" || { echo "ERROR: Could not enter the ps3toolchain directory."; exit 1; }
+cd "$(dirname "$0")" ||
+{ echo "ERROR: Could not enter the ps3toolchain directory."; exit 1; }
 
 ## Create the build directory.
-mkdir -p build && cd build || { echo "ERROR: Could not create the build directory."; exit 1; }
+(mkdir -p build && cd build) ||
+{ echo "ERROR: Could not create the build directory."; exit 1; }
 
 ## Use gmake if available
-which gmake 1>/dev/null 2>&1 && export MAKE=gmake
+command -v gmake && export MAKE=gmake
 
 ## Fetch the depend scripts.
-DEPEND_SCRIPTS=`ls ../depends/*.sh | sort`
+DEPEND_SCRIPTS=$(find ../depends -name "*.sh" | sort)
 
 ## Run all the depend scripts.
-for SCRIPT in $DEPEND_SCRIPTS; do "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; } done
+for SCRIPT in $DEPEND_SCRIPTS; do
+  "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; }
+done
 
 ## Fetch the build scripts.
-BUILD_SCRIPTS=`ls ../scripts/*.sh | sort`
+BUILD_SCRIPTS=$(find ../scripts -name "*.sh" | sort)
 
 ## If specific steps were requested...
-if [ $1 ]; then
+if [ "$1" ]; then
 
   ## Find the requested build scripts.
   REQUESTS=""
 
-  for STEP in $@; do
+  for STEP in "$@"; do
     SCRIPT=""
     for i in $BUILD_SCRIPTS; do
-      if [ `basename $i | cut -d'-' -f1` -eq $STEP ]; then
+      if [ "$(basename "$i" | cut -d'-' -f1)" -eq "$STEP" ]; then
         SCRIPT=$i
         break
       fi
     done
 
-    [ -z $SCRIPT ] && { echo "ERROR: unknown step $STEP"; exit 1; }
+    [ -z "$SCRIPT" ] && { echo "ERROR: unknown step \"$STEP\""; exit 1; }
 
     REQUESTS="$REQUESTS $SCRIPT"
   done
