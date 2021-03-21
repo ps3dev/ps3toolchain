@@ -2,7 +2,6 @@
 # check-gmp.sh by Timothy Redaelli (timothy@redaelli.eu)
 
 # i386 dumpmachine returns i686-linux-gnu
-echo $(gcc -dumpmachine)
 [ -f /usr/include/"$(gcc -dumpmachine)"/gmp.h ] ||
 [ -f /usr/include/i386-linux-gnu/gmp.h ] ||
 [ -f /usr/include/gmp.h ] ||
