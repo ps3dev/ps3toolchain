@@ -1,4 +1,4 @@
-name: ci
+name: Check Build and Push
 
 on:
   push:
