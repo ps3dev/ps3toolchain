@@ -699,6 +699,19 @@ index 1d5a9d7c6..e568cb3f8 100644
       emul_name="-melf64ppc"
        ;;
       *-*-freebsd*)
+diff --git a/libcpp/lex.c b/libcpp/lex.c
+index 9edd2a6af..15585ff93 100644
+--- a/libcpp/lex.c
++++ b/libcpp/lex.c
+@@ -568,7 +568,7 @@ search_line_fast (const uchar *s, const uchar *end ATTRIBUTE_UNUSED)
+     {
+       vc m_nl, m_cr, m_bs, m_qm;
+ 
+-      data = *((const vc *)s);
++      data = __builtin_vec_vsx_ld (0, s);
+       s += 16;
+ 
+       m_nl = (vc) __builtin_vec_cmpeq(data, repl_nl);
 diff --git a/libgcc/config.host b/libgcc/config.host
 index bedcf1017..8d6c8feff 100644
 --- a/libgcc/config.host
