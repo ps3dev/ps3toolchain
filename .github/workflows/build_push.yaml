@@ -1,4 +1,4 @@
-name: Check Build and Push
+name: CI
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - '*'
+  workflow_dispatch:
 
 jobs:
   ShellCheck:
@@ -21,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: ShellCheck
     steps:
+      - name: Make Space
+        run: |
+          sudo rm -rf /usr/local/lib/android # will release about 10 GB if you don't need Android
+          sudo rm -rf /usr/share/dotnet # will release about 20GB if you don't need .NET
       - name: Checkout
         if: success()
         id: checkout
@@ -44,8 +49,6 @@ jobs:
         id: prepare
         run: |
           echo ::set-output name=docker_platforms::linux/amd64,linux/386
-          echo ::set-output name=docker_username::miigotu
-          echo ::set-output name=github_image::ghcr.io/${GITHUB_REPOSITORY,,}/ps3dev
           VERSION_TAG=${GITHUB_REF#refs/*/}
           echo ::set-output name=version::${VERSION_TAG%/merge}
 #      - name: Login to DockerHub
@@ -53,15 +56,15 @@ jobs:
 #        id: login_docker
 #        uses: docker/login-action@v1
 #        with:
-#          username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Login to GitHub Container Registry
         if: success()
         id: login_github
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ steps.prepare.outputs.docker_username }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push (master)
         if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
@@ -72,8 +75,10 @@ jobs:
           platforms: ${{ steps.prepare.outputs.docker_platforms }}
           push: true
           tags: |
-            ${{ steps.prepare.outputs.github_image }}:master
-            ${{ steps.prepare.outputs.github_image }}:latest
+            ghcr.io/ps3dev/ps3dev:master
+            ghcr.io/ps3dev/ps3dev:latest
+#            ps3dev/ps3dev:master
+#            ps3dev/ps3dev:latest
       - name: Build and push (development)
         if: success() && steps.prepare.outputs.version != 'master'
         id: build_push_development
@@ -83,7 +88,8 @@ jobs:
           platforms: ${{ steps.prepare.outputs.docker_platforms }}
           push: true
           tags: |
-            ${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}
+            ghcr.io/ps3dev/ps3dev:${{ steps.prepare.outputs.version }}
+#            ps3dev/ps3dev:${{ steps.prepare.outputs.version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
       - name: Move cache
