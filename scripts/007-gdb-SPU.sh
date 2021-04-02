@@ -16,7 +16,7 @@ if [ ! -d ${GDB} ]; then
   tar xfvj ${GDB}.tar.bz2
 
   ## Patch the source code.
-  cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
+  patch -p1 -d ${GDB} < ../patches/${GDB}-PS3.patch
 
   ## Replace config.guess and config.sub
   cp config.guess config.sub ${GDB}
@@ -40,6 +40,6 @@ cd ${GDB}/build-spu
     --disable-werror
 
 ## Compile and install.
-PROCS="$(nproc --all 2>&1)" || ret=$?
-if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+PROCESSORS="$(nproc --all 2>&1)"
+[ -n "$PROCESSORS" ] && [ "$PROCESSORS" -gt 0 ] || PROCESSORS=4
+${MAKE:-make} -j $PROCESSORS && ${MAKE:-make} libdir=host-libs/lib install

@@ -16,7 +16,7 @@ if [ ! -d ${BINUTILS} ]; then
   tar xfvj ${BINUTILS}.tar.bz2
 
   ## Patch the source code.
-  cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
+  patch -p1 -d ${BINUTILS} < ../patches/${BINUTILS}-PS3.patch
 
   ## Replace config.guess and config.sub
   cp config.guess config.sub ${BINUTILS}
@@ -45,6 +45,6 @@ cd ${BINUTILS}/build-spu
     --with-gnu-ld
 
 ## Compile and install.
-PROCS="$(nproc --all 2>&1)" || ret=$?
-if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+PROCESSORS="$(nproc --all 2>&1)"
+[ -n "$PROCESSORS" ] && [ "$PROCESSORS" -gt 0 ] || PROCESSORS=4
+${MAKE:-make} -j $PROCESSORS && ${MAKE:-make} libdir=host-libs/lib install
