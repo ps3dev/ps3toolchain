@@ -3,14 +3,16 @@
 # psl1ght.sh by Naomi Peori (naomi@peori.ca)
 # Modified by luizfernandonb (luizfernando.nb@outlook.com)
 
+PS3DEV_PSL1GHT='psl1ght'
+
 ## Download the source code.
-wget --no-check-certificate https://github.com/ps3dev/PSL1GHT/tarball/master -O psl1ght.tar.gz
+if [ ! -f ${PS3DEV_PSL1GHT}.tar.gz ]; then wget --no-check-certificate https://github.com/ps3dev/${PS3DEV_PSL1GHT}/tarball/master -O ${PS3DEV_PSL1GHT}.tar.gz; fi
 
 ## Unpack the source code.
-rm -Rf psl1ght && mkdir psl1ght && pigz -dc psl1ght.tar.gz | tar --strip-components=1 --directory=psl1ght -xvf -
+rm -Rf ${PS3DEV_PSL1GHT} && mkdir ${PS3DEV_PSL1GHT} && tar xvf ${PS3DEV_PSL1GHT}.tar.gz --strip-components=1 --directory=${PS3DEV_PSL1GHT}
 
 ## Create the build directory.
-cd psl1ght
+cd ${PS3DEV_PSL1GHT}
 
 ## Compile and install.
-${MAKE:-make} install-ctrl && ${MAKE:-make} && ${MAKE:-make} install
+${MAKE:-make} install-ctrl -j$(nproc) --no-print-directory && ${MAKE:-make} -j$(nproc) --no-print-directory && ${MAKE:-make} install -j$(nproc) --no-print-directory

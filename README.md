@@ -7,49 +7,53 @@ videogame system.
 
 ## How do I use it?
 
-1. If you are using Linux or macOS, add this to the login script (`~/.bashrc` on Linux)
+1. Set the `PS3DEV` and `PS1LIGHT` environment variables together with the executable/folder path (Linux folder `~/.bashrc` example)
 
 ```bash
-  export PS3DEV=/usr/local/ps3dev
-  export PSL1GHT=$PS3DEV
+ export PS3DEV=/usr/local/ps3dev
+ export PSL1GHT=$PS3DEV
 
-  export PATH=$PATH:$PS3DEV/bin
-  export PATH=$PATH:$PS3DEV/ppu/bin
-  export PATH=$PATH:$PS3DEV/spu/bin
+ export PATH=$PATH:$PS3DEV/bin
+ export PATH=$PATH:$PS3DEV/ppu/bin
+ export PATH=$PATH:$PS3DEV/spu/bin
 ```
 
-2. Give yourself permission to write files to the folder yourself (Linux example)
+2. Create the `$PS3DEV` folder (Linux example)
 
 ```bash
 sudo mkdir $PS3DEV
+```
+
+3. Give yourself permission to write files to the `$PS3DEV` folder (Linux example)
+
+```bash
 sudo chown -R $USER:$USER $PS3DEV
 ```
 
-3. Update the shell for it with the new variables (on Linux the command is `source ~/.bashrc`)
+4. Make sure the new variables are set in the shell (Linux command example `source ~/.bashrc`)
 
 ### Install dependencies
 
 #### Linux
 
-- Specifically on `debian-based` systems, the following command line should
-  be enough to install everything necessary:
+- For Linux, these are the necessary packages:
 
 ```bash
-  sudo apt install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
+autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
 ```
 
 #### macOS
 
-- On macOS systems, if you have [Homebrew](http://brew.sh) package manager, the following command line should be enough to install everything necessary:
+- And for macOS, these are:
 
 ```bash
-brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config pigz lbzip2
+autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
 ```
 
 ### Install toolchain
 
 3. Run the toolchain script:
- 
+
 ```bash
 ./toolchain.sh
 ```

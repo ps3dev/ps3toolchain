@@ -13,8 +13,8 @@ if [ ! -d ${GCC} ]; then
   if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && tar -xvJf ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && tar -xvf ${NEWLIB}.tar.gz
+  rm -Rf ${GCC} && tar xvJf ${GCC}.tar.xz
+  rm -Rf ${NEWLIB} && tar xvf ${NEWLIB}.tar.gz
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
@@ -56,4 +56,4 @@ GOCFLAGS_FOR_TARGET="-g -O3" \
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} all -j $PROCS --no-print-directory && ${MAKE:-make} install -j $PROCS --no-print-directory
+${MAKE:-make} all -j$PROCS --no-print-directory && ${MAKE:-make} install -j$PROCS --no-print-directory

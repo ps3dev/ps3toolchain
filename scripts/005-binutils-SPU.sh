@@ -15,7 +15,7 @@ if [ ! -d ${BINUTILS} ]; then
   if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
 
   ## Unpack the source code.
-  tar -xvjf ${BINUTILS}.tar.bz2
+  tar xvjf ${BINUTILS}.tar.bz2
 
   ## Patch the source code.
   cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
@@ -43,4 +43,4 @@ CFLAGS="-Os" CXXFLAGS="-Os" CFLAGS_FOR_TARGET="-Os" CXXFLAGS_FOR_TARGET="-Os" GO
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j $PROCS --no-print-directory
+${MAKE:-make} -j$PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j$PROCS --no-print-directory

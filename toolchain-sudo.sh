@@ -1,5 +1,4 @@
 #!/bin/sh
-#
 # toolchain-sudo.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the ps3toolchain directory.

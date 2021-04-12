@@ -3,7 +3,7 @@
 # gdb-PPU.sh by Naomi Peori (naomi@peori.ca)
 # Modified by luizfernandonb (luizfernando.nb@outlook.com)
 
-GDB="gdb-10.1"
+GDB="gdb-7.5.1"
 
 if [ ! -d ${GDB} ]; then
 
@@ -15,7 +15,7 @@ if [ ! -d ${GDB} ]; then
   if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
 
   ## Unpack the source code.
-  tar -xvJf ${GDB}.tar.xz
+  tar xvJf ${GDB}.tar.xz
 
   ## Replace config.guess and config.sub
   cp config.guess config.sub ${GDB}
@@ -40,4 +40,4 @@ CFLAGS="-g -O3" CXXFLAGS="-g -O3" CFLAGS_FOR_TARGET="-g -O3" CXXFLAGS_FOR_TARGET
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j $PROCS --no-print-directory
+${MAKE:-make} -j$PROCS --no-print-directory && ${MAKE:-make} libdir="host-libs/lib" install -j$PROCS --no-print-directory
