@@ -36,7 +36,7 @@ sudo chown -R $USER:$USER $PS3DEV
 
 #### Linux
 
-- For Linux, these are the necessary packages:
+4.1. For Linux, these are the necessary packages:
 
 ```bash
 autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
@@ -44,7 +44,7 @@ autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch p
 
 #### macOS
 
-- And for macOS, these are:
+4.2. And for macOS, these are:
 
 ```bash
 autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
@@ -52,7 +52,7 @@ autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
 
 ### Install toolchain
 
-3. Run the toolchain script:
+5. Run the toolchain script:
 
 ```bash
 ./toolchain.sh

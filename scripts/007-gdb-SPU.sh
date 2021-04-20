@@ -34,7 +34,7 @@ cd ${GDB}/build-spu
 
 ## Configure the build.
 CFLAGS="-g -Os" CXXFLAGS="-g -Os" CFLAGS_FOR_TARGET="-g -Os" CXXFLAGS_FOR_TARGET="-g -Os" GOCFLAGS_FOR_TARGET="-g -Os" BOOT_CFLAGS="-g -Os" \
-../configure --prefix="$PS3DEV/spu" --target="spu" --disable-nls --disable-sim --disable-werror -with-cpu="cell" --with-tune="cell" \
+../configure --prefix="$PS3DEV/spu" --target="spu" --disable-nls --disable-sim --disable-werror --with-cpu="cell" --with-tune="cell" \
              --with-endian="big" \
 
 ## Compile and install.

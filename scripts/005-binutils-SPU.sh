@@ -38,7 +38,7 @@ cd ${BINUTILS}/build-spu
 ## Configure the build.
 CFLAGS="-Os" CXXFLAGS="-Os" CFLAGS_FOR_TARGET="-Os" CXXFLAGS_FOR_TARGET="-Os" GOCFLAGS_FOR_TARGET="-Os" BOOT_CFLAGS="-Os" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" --disable-nls --disable-shared --disable-debug --disable-dependency-tracking --disable-werror \
-             --with-gcc --with-gnu-as --with-gnu-ld -with-cpu="cell" --with-tune="cell" --with-endian="big" \
+             --with-gcc --with-gnu-as --with-gnu-ld --with-cpu="cell" --with-tune="cell" --with-endian="big" \
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

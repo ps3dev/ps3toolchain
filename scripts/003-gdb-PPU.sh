@@ -34,7 +34,7 @@ cd ${GDB}/build-ppu
 
 ## Configure the build.
 CFLAGS="-g -O3" CXXFLAGS="-g -O3" CFLAGS_FOR_TARGET="-g -O3" CXXFLAGS_FOR_TARGET="-g -O3" BOOT_CFLAGS="-g -O3" GOCFLAGS_FOR_TARGET="-g -O3" \
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-multilib --disable-nls --disable-sim --disable-werror -with-cpu="cell" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" --disable-multilib --disable-nls --disable-sim --disable-werror --with-cpu="cell" \
              --with-tune="cell" \
 
 ## Compile and install.
