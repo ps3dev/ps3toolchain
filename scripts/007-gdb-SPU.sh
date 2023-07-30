@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # gdb-SPU.sh by Naomi Peori (naomi@peori.ca)
 
-GDB="gdb-11.2"
+GDB="gdb-8.3.1"
 
 if [ ! -d ${GDB} ]; then
 
@@ -14,6 +14,9 @@ if [ ! -d ${GDB} ]; then
 
   ## Unpack the source code.
   tar xfvJ ${GDB}.tar.xz
+
+  ## Patch the source code.
+  cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
 
   ## Replace config.guess and config.sub
   cp config.guess config.sub ${GDB}
