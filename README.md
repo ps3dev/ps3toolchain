@@ -10,16 +10,15 @@
   How do I use it?
  ==================
 
- 1) Set up your environment by installing the following software:
+## Set up your environment by installing the following software:
 
   autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
   ncurses, patch, python, subversion, wget, zlib, libtool, python,
   bzip2, gmp, pkg-config, g++, libssl-dev, clang
 
-## Linux
+### Linux
 
-  Specifically on debian-based systems, the following command line should
-  be enough to install everything necessary:
+For Debian based distros:
 
 ```bash
   apt-get install autoconf automake bison flex gcc libelf-dev make \
@@ -28,22 +27,23 @@
 ```
 
 For RedHat distros:
+
 ```bash 
   sudo dnf install bison flex gcc elfutils-libelf-devel make python path \
   wget zlib-devel libtool python3-devel bzip2 gmp-devel pkg-config gcc \
   openssl-devel texinfo ncurses-devel
 ```
 
-## macOS
+### macOS
 
   On macOS systems, if you have [Homebrew](http://brew.sh) package manager, the following command line should
   be enough to install everything necessary:
 
 ```bash
-brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
+  brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
 ```
 
- 2) Add the following to your login script:
+## Add the following variables to your bash config:
 ```bash
   export PS3DEV=/usr/local/ps3dev
   export PSL1GHT=$PS3DEV
@@ -53,7 +53,7 @@ brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
   export PATH=$PATH:$PS3DEV/spu/bin
 ```
 
- 3) Run the toolchain script:
+## Run the toolchain script:
 ```bash
   ./toolchain.sh
 ```
