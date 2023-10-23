@@ -27,6 +27,13 @@
     libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
 ```
 
+For RedHat distros:
+```bash 
+  sudo dnf install bison flex gcc elfutils-libelf-devel make python path \
+  wget zlib-devel libtool python3-devel bzip2 gmp-devel pkg-config gcc \
+  openssl-devel texinfo ncurses-devel
+```
+
 ## macOS
 
   On macOS systems, if you have [Homebrew](http://brew.sh) package manager, the following command line should
