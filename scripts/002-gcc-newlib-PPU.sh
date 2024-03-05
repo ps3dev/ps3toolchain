@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-13.2.0"
 NEWLIB="newlib-1.20.0"
 
 if [ ! -d ${GCC} ]; then
@@ -58,8 +58,6 @@ cd ${GCC}/build-ppu
     --enable-threads \
     --with-cpu="cell" \
     --with-newlib \
-    --enable-newlib-multithread \
-    --enable-newlib-hw-fp \
     --with-system-zlib
 
 ## Compile and install.

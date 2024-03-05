@@ -1,8 +1,11 @@
+# Original from https://github.com/ps3dev/ps3toolchain
+# Updated to gcc 9.5.0 by Darjan Krijan [https://disc-kuraudo.eu]
+# Updated to gcc 13.2.0 by luizfernandonb
 diff --git a/Makefile.in b/Makefile.in
-index b824e0a0c..5bf0da25e 100644
+index 06a9398e172..7419f7ed67a 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -25734,7 +25734,6 @@ check-libiberty:
+@@ -28118,7 +28118,6 @@ check-libiberty:
  .PHONY: install-libiberty maybe-install-libiberty
  maybe-install-libiberty:
  @if libiberty
@@ -11,15 +14,15 @@ index b824e0a0c..5bf0da25e 100644
  install-libiberty: installdirs
  	@: $(MAKE); $(unstage)
 diff --git a/gcc/config.gcc b/gcc/config.gcc
-index a9196cd26..f2a94403d 100644
+index 648b3dc2110..650d65fe28d 100644
 --- a/gcc/config.gcc
 +++ b/gcc/config.gcc
-@@ -2330,6 +2330,15 @@ pdp11-*-*)
+@@ -2863,6 +2863,15 @@ pdp11-*-*)
  #	tmake_file="${tmake_file} rs6000/t-fprules"
  #	extra_headers=
  #	;;
 +powerpc64-ps3-elf)
-+	tm_file="${tm_file} dbxelf.h elfos.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
++	tm_file="${tm_file} elfos.h gnu-user.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
 +	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
 +	if test x${enable_secureplt} = xyes; then
 +		tm_file="rs6000/secureplt.h ${tm_file}"
@@ -28,14 +31,14 @@ index a9196cd26..f2a94403d 100644
 +	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
 +	;;
  powerpc-*-darwin*)
- 	extra_options="${extra_options} rs6000/darwin.opt"
+ 	extra_options="${extra_options} ${cpu_type}/darwin.opt"
  	case ${target} in
 diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
 new file mode 100644
-index 000000000..86da868b5
+index 00000000000..79a09605757
 --- /dev/null
 +++ b/gcc/config/rs6000/cell64lv2.h
-@@ -0,0 +1,587 @@
+@@ -0,0 +1,583 @@
 +/* Definitions of target machine for GNU compiler,
 +   for 64 bit PowerPC linux.
 +   Copyright (C) 2000-2017 Free Software Foundation, Inc.
@@ -330,11 +333,9 @@ index 000000000..86da868b5
 +/* PowerPC64 Linux word-aligns FP doubles when -malign-power is given.  */
 +#undef  ADJUST_FIELD_ALIGN
 +#define ADJUST_FIELD_ALIGN(FIELD, TYPE, COMPUTED) \
-+  (rs6000_special_adjust_field_align_p ((TYPE), (COMPUTED))		\
-+   ? 128								\
-+   : (TARGET_64BIT							\
-+      && TARGET_ALIGN_NATURAL == 0					\
-+      && TYPE_MODE (strip_array_types (TYPE)) == DFmode)		\
++  ((TARGET_64BIT							\
++    && TARGET_ALIGN_NATURAL == 0					\
++    && TYPE_MODE (strip_array_types (TYPE)) == DFmode)			\
 +   ? MIN ((COMPUTED), 32)						\
 +   : (COMPUTED))
 +
@@ -377,7 +378,7 @@ index 000000000..86da868b5
 +   registers and memory.  FIRST is nonzero if this is the only
 +   element.  */
 +#define BLOCK_REG_PADDING(MODE, TYPE, FIRST) \
-+  (!(FIRST) ? upward : FUNCTION_ARG_PADDING (MODE, TYPE))
++  (!(FIRST) ? PAD_UPWARD : targetm.calls.function_arg_padding (MODE, TYPE))
 +
 +/* Linux doesn't support saving and restoring 64-bit regs in a 32-bit
 +   process.  */
@@ -596,8 +597,6 @@ index 000000000..86da868b5
 +#define TARGET_THREAD_SSP_OFFSET	(TARGET_64BIT ? -0x7010 : -0x7008)
 +#endif
 +
-+#define POWERPC_CELL64LV2
-+
 +#define POINTERS_EXTEND_UNSIGNED 1
 +
 +/* ppc{32,64} linux has 128-bit long double support in glibc 2.4 and later.  */
@@ -623,54 +622,48 @@ index 000000000..86da868b5
 +   enabling the __float128 keyword.  */
 +#undef	TARGET_FLOAT128_ENABLE_TYPE
 +#define TARGET_FLOAT128_ENABLE_TYPE 1
-diff --git a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
-index db9136f26..3a29d4723 100644
---- a/gcc/config/rs6000/rs6000.c
-+++ b/gcc/config/rs6000/rs6000.c
-@@ -1349,6 +1349,12 @@ rtl_opt_pass *make_pass_analyze_swaps (gcc::context*);
- static bool rs6000_keep_leaf_when_profiled () __attribute__ ((unused));
- static tree rs6000_fold_builtin (tree, int, tree *, bool);
+\ No newline at end of file
+diff --git a/gcc/config/rs6000/rs6000.cc b/gcc/config/rs6000/rs6000.cc
+index e5ceff3a61b..152b1191490 100644
+--- a/gcc/config/rs6000/rs6000.cc
++++ b/gcc/config/rs6000/rs6000.cc
+@@ -1762,6 +1762,17 @@ static const struct attribute_spec rs6000_attribute_table[] =
+ #define TARGET_UPDATE_IPA_FN_TARGET_INFO rs6000_update_ipa_fn_target_info
+ 
  
-+#ifdef POWERPC_CELL64LV2
++static bool rs6000_cell64lv2_valid_pointer_mode(scalar_int_mode);
 +
-+static bool rs6000_cell64lv2_valid_pointer_mode(enum machine_mode);
-+
-+#endif
-+
- /* Hash table stuff for keeping track of TOC entries.  */
- 
- struct GTY((for_user)) toc_hash_struct
-@@ -43333,7 +43339,19 @@ rs6000_optab_supported_p (int op, machine_mode mode1, machine_mode,
-       return true;
-     }
- }
--
-+
-+#ifdef POWERPC_CELL64LV2
++static bool
++rs6000_cell64lv2_valid_pointer_mode(scalar_int_mode mode)
++{
++  return (mode == SImode || (TARGET_64BIT && mode == DImode) || mode == ptr_mode || mode == Pmode);
++}
 +
 +#undef TARGET_VALID_POINTER_MODE
 +#define TARGET_VALID_POINTER_MODE rs6000_cell64lv2_valid_pointer_mode
 +
-+static bool rs6000_cell64lv2_valid_pointer_mode(enum machine_mode mode)
-+{
-+	return (mode == SImode || (TARGET_64BIT && mode == DImode) || mode == ptr_mode || mode == Pmode);
-+}
-+
-+#endif
-+
- struct gcc_target targetm = TARGET_INITIALIZER;
- 
- #include "gt-rs6000.h"
+ /* Processor table.  */
+ struct rs6000_ptt
+ {
+@@ -3491,7 +3502,7 @@ rs6000_linux64_override_options ()
+     {
+       if (TARGET_PROFILE_KERNEL)
+ 	{
+-	  profile_kernel = 0;
++	  //profile_kernel = 0; Why???
+ 	  error (INVALID_32BIT, "profile-kernel");
+ 	}
+       if (OPTION_SET_P (rs6000_current_cmodel))
 diff --git a/gcc/configure b/gcc/configure
-index 50ccc2a0f..6b503988a 100755
+index dec2eca1a45..bcfdcffb950 100755
 --- a/gcc/configure
 +++ b/gcc/configure
-@@ -28598,12 +28598,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
+@@ -30853,12 +30853,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
  esac
  
  case "$target:$tm_file" in
--  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc*-*-linux*rs6000/biarch64.h*)
-+  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc64-ps3-elf* | powerpc*-*-linux*rs6000/biarch64.h*)
+-  powerpc64*-*-freebsd* | powerpc64*-*-linux* | powerpc*-*-linux*rs6000/biarch64.h*)
++  powerpc64*-*-freebsd* | powerpc64*-*-linux* | powerpc64-ps3-elf* | powerpc*-*-linux*rs6000/biarch64.h*)
    case "$target" in
       *le-*-linux*)
       emul_name="-melf64lppc"
@@ -679,44 +672,12 @@ index 50ccc2a0f..6b503988a 100755
 +     *-*-linux* | *-ps3-elf*)
       emul_name="-melf64ppc"
        ;;
-      *-*-freebsd*)
-diff --git a/gcc/configure.ac b/gcc/configure.ac
-index 1d5a9d7c6..e568cb3f8 100644
---- a/gcc/configure.ac
-+++ b/gcc/configure.ac
-@@ -5462,12 +5462,12 @@ EOF
- esac
- 
- case "$target:$tm_file" in
--  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc*-*-linux*rs6000/biarch64.h*)
-+  powerpc64-*-freebsd* | powerpc64*-*-linux* | powerpc64-ps3-elf* | powerpc*-*-linux*rs6000/biarch64.h*)
-   case "$target" in
-      *le-*-linux*)
-      emul_name="-melf64lppc"
-       ;;
--     *-*-linux*)
-+     *-*-linux* | *-ps3-elf*)
-      emul_name="-melf64ppc"
-       ;;
-      *-*-freebsd*)
-diff --git a/libcpp/lex.c b/libcpp/lex.c
-index 9edd2a6af..15585ff93 100644
---- a/libcpp/lex.c
-+++ b/libcpp/lex.c
-@@ -568,7 +568,7 @@ search_line_fast (const uchar *s, const uchar *end ATTRIBUTE_UNUSED)
-     {
-       vc m_nl, m_cr, m_bs, m_qm;
- 
--      data = *((const vc *)s);
-+      data = __builtin_vec_vsx_ld (0, s);
-       s += 16;
- 
-       m_nl = (vc) __builtin_vec_cmpeq(data, repl_nl);
+      *le-*-freebsd*)
 diff --git a/libgcc/config.host b/libgcc/config.host
-index bedcf1017..8d6c8feff 100644
+index 9d7212028d0..c2b3bb8ac28 100644
 --- a/libgcc/config.host
 +++ b/libgcc/config.host
-@@ -1043,6 +1043,8 @@ powerpc-*-rtems*)
+@@ -1224,6 +1224,8 @@ powerpc-*-rtems*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
  	extra_parts="$extra_parts crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"
  	;;
