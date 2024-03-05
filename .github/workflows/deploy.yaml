@@ -15,6 +15,8 @@ jobs:
     defaults:
       run:
         shell: bash
+    env:
+      BASH_ENV: "~/.bashrc"
 
     steps:
     - uses: actions/checkout@v2
@@ -29,8 +31,8 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         brew update
-        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
-        alias sed='gsed'
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed python
+        echo "alias sed='gsed'" >> ~/.bashrc
         # python2
         curl -O https://www.python.org/ftp/python/2.7.18/python-2.7.18-macosx10.9.pkg
         sudo installer -pkg python-2.7.18-macosx10.9.pkg -target /
