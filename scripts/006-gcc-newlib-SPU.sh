@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # gcc-newlib-SPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-9.5.0"
+GCC="gcc-7.2.0"
 NEWLIB="newlib-1.20.0"
 
 if [ ! -d ${GCC} ]; then
@@ -15,7 +15,7 @@ if [ ! -d ${GCC} ]; then
   rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3-SPU.patch | patch -p1 -d ${GCC}
+  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
   cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
   ## Enter the source code directory.
