@@ -52,7 +52,7 @@ CXXFLAGS="$CXXFLAGS -Werror=format-security"
 		--with-cpu="cell" \
 		--with-newlib \
 		--with-system-zlib \
-		--enable-languages="c" \
+		--enable-languages="c,c++" \
 		--enable-long-double-128 \
 		--enable-lto \
 		--enable-threads \
