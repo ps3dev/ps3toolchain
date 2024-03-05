@@ -1,68 +1,78 @@
-name: Build toolchain docker image
+name: CI
 
 on:
   push:
-    branches:
-      - '*'
   pull_request:
-    branches:
-      - '*'
+  repository_dispatch:
+    types: [run_build]
 
 jobs:
-  Docker:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
-        persist-credentials: false
-    - name: Set up Docker Buildx
-      if: success()
-      id: buildx
-      uses: crazy-max/ghaction-docker-buildx@v3
-      with:
-        buildx-version: latest
-        qemu-version: latest
-    - name: Prepare
-      if: success()
-      id: prepare
+    - uses: actions/checkout@v2
+    
+    - name: Install Ubuntu requirements
+      if: matrix.os == 'ubuntu-latest'
       run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/386
-        echo ::set-output name=docker_username::miigotu
-        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
-        VERSION_TAG=${GITHUB_REF#refs/*/}
-        echo ::set-output name=version::${VERSION_TAG%/merge}
-    - name: Available platforms
-      if: success()
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Docker Login and set build command
-      if: success()
-      id: login
+        sudo apt-get update
+        sudo apt-get -y install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool-bin python-dev bzip2 libgmp3-dev pkg-config
+    
+    - name: Install macOS requirements
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew update
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
+
+    - name: Runs all the stages in the shell
+      run: |
+        mkdir $PWD/ps3dev
+        export PS3DEV=$PWD/ps3dev
+        export PSL1GHT=$PS3DEV
+        export PATH=$PATH:$PS3DEV/bin
+        export PATH=$PATH:$PS3DEV/ppu/bin
+        export PATH=$PATH:$PS3DEV/spu/bin
+        ./toolchain.sh
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+    - name: Compress ps3dev folder
+      run: |
+        tar -zcvf ps3dev.tar.gz ps3dev
+
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: ps3dev-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
+#        path: ps3dev.tar.gz
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
-        GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
-          --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
-          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      id: cache
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ steps.prepare.outputs.version }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
-    - name: Run Buildx (master)
-      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
-      run: |
-          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
-    - name: Run Buildx (non-master)
-      if: success() && steps.prepare.outputs.version != 'master' && github.event_name != 'pull_request'
-      run: |
-        ${{ steps.login.outputs.buildx }} --file Dockerfile .
-    - name: Clear
-      if: always()
-      run: |
-        rm -rf ${HOME}/.docker/config.json
+        tag_name: ${{matrix.os}}-${{ steps.slug.outputs.sha8 }}
+        release_name: ps3dev ${{matrix.os}} (${{steps.date.outputs.date}})
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./ps3dev.tar.gz
+        asset_name: ps3dev-${{matrix.os}}-${{steps.date.outputs.date}}.tar.gz
+        asset_content_type: application/gzip
