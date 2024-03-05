@@ -45,8 +45,9 @@ cd ${GCC}/build-spu
 
 ## Configure the build.
 unset CFLAGS CXXFLAGS LDFLAGS
+CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fschedule-insns -mdual-nops -mwarn-reloc" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
-		--enable-languages="c" \
+		--enable-languages="c,c++" \
 		--enable-lto \
 		--enable-threads \
 		--enable-newlib-multithread \
