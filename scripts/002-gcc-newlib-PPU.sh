@@ -45,8 +45,6 @@ cd ${GCC}/build-ppu
 
 ## Configure the build.
 
-## TODO - Move it to patch file
-sed -i 's/AC_DEFINE(HAVE_STRUCT_DIRENT_D_TYPE, 1/AC_DEFINE(HAVE_STRUCT_DIRENT_D_TYPE, 0/' ../libstdc++-v3/acinclude.m4
 
 # Avoid breakage
 CFLAGS="$CFLAGS -Werror=format-security"
@@ -67,6 +65,9 @@ CXXFLAGS="$CXXFLAGS -Werror=format-security"
 		--disable-nls \
 		--disable-shared \
 		--disable-win32-registry
+
+## TODO - Move it to patch file
+sed -i 's/ifdef _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE/if 0/' ../libstdc++-v3/src/filesystem/dir-common.h
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
