@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     defaults:
       run:
         shell: bash
@@ -64,6 +64,10 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
+    - name: Get current arch
+      id: arch
+      run: echo "::set-output name=arch::$(uname -m)"
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -71,7 +75,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{matrix.os}}-${{ steps.slug.outputs.sha8 }}
-        release_name: ps3dev ${{matrix.os}} (${{steps.date.outputs.date}})
+        release_name: ps3dev ${{matrix.os}} ${{steps.arch.outputs.arch}} (${{steps.date.outputs.date}})
         draft: false
         prerelease: false
 
@@ -83,5 +87,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./ps3dev.tar.gz
-        asset_name: ps3dev-${{matrix.os}}-${{steps.date.outputs.date}}.tar.gz
+        asset_name: ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
         asset_content_type: application/gzip
