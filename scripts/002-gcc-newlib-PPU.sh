@@ -66,6 +66,11 @@ CXXFLAGS="$CXXFLAGS -Werror=format-security"
 		--disable-shared \
 		--disable-win32-registry
 
+
+# Check if the operating system is macOS
+if [ "$(uname)" = "Darwin" ]; then
+  alias sed='gsed'
+fi
 ## TODO - Move it to patch file
 sed -i 's/ifdef _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE/if 0/' ../libstdc++-v3/src/filesystem/dir-common.h
 
