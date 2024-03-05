@@ -29,7 +29,7 @@ jobs:
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
         # python2
         curl -O https://www.python.org/ftp/python/2.7.18/python-2.7.18-macosx10.9.pkg
-        installer -pkg python-2.7.18-macosx10.9.pkg -target /
+        sudo installer -pkg python-2.7.18-macosx10.9.pkg -target /
 
     - name: Runs all the stages in the shell
       run: |
