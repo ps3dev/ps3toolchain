@@ -19,8 +19,8 @@ jobs:
     - name: Install Ubuntu requirements
       if: matrix.os == 'ubuntu-latest'
       run: |
-        sudo apt-get update
-        sudo apt-get -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2 subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config
+        sudo apt update
+        sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2 subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config
     
     - name: Install macOS requirements
       if: matrix.os == 'macos-latest'
