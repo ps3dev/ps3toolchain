@@ -46,7 +46,7 @@ cd ${GCC}/build-ppu
 ## Configure the build.
 
 ## TODO - Move it to patch file
-sed -i 's/#define _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE 1/#define _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE 0/' powerpc64-ps3-elf/libstdc++-v3/include/powerpc64-ps3-elf/bits/c++config.h
+sed -i 's/AC_DEFINE(HAVE_STRUCT_DIRENT_D_TYPE, 1/AC_DEFINE(HAVE_STRUCT_DIRENT_D_TYPE, 0/' ../libstdc++-v3/acinclude.m4
 
 # Avoid breakage
 CFLAGS="$CFLAGS -Werror=format-security"
