@@ -11,12 +11,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest]
     defaults:
       run:
         shell: bash
-    env:
-      BASH_ENV: "~/.bashrc"
 
     steps:
     - uses: actions/checkout@v4
@@ -34,8 +32,10 @@ jobs:
         brew update
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed texinfo
         echo "alias sed='gsed'" >> ~/.bashrc
+        
+        # check current version
         python --version
-
+        python-config --libs
         
         # install pyenv
         brew install pyenv
@@ -47,7 +47,9 @@ jobs:
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
 
+        # check current version
         python --version
+        python-config --libs
 
     - name: Runs all the stages in the shell
       run: |
