@@ -1,20 +1,9 @@
 # Original from https://github.com/ps3dev/ps3toolchain
 # Updated to gcc 9.5.0 by Darjan Krijan [https://disc-kuraudo.eu]
 # Updated to gcc 13.2.0 by luizfernandonb
-diff --git a/Makefile.in b/Makefile.in
-index 06a9398e172..7419f7ed67a 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -28118,7 +28118,6 @@ check-libiberty:
- .PHONY: install-libiberty maybe-install-libiberty
- maybe-install-libiberty:
- @if libiberty
--maybe-install-libiberty: install-libiberty
- 
- install-libiberty: installdirs
- 	@: $(MAKE); $(unstage)
+# Updated to gcc 13.2.0 by humbertodias
 diff --git a/gcc/config.gcc b/gcc/config.gcc
-index 648b3dc2110..650d65fe28d 100644
+index 648b3dc..650d65f 100644
 --- a/gcc/config.gcc
 +++ b/gcc/config.gcc
 @@ -2863,6 +2863,15 @@ pdp11-*-*)
@@ -35,7 +24,7 @@ index 648b3dc2110..650d65fe28d 100644
  	case ${target} in
 diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
 new file mode 100644
-index 00000000000..79a09605757
+index 0000000..4a34fca
 --- /dev/null
 +++ b/gcc/config/rs6000/cell64lv2.h
 @@ -0,0 +1,583 @@
@@ -624,7 +613,7 @@ index 00000000000..79a09605757
 +#define TARGET_FLOAT128_ENABLE_TYPE 1
 \ No newline at end of file
 diff --git a/gcc/config/rs6000/rs6000.cc b/gcc/config/rs6000/rs6000.cc
-index e5ceff3a61b..152b1191490 100644
+index 196bcbe..11430b8 100644
 --- a/gcc/config/rs6000/rs6000.cc
 +++ b/gcc/config/rs6000/rs6000.cc
 @@ -1762,6 +1762,17 @@ static const struct attribute_spec rs6000_attribute_table[] =
@@ -655,10 +644,10 @@ index e5ceff3a61b..152b1191490 100644
  	}
        if (OPTION_SET_P (rs6000_current_cmodel))
 diff --git a/gcc/configure b/gcc/configure
-index dec2eca1a45..bcfdcffb950 100755
+index c7b26d1..85e83d3 100755
 --- a/gcc/configure
 +++ b/gcc/configure
-@@ -30853,12 +30853,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
+@@ -30787,12 +30787,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
  esac
  
  case "$target:$tm_file" in
@@ -674,7 +663,7 @@ index dec2eca1a45..bcfdcffb950 100755
        ;;
       *le-*-freebsd*)
 diff --git a/libgcc/config.host b/libgcc/config.host
-index 9d7212028d0..c2b3bb8ac28 100644
+index 9d72120..c2b3bb8 100644
 --- a/libgcc/config.host
 +++ b/libgcc/config.host
 @@ -1224,6 +1224,8 @@ powerpc-*-rtems*)
@@ -686,3 +675,40 @@ index 9d7212028d0..c2b3bb8ac28 100644
  powerpc*-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff rs6000/t-linux t-dfprules rs6000/t-ppc64-fp t-slibgcc-libgcc"
  	tmake_file="${tmake_file} t-stack rs6000/t-stack-rs6000"
+diff --git a/libstdc++-v3/src/filesystem/dir-common.h b/libstdc++-v3/src/filesystem/dir-common.h
+index af51375..3aedb59 100644
+--- a/libstdc++-v3/src/filesystem/dir-common.h
++++ b/libstdc++-v3/src/filesystem/dir-common.h
+@@ -272,20 +272,12 @@ get_file_type(const std::filesystem::__gnu_posix::dirent& d [[gnu::unused]])
+ #ifdef _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE
+   switch (d.d_type)
+   {
+-  case DT_BLK:
+-    return file_type::block;
+-  case DT_CHR:
+-    return file_type::character;
+   case DT_DIR:
+     return file_type::directory;
+-  case DT_FIFO:
+-    return file_type::fifo;
+   case DT_LNK:
+     return file_type::symlink;
+   case DT_REG:
+     return file_type::regular;
+-  case DT_SOCK:
+-    return file_type::socket;
+   case DT_UNKNOWN:
+     return file_type::unknown;
+   default:
+diff --git a/Makefile.in b/Makefile.in
+index 06a9398..7419f7e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -28118,7 +28118,6 @@ check-libiberty:
+ .PHONY: install-libiberty maybe-install-libiberty
+ maybe-install-libiberty:
+ @if libiberty
+-maybe-install-libiberty: install-libiberty
+ 
+ install-libiberty: installdirs
+ 	@: $(MAKE); $(unstage)
