@@ -47,8 +47,8 @@ cd ${GCC}/build-ppu
 
 
 # Avoid breakage
-CFLAGS="$CFLAGS -Werror=format-security"
-CXXFLAGS="$CXXFLAGS -Werror=format-security"
+CFLAGS="${CFLAGS/-Werror=format-security/}"
+CXXFLAGS="${CXXFLAGS/-Werror=format-security/}"
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
 		--with-cpu="cell" \
 		--with-newlib \
