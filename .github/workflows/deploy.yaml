@@ -20,12 +20,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
     - name: Install Ubuntu requirements
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt update
-        sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev
+        sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch subversion wget zlib1g-dev libtool-bin bzip2 libgmp3-dev pkg-config libssl-dev
     
     - name: Install macOS requirements
       if: matrix.os == 'macos-latest'
@@ -33,9 +36,6 @@ jobs:
         brew update
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
         echo "alias sed='gsed'" >> ~/.bashrc
-        # python2
-        curl -O https://www.python.org/ftp/python/2.7.18/python-2.7.18-macosx10.9.pkg
-        sudo installer -pkg python-2.7.18-macosx10.9.pkg -target /
 
     - name: Runs all the stages in the shell
       run: |
