@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [macos-latest]
     defaults:
       run:
         shell: bash
@@ -48,9 +48,10 @@ jobs:
         pyenv install 3.11.0
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
-
-        echo "alias python-config=~/.pyenv/versions/3.11.0/bin/python-config' >> ~/.bashrc 
-
+        dir_python=`dirname $(pyenv which python-config)`
+        echo $dir_path
+        echo "export PATH=$dir_python:$PATH" >> ~/.bashrc 
+        source ~/.bashrc
         python --version
         python-config --libs
 
