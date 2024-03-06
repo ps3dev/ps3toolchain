@@ -48,10 +48,11 @@ jobs:
         pyenv install 3.11.0
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
-        dir_python=`dirname $(pyenv which python-config)`
+        dir_python="$(pyenv which python-config)"
         echo $dir_path
-        echo "export PATH=$dir_python:$PATH" >> ~/.bashrc 
+        echo "export PATH=$dir_python/..:$PATH" >> ~/.bashrc 
         source ~/.bashrc
+        echo $PATH
         python --version
         python-config --libs
 
