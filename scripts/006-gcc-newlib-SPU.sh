@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # gcc-newlib-SPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-9.5.0"
 NEWLIB="newlib-1.20.0"
 
 if [ ! -d ${GCC} ]; then
