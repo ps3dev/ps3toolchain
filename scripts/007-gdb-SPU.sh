@@ -35,11 +35,6 @@ cd ${GDB}/build-spu
 
 ## Configure the build.
 
-# TODO - Move it to patch file
-if [ "$(uname -s)" = "Darwin" ]; then
-sed -i 's/#undef GWINSZ_IN_SYS_IOCTL/#define GWINSZ_IN_SYS_IOCTL/' ../readline/config.h.in
-fi
-
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
