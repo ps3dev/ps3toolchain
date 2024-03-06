@@ -35,7 +35,7 @@ jobs:
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed texinfo
         echo "alias sed='gsed'" >> ~/.bashrc
         python --version
-        brew uninstall python3
+        brew uninstall --ignore-dependencies python3
         brew install python@3.11
         python --version
 
