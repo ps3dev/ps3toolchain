@@ -37,7 +37,7 @@ jobs:
 
         # check current version
         python --version
-        python-config --libs
+        #python-config --libs
         
         # install pyenv
         brew install pyenv
@@ -48,6 +48,9 @@ jobs:
         pyenv install 3.11.0
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
+
+        pip install python-config
+
         dir_python="$(pyenv which python-config)"
         echo $dir_path
         echo "export PATH=$dir_python/..:$PATH" >> ~/.bashrc 
