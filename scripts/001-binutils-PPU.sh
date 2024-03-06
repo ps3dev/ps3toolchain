@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # binutils-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-BINUTILS="binutils-2.24"
+BINUTILS="binutils-2.42"
 
 if [ ! -d ${BINUTILS} ]; then
 
@@ -34,19 +34,20 @@ fi
 cd ${BINUTILS}/build-ppu
 
 ## Configure the build.
+unset LDFLAGS
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-    --disable-nls \
-    --disable-shared \
-    --disable-debug \
-    --disable-dependency-tracking \
-    --disable-werror \
-    --enable-64-bit-bfd \
+		--with-gcc \
+		--with-gnu-as \
+		--with-gnu-ld \
+		--enable-64-bit-bfd \
 		--enable-lto \
-    --with-gcc \
-    --with-gnu-as \
-    --with-gnu-ld
+		--disable-nls \
+		--disable-shared \
+		--disable-debug \
+		--disable-dependency-tracking \
+		--disable-werror
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=`pwd`/host-libs/lib install
