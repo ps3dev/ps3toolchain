@@ -33,9 +33,9 @@ jobs:
         brew update
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
         echo "alias sed='gsed'" >> ~/.bashrc
-        # python3
-        curl -O https://www.python.org/ftp/python/3.11.8/python-3.11.8-macos11.pkg
-        sudo installer -pkg python-3.11.8-macos11.pkg -target /
+
+        brew install python@3.11
+        brew link --overwrite python@3.11
 
     - name: Runs all the stages in the shell
       run: |
