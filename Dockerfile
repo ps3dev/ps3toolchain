@@ -1,20 +1,20 @@
-FROM ubuntu:xenial
+FROM ubuntu:24.04
 LABEL maintainer="miigotu@gmail.com"
 
 ENV PS3DEV /usr/local/ps3dev
 ENV PSL1GHT ${PS3DEV}
 ENV PATH ${PATH}:${PS3DEV}/bin:${PS3DEV}/ppu/bin:${PS3DEV}/spu/bin
+ENV PKG_CONFIG_PATH $PKG_CONFIG_PATH:$PS3DEV/portlibs/ppu/lib/package
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN \
-  apt-get -y update && \
-  apt-get -y install \
-  autoconf bison build-essential ca-certificates flex git libelf-dev\
-  libgmp-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev \
-  texinfo wget zlib1g-dev && \
-  apt-get -y clean autoclean autoremove && \
-  rm -rf /var/lib/{apt,dpkg,cache,log}/
+  apt -y update && \
+  apt --no-install-recommends install -y autoconf automake bison build-essential bzip2 \
+  ca-certificates flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
+  libtool libtool-bin make patch pkg-config python-dev-is-python3 texinfo wget xz-utils zlib1g-dev && \
+  apt -y clean autoclean autoremove && \
+  rm -rf /var/lib/{apt,dpkg,cache,log}
 
 RUN mkdir /build
 WORKDIR /build
