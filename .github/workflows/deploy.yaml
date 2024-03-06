@@ -32,7 +32,7 @@ jobs:
       # act -P macos-latest=-self-hosted --container-architecture linux/amd64
       run: |
         brew update
-        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed python@3.11
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed python3
         echo "alias sed='gsed'" >> ~/.bashrc
         #pip install python-config
 
