@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-13]
     defaults:
       run:
         shell: bash
@@ -28,16 +28,17 @@ jobs:
         sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev
     
     - name: Install macOS requirements
-      if: matrix.os == 'macos-latest'
+      if: matrix.os == 'macos-13'
+      # act -P macos-latest=-self-hosted --container-architecture linux/amd64
       run: |
         brew update
-        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed python@3.11
         echo "alias sed='gsed'" >> ~/.bashrc
-        pip install python-config
+        #pip install python-config
 
     - name: Runs all the stages in the shell
       run: |
-        mkdir $PWD/ps3dev
+        mkdir -p $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
         export PSL1GHT=$PS3DEV
         export PATH=$PATH:$PS3DEV/bin
