@@ -34,8 +34,7 @@ jobs:
         brew update
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
         echo "alias sed='gsed'" >> ~/.bashrc
-        brew unlink python3
-        brew install python@3.11
+        python --version
         pip install python-config
 
     - name: Runs all the stages in the shell
