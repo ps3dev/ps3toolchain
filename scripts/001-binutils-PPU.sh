@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # binutils-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-BINUTILS="binutils-2.24"
+BINUTILS="binutils-2.42"
 
 if [ ! -d ${BINUTILS} ]; then
 
