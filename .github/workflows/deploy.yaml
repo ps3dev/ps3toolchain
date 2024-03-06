@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, ubuntu-latest]
     defaults:
       run:
         shell: bash
@@ -48,15 +48,7 @@ jobs:
         pyenv install 3.11.0
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
-
         pip install python-config
-
-        dir_python="$(pyenv which python-config)"
-        echo $dir_path
-        
-        echo $PATH
-        python --version
-        python-config --libs
         echo 'pyenv global 3.11.0' >> ~/.bashrc
 
     - name: Runs all the stages in the shell
