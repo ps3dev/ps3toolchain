@@ -34,9 +34,6 @@ jobs:
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed
         echo "alias sed='gsed'" >> ~/.bashrc
 
-        brew install python@3.11
-        brew link --overwrite python@3.11
-
     - name: Runs all the stages in the shell
       run: |
         mkdir $PWD/ps3dev
