@@ -34,6 +34,12 @@ fi
 cd ${GDB}/build-spu
 
 ## Configure the build.
+
+# TODO - Move it to patch file
+if [ "$(uname -s)" = "Darwin" ]; then
+sed -i 's/#undef GWINSZ_IN_SYS_IOCTL/#define GWINSZ_IN_SYS_IOCTL/' ../readline/config.h.in
+fi
+
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
@@ -42,4 +48,4 @@ cd ${GDB}/build-spu
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=`pwd`/host-libs/lib install
