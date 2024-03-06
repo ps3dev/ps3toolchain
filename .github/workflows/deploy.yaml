@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13]
+        os: [macos-latest, ubuntu-latest]
     defaults:
       run:
         shell: bash
@@ -28,15 +28,25 @@ jobs:
         sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev
     
     - name: Install macOS requirements
-      if: matrix.os == 'macos-13'
+      if: matrix.os == 'macos-latest'
       # act -P macos-latest=-self-hosted --container-architecture linux/amd64
       run: |
         brew update
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed texinfo
         echo "alias sed='gsed'" >> ~/.bashrc
         python --version
-        brew uninstall --ignore-dependencies python3
-        brew install python@3.11
+
+        
+        # install pyenv
+        brew install pyenv
+        # Initialize pyenv in the current shell
+        eval "$(pyenv init --path)"
+
+        # Install Python 3.11 using pyenv
+        pyenv install 3.11.0
+        # Set Python 3.11 as the global version
+        pyenv global 3.11.0
+
         python --version
 
     - name: Runs all the stages in the shell
