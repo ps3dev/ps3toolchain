@@ -57,6 +57,7 @@ jobs:
         echo $PATH
         python --version
         python-config --libs
+        echo 'pyenv global 3.11.0' >> ~/.bashrc
 
     - name: Runs all the stages in the shell
       run: |
