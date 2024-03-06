@@ -53,8 +53,7 @@ jobs:
 
         dir_python="$(pyenv which python-config)"
         echo $dir_path
-        echo "export PATH=$dir_python/..:$PATH" >> ~/.bashrc 
-        source ~/.bashrc
+        
         echo $PATH
         python --version
         python-config --libs
