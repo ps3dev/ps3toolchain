@@ -29,9 +29,8 @@ RUN \
   pyenv global $PYTHON_VERSION && \
   pyenv rehash && \
   # pyenv
-  apt -y clean autoclean autoremove && \
-  rm -rf /var/lib/{apt,dpkg,cache,log}
-
+  apt -y clean autoclean autoremove
+  
 RUN mkdir /build
 WORKDIR /build
 COPY . /build
