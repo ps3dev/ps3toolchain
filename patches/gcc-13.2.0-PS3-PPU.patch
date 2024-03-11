@@ -663,18 +663,27 @@ index c7b26d1..85e83d3 100755
        ;;
       *le-*-freebsd*)
 diff --git a/libgcc/config.host b/libgcc/config.host
-index 9d72120..c2b3bb8 100644
+index 9d72120..7ddde1d 100644
 --- a/libgcc/config.host
 +++ b/libgcc/config.host
-@@ -1224,6 +1224,8 @@ powerpc-*-rtems*)
+@@ -1224,6 +1224,9 @@ powerpc-*-rtems*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
  	extra_parts="$extra_parts crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"
  	;;
 +powerpc64-ps3-elf)
++	tmake_file="${tmake_file} rs6000/t-crtstuff-cell64lv2"
 +	;;
  powerpc*-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff rs6000/t-linux t-dfprules rs6000/t-ppc64-fp t-slibgcc-libgcc"
  	tmake_file="${tmake_file} t-stack rs6000/t-stack-rs6000"
+diff --git a/libgcc/config/rs6000/t-crtstuff-cell64lv2 b/libgcc/config/rs6000/t-crtstuff-cell64lv2
+new file mode 100644
+index 0000000..9eb9ca7
+--- /dev/null
++++ b/libgcc/config/rs6000/t-crtstuff-cell64lv2
+@@ -0,0 +1 @@
++CRTSTUFF_T_CFLAGS = -fno-asynchronous-unwind-tables
+\ No newline at end of file
 diff --git a/libstdc++-v3/src/filesystem/dir-common.h b/libstdc++-v3/src/filesystem/dir-common.h
 index af51375..3aedb59 100644
 --- a/libstdc++-v3/src/filesystem/dir-common.h
