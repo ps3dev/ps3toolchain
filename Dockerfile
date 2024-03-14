@@ -18,7 +18,7 @@ ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 RUN \
   apt -y update && \
   apt --no-install-recommends install -y autoconf automake bison build-essential bzip2 \
-  ca-certificates flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
+  ca-certificates cmake flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
   libtool libtool-bin make patch pkg-config texinfo wget xz-utils zlib1g-dev && \
   # pyenv 
   apt --no-install-recommends install -y zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
