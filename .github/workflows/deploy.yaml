@@ -60,6 +60,7 @@ jobs:
         export PATH=$PATH:$PS3DEV/bin
         export PATH=$PATH:$PS3DEV/ppu/bin
         export PATH=$PATH:$PS3DEV/spu/bin
+        export PATH=$PATH:$PS3DEV/portlibs/ppu/bin
         ./toolchain.sh
 
     - name: Get short SHA
