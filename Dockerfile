@@ -37,6 +37,4 @@ COPY . /build
 
 # Fixes certificate errors with letsencrypt in ARMv7
 RUN echo "ca_certificate=/etc/ssl/certs/ca-certificates.crt" >> /etc/wgetrc
-RUN /build/toolchain.sh
-# Temporary files
-RUN rm -rf /build/build
+RUN /build/toolchain.sh && rm -rf /build/build
