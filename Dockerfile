@@ -11,15 +11,16 @@ ENV PKG_CONFIG_PATH $PS3DEV/portlibs/ppu/lib/pkgconfig
 
 ENV DEBIAN_FRONTEND=noninteractive
 # last python version with diskutils module support
-ENV PYTHON_VERSION=3.11.8
+ENV PYTHON_VERSION=3.10
 ENV PYENV_ROOT="$HOME/.pyenv"
+ENV PIP_ROOT_USER_ACTION=ignore
 ENV PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
 
 RUN \
   apt -y update && \
   apt --no-install-recommends install -y autoconf automake bison build-essential bzip2 \
   ca-certificates cmake flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
-  libtool libtool-bin make patch pkg-config texinfo wget xz-utils zlib1g-dev && \
+  libtool libtool-bin make patch pkg-config texinfo wget xz-utils zlib1g-dev nvidia-cg-toolkit && \
   # pyenv 
   apt --no-install-recommends install -y zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
   llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev curl && \
@@ -28,6 +29,7 @@ RUN \
   pyenv install $PYTHON_VERSION && \
   pyenv global $PYTHON_VERSION && \
   pyenv rehash && \
+  pip install pycrypto && \
   # pyenv
   apt -y clean autoclean autoremove
   
