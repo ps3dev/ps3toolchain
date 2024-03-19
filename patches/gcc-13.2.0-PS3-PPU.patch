@@ -684,31 +684,6 @@ index 0000000..9eb9ca7
 @@ -0,0 +1 @@
 +CRTSTUFF_T_CFLAGS = -fno-asynchronous-unwind-tables
 \ No newline at end of file
-diff --git a/libstdc++-v3/src/filesystem/dir-common.h b/libstdc++-v3/src/filesystem/dir-common.h
-index af51375..3aedb59 100644
---- a/libstdc++-v3/src/filesystem/dir-common.h
-+++ b/libstdc++-v3/src/filesystem/dir-common.h
-@@ -272,20 +272,12 @@ get_file_type(const std::filesystem::__gnu_posix::dirent& d [[gnu::unused]])
- #ifdef _GLIBCXX_HAVE_STRUCT_DIRENT_D_TYPE
-   switch (d.d_type)
-   {
--  case DT_BLK:
--    return file_type::block;
--  case DT_CHR:
--    return file_type::character;
-   case DT_DIR:
-     return file_type::directory;
--  case DT_FIFO:
--    return file_type::fifo;
-   case DT_LNK:
-     return file_type::symlink;
-   case DT_REG:
-     return file_type::regular;
--  case DT_SOCK:
--    return file_type::socket;
-   case DT_UNKNOWN:
-     return file_type::unknown;
-   default:
 diff --git a/Makefile.in b/Makefile.in
 index 06a9398..7419f7e 100644
 --- a/Makefile.in
