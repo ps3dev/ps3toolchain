@@ -1,2 +1,5 @@
 build/
 .idea/**
+.DS_Store
+ps3dev
+.vscode
