@@ -21,6 +21,8 @@ RUN \
   apt --no-install-recommends install -y autoconf automake bison build-essential bzip2 \
   ca-certificates cmake flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
   libtool libtool-bin make patch pkg-config texinfo wget xz-utils zlib1g-dev nvidia-cg-toolkit && \
+  # Install dependencies specific for amd64 architecture
+  if [ "$(uname -m)" = "x86_64" ]; then apt install -y nvidia-cg-toolkit ; fi ; \
   # pyenv 
   apt --no-install-recommends install -y zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
   llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev curl && \
