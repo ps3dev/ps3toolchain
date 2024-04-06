@@ -93,7 +93,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{matrix.os}}-${{ steps.slug.outputs.sha8 }}
+        tag_name: ${{matrix.os}}-${{steps.arch.outputs.arch}}-${{ steps.slug.outputs.sha8 }}
         release_name: ps3dev ${{matrix.os}} ${{steps.arch.outputs.arch}} (${{steps.date.outputs.date}})
         draft: false
         prerelease: false
