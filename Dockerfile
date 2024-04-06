@@ -1,20 +1,16 @@
-FROM ubuntu:22.04 as builder
-
+FROM ubuntu:22.04 as base
 # Set the default shell to Bash
 SHELL ["/bin/bash", "-c"]
-
 ENV PS3DEV /usr/local/ps3dev
 ENV PSL1GHT ${PS3DEV}
 ENV PATH ${PATH}:${PS3DEV}/bin:${PS3DEV}/ppu/bin:${PS3DEV}/spu/bin:${PS3DEV}/portlibs/ppu/bin
 ENV PKG_CONFIG_PATH ${PS3DEV}/portlibs/ppu/lib/pkgconfig
-
 ENV DEBIAN_FRONTEND=noninteractive
 # last python version with diskutils module support
 ENV PYTHON_VERSION=3.10
 ENV PYENV_ROOT ${HOME}/.pyenv
 ENV PIP_ROOT_USER_ACTION=ignore
 ENV PATH ${PYENV_ROOT}/shims:${PYENV_ROOT}/bin:$PATH
-
 RUN apt update -y && \
     apt --no-install-recommends install -y autoconf automake bison build-essential bzip2 \
     ca-certificates cmake flex gettext-base git libelf-dev libgmp3-dev libncurses5-dev libssl-dev \
@@ -32,13 +28,15 @@ RUN apt update -y && \
     pyenv update && pyenv install $PYTHON_VERSION && pyenv global $PYTHON_VERSION && pyenv rehash && \
     pip install pycrypto && \
     # pyenv
-    apt -y clean autoclean autoremove && \
-    mkdir /build
+    apt -y clean autoclean autoremove
+
+FROM base as builder
+RUN mkdir /build
 WORKDIR /build
 COPY . /build
 RUN /build/toolchain.sh
 
-FROM ubuntu:22.04 as runtime
+FROM base as runtime
 ENV PS3DEV /usr/local/ps3dev
 ENV PSL1GHT ${PS3DEV}
 ENV PATH ${PATH}:${PS3DEV}/bin:${PS3DEV}/ppu/bin:${PS3DEV}/spu/bin:${PS3DEV}/portlibs/ppu/bin
