@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
+        architecture: [x64, arm64]
     defaults:
       run:
         shell: bash
