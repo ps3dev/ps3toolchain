@@ -27,7 +27,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev && \
-        if [ "$(uname -m)" = "x86_64" ]; then apt install -y nvidia-cg-toolkit ; fi
+        if [ "$(uname -m)" = "x86_64" ]; then sudo apt install -y nvidia-cg-toolkit ; fi
     
     - name: Install macOS requirements
       if: matrix.os == 'macos-latest'
