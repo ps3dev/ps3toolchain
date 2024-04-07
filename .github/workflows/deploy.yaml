@@ -10,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -19,6 +20,10 @@ jobs:
         shell: bash
     env:
       BASH_ENV: "~/.bashrc"
+
+    outputs:
+      sha8: ${{ steps.slug.outputs.sha8 }}
+      date: ${{ steps.date.outputs.date }}
 
     steps:
     - uses: actions/checkout@v4
@@ -86,7 +91,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: artifact-${{matrix.architecture}}
-        path: ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
+        path: ps3dev-${{matrix.os}}-${{matrix.architecture}}-${{steps.date.outputs.date}}.tar.gz
 
   publish:
     needs: build
@@ -98,7 +103,7 @@ jobs:
 
       - name: Set SemVer
         id: semver
-        run: echo "::set-output name=semver::0.1.0+${{ steps.date.outputs.date }}.${{ steps.slug.outputs.sha8 }}"
+        run: echo "::set-output name=semver::0.1.0+${{ needs.build.outputs.date }}.${{ needs.build.outputs.sha8 }}"
   
       - name: Create Tag
         uses: negz/create-tag@v1
@@ -111,7 +116,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.build.outputs.semver }}
+          tag_name: ${{ steps.semver.outputs.semver }}
           files: |
             ${{ github.workspace }}/*.tar.gz
             

@@ -43,6 +43,7 @@ ENV PATH ${PATH}:${PS3DEV}/bin:${PS3DEV}/ppu/bin:${PS3DEV}/spu/bin:${PS3DEV}/por
 ENV PKG_CONFIG_PATH ${PS3DEV}/portlibs/ppu/lib/pkgconfig
 COPY --from=builder ${PS3DEV} ${PS3DEV}
 
-# How to build multi platform image
-# docker buildx create --use
-# docker buildx build --platform linux/amd64,linux/arm64 -t ps3dev:latest .
+# How to build and run a multi platform image
+# Tested platforms: linux/amd64 or linux/arm64
+# DOCKER_DEFAULT_PLATFORM=linux/arm64 docker build . -t ps3dev 
+# DOCKER_DEFAULT_PLATFORM=linux/arm64 docker run -it -v `pwd`:/build -w /build ps3dev
