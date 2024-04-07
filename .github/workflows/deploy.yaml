@@ -89,10 +89,11 @@ jobs:
         path: ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
 
     - name: Create Tag
-      run: | 
-        TAG_NAME="v${{ steps.slug.outputs.sha8 }}"
-        git tag -a $TAG_NAME -m "automatic tag creation"
-        git push origin $TAG_NAME        
+      uses: negz/create-tag@v1
+      with:
+        version: ${{ steps.slug.outputs.sha8 }}
+        message: "automatic tag creation"
+        token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-release:
     needs: build
