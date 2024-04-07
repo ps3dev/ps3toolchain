@@ -72,7 +72,7 @@ jobs:
     
     - name: Compress ps3dev folder
       run: |
-        tar -zcvf ps3dev.tar.gz ps3dev
+        tar -zcvf ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz ps3dev
 
     - name: Get current date
       id: date
@@ -82,16 +82,11 @@ jobs:
       id: arch
       run: echo "::set-output name=arch::$(uname -m)"
 
-    - name: Compress ps3dev folder
-      run: |
-        tar -czvf ${{github.workspace}}/ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz -C "${PS3DEV}" .
-
     - name: Archive Folder
       uses: actions/upload-artifact@v4
       with:
         name: artifact-${{matrix.architecture}}
-        path: |
-          ${{github.workspace}}/ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
+        path: ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
 
   publish-release:
     needs: build
