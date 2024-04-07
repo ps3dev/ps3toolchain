@@ -88,38 +88,24 @@ jobs:
         name: artifact-${{matrix.architecture}}
         path: ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz
 
-    - name: Set SemVer
-      id: semver
-      run: echo "::set-output name=semver::0.1.0+${{ steps.date.outputs.date }}.${{ steps.slug.outputs.sha8 }}"
-
-    - name: Check if Tag Exists
-      id: check_tag
-      run: |
-        git fetch --tags
-        tag_exists=$(git tag --list "${{ steps.semver.outputs.semver }}" | wc -l)
-        if [ "$tag_exists" -eq "0" ]; then
-          echo "Tag does not exist."
-          echo "::set-output name=tag_exists::false"
-        else
-          echo "Tag already exists."
-          echo "::set-output name=tag_exists::true"
-        fi      
-
-    - name: Create Tag
-      if: steps.check_tag.outputs.tag_exists == 'false'
-      uses: negz/create-tag@v1
-      with:
-        version: ${{steps.semver.outputs.semver}}
-        message: "automatic tag creation"
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-release:
+  publish:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
       - name: Download all Artifact
         uses: actions/download-artifact@v4
+
+      - name: Set SemVer
+        id: semver
+        run: echo "::set-output name=semver::0.1.0+${{ steps.date.outputs.date }}.${{ steps.slug.outputs.sha8 }}"
+  
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ steps.semver.outputs.semver }}
+          message: "automatic tag creation"
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
         id: create_release
