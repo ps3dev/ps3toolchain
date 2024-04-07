@@ -84,7 +84,7 @@ jobs:
 
     - name: Compress ps3dev folder
       run: |
-        tar -czvf ${{github.workspace}}/ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz -C /usr/local/ps3dev
+        tar -czvf ${{github.workspace}}/ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz -C ${PS3DEV}
 
     - name: Archive Folder
       uses: actions/upload-artifact@v4
