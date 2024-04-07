@@ -19,9 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        platform:
-          - linux/amd64
-          - linux/arm64
+        architecture: [x64, arm64]
     env:
       DOCKERHUB_REPONAME: ps3dev
       DOCKERHUB_REPOTAG: latest
@@ -51,5 +49,5 @@ jobs:
       - name: Build and push
         id: docker_build
         run: |
-          DOCKER_DEFAULT_PLATFORM=${{ matrix.platform }} docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ env.DOCKERHUB_REPOTAG }} .
-          DOCKER_DEFAULT_PLATFORM=${{ matrix.platform }} docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ env.DOCKERHUB_REPOTAG }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ env.DOCKERHUB_REPOTAG }} .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ env.DOCKERHUB_REPOTAG }}
