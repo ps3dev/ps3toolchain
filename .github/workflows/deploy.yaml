@@ -13,7 +13,7 @@ jobs:
     
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
         architecture: [x64, arm64]
     defaults:
       run:
@@ -90,7 +90,7 @@ jobs:
     - name: Archive Folder
       uses: actions/upload-artifact@v4
       with:
-        name: artifact-${{matrix.architecture}}
+        name: ${{matrix.os}}-${{matrix.architecture}}
         path: ps3dev-${{matrix.os}}-${{matrix.architecture}}-${{steps.date.outputs.date}}.tar.gz
 
   publish:
