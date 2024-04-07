@@ -74,11 +74,6 @@ jobs:
       run: |
         tar -zcvf ps3dev.tar.gz ps3dev
 
-#    - uses: actions/upload-artifact@v2
-#      with:
-#        name: ps3dev-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
-#        path: ps3dev.tar.gz
-
     - name: Get current date
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
@@ -101,17 +96,10 @@ jobs:
   publish-release:
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        architecture: [x64, arm64]
 
     steps:
-      - name: Download Artifact
+      - name: Download all Artifact
         uses: actions/download-artifact@v4
-#        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          name: artifact-${{matrix.architecture}}
-          path: ${{github.workspace}}
 
       - name: Create Release
         id: create_release
