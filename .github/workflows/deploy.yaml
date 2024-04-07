@@ -95,6 +95,7 @@ jobs:
     - name: Check if Tag Exists
       id: check_tag
       run: |
+        git fetch --tags
         tag_exists=$(git tag --list "${{ steps.semver.outputs.semver }}" | wc -l)
         if [ "$tag_exists" -eq "0" ]; then
           echo "Tag does not exist."
@@ -123,8 +124,8 @@ jobs:
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: ${{ needs.build.outputs.semver }}
           files: |
             ${{ github.workspace }}/*.tar.gz
             
