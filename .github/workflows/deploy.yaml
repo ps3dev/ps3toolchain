@@ -87,6 +87,10 @@ jobs:
       id: arch
       run: echo "::set-output name=arch::$(uname -m)"
 
+    - name: Compress ps3dev folder
+      run: |
+        tar -czvf ${{github.workspace}}/ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz -C /usr/local/ps3dev
+
     - name: Archive Folder
       uses: actions/upload-artifact@v4
       with:
