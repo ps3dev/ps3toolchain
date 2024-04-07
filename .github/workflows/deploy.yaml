@@ -91,7 +91,7 @@ jobs:
     - name: Create Tag
       uses: negz/create-tag@v1
       with:
-        version: ${{ steps.slug.outputs.sha8 }}
+        version: v${{steps.date.outputs.date}}-${{ steps.slug.outputs.sha8 }}
         message: "automatic tag creation"
         token: ${{ secrets.GITHUB_TOKEN }}
 
