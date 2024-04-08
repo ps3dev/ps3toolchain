@@ -119,5 +119,5 @@ jobs:
         with:
           tag_name: ${{ steps.semver.outputs.semver }}
           files: |
-            ${{ github.workspace }}/*.tar.gz
+            ${{ github.workspace }}/**/*.tar.gz
             
