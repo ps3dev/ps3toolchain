@@ -67,6 +67,7 @@ jobs:
         # Set Python 3.11 as the global version
         pyenv global 3.11.0
         pip install python-config
+        echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
         echo 'pyenv global 3.11.0' >> ~/.bashrc
         echo 'echo bashrc loaded' >> ~/.bashrc
 
