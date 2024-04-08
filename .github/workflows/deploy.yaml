@@ -91,7 +91,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{matrix.os}}-${{matrix.architecture}}
-        path: ps3dev-${{matrix.os}}-${{matrix.architecture}}-${{steps.date.outputs.date}}.tar.gz
+        path: ps3dev-*.tar.gz
 
   publish:
     needs: build
