@@ -56,6 +56,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platform: ${{ matrix.platform }}
+          platforms: ${{ matrix.platform }}
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ matrix.platform }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:latest
