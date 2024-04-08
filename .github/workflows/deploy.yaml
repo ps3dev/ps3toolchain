@@ -1,68 +1,123 @@
-name: Build toolchain docker image
+name: ci
 
 on:
   push:
-    branches:
-      - '*'
   pull_request:
-    branches:
-      - '*'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [run_build]
 
 jobs:
-  Docker:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64]
+    defaults:
+      run:
+        shell: bash
+
+    outputs:
+      sha8: ${{ steps.slug.outputs.sha8 }}
+      date: ${{ steps.date.outputs.date }}
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Get current arch
+      id: arch
+      run: echo "::set-output name=arch::$(uname -m)"
+
+    - name: Install Ubuntu requirements
+      if: startsWith(matrix.os, 'ubuntu')
+      run: |
+        sudo apt update
+        sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev && \
+        if [ "$(uname -m)" = "x86_64" ]; then sudo apt install -y nvidia-cg-toolkit ; fi
+    
+    - name: Install macOS requirements
+      if: startsWith(matrix.os, 'macos')
+      # act -P macos-latest=-self-hosted --container-architecture linux/amd64
+      run: |
+        brew update
+        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed texinfo
+        echo "alias sed='gsed'" >> ~/.bashrc
+
+        # check current version
+        python --version
+        #python-config --libs
+        
+        # install pyenv
+        brew install pyenv
+        # Initialize pyenv in the current shell
+        eval "$(pyenv init --path)"
+
+        # Install Python 3.11 using pyenv
+        pyenv install 3.11.0
+        # Set Python 3.11 as the global version
+        pyenv global 3.11.0
+        pip install python-config
+        echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
+        echo 'pyenv global 3.11.0' >> ~/.bashrc
+        echo 'echo bashrc loaded' >> ~/.bashrc
+
+    - name: Runs all the stages in the shell
+      run: |
+        . ~/.bashrc
+        mkdir -p $PWD/ps3dev
+        export PS3DEV=$PWD/ps3dev
+        export PSL1GHT=$PS3DEV
+        export PATH=$PATH:$PS3DEV/bin
+        export PATH=$PATH:$PS3DEV/ppu/bin
+        export PATH=$PATH:$PS3DEV/spu/bin
+        export PATH=$PATH:$PS3DEV/portlibs/ppu/bin
+        export PKG_CONFIG_PATH=$PS3DEV/portlibs/ppu/lib/pkgconfig
+        ./toolchain.sh
+
+    - name: Compress ps3dev folder
+      run: |
+        tar -zcvf ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz ps3dev
+
+    - name: Archive Folder
+      uses: actions/upload-artifact@v4
       with:
-        fetch-depth: 1
-        persist-credentials: false
-    - name: Set up Docker Buildx
-      if: success()
-      id: buildx
-      uses: crazy-max/ghaction-docker-buildx@v3
-      with:
-        buildx-version: latest
-        qemu-version: latest
-    - name: Prepare
-      if: success()
-      id: prepare
-      run: |
-        echo ::set-output name=docker_platforms::linux/amd64,linux/386
-        echo ::set-output name=docker_username::miigotu
-        echo ::set-output name=github_image::docker.pkg.github.com/${GITHUB_REPOSITORY,,}/ps3dev
-        VERSION_TAG=${GITHUB_REF#refs/*/}
-        echo ::set-output name=version::${VERSION_TAG%/merge}
-    - name: Available platforms
-      if: success()
-      run: echo ${{ steps.buildx.outputs.platforms }}
-    - name: Docker Login and set build command
-      if: success()
-      id: login
-      env:
-        GITHUB_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
-        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
-          --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
-          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      id: cache
-      with:
-        path: /tmp/.buildx-cache
-        key: ${{ runner.os }}-buildx-${{ steps.prepare.outputs.version }}
-        restore-keys: |
-          ${{ runner.os }}-buildx-
-    - name: Run Buildx (master)
-      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
-      run: |
-          ${{ steps.login.outputs.buildx }} --tag "${{ steps.prepare.outputs.github_image }}:latest" --file Dockerfile .
-    - name: Run Buildx (non-master)
-      if: success() && steps.prepare.outputs.version != 'master' && github.event_name != 'pull_request'
-      run: |
-        ${{ steps.login.outputs.buildx }} --file Dockerfile .
-    - name: Clear
-      if: always()
-      run: |
-        rm -rf ${HOME}/.docker/config.json
+        name: ${{matrix.os}}-${{matrix.architecture}}
+        path: ps3dev-*.tar.gz
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all Artifact
+        uses: actions/download-artifact@v4
+
+      - name: Set SemVer
+        id: semver
+        run: echo "::set-output name=semver::0.1.0+${{ needs.build.outputs.date }}.${{ needs.build.outputs.sha8 }}"
+  
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ steps.semver.outputs.semver }}
+          message: "automatic tag creation"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.semver.outputs.semver }}
+          files: |
+            ${{ github.workspace }}/**/*.tar.gz
+            

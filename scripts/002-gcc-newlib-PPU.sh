@@ -1,7 +1,7 @@
-#!/bin/sh -e
+#!/bin/bash -e
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-13.2.0"
 NEWLIB="newlib-1.20.0"
 
 if [ ! -d ${GCC} ]; then
@@ -15,7 +15,7 @@ if [ ! -d ${GCC} ]; then
   rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
+  cat ../patches/${GCC}-PS3-PPU.patch | patch -p1 -d ${GCC}
   cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
   ## Enter the source code directory.
@@ -44,23 +44,27 @@ fi
 cd ${GCC}/build-ppu
 
 ## Configure the build.
+
+
+# Avoid breakage
+CFLAGS="${CFLAGS/-Werror=format-security/}"
+CXXFLAGS="${CXXFLAGS/-Werror=format-security/}"
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-    --disable-dependency-tracking \
-    --disable-libcc1 \
-    --disable-libstdcxx-pch \
-    --disable-multilib \
-    --disable-nls \
-    --disable-shared \
-    --disable-win32-registry \
-    --enable-languages="c,c++" \
-    --enable-long-double-128 \
-    --enable-lto \
-    --enable-threads \
-    --with-cpu="cell" \
-    --with-newlib \
-    --enable-newlib-multithread \
-    --enable-newlib-hw-fp \
-    --with-system-zlib
+		--with-cpu="cell" \
+		--with-newlib \
+		--with-system-zlib \
+		--enable-languages="c,c++" \
+		--enable-long-double-128 \
+		--enable-lto \
+		--enable-threads \
+		--enable-newlib-multithread \
+		--enable-newlib-hw-fp \
+		--disable-dependency-tracking \
+		--disable-libcc1 \
+		--disable-multilib \
+		--disable-nls \
+		--disable-shared \
+		--disable-win32-registry
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
