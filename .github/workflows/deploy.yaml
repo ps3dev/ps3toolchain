@@ -18,8 +18,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    env:
-      BASH_ENV: "~/.bashrc"
 
     outputs:
       sha8: ${{ steps.slug.outputs.sha8 }}
@@ -27,9 +25,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-        
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    - name: Get current arch
+      id: arch
+      run: echo "::set-output name=arch::$(uname -m)"
+
     - name: Install Ubuntu requirements
-      if: matrix.os == 'ubuntu-latest'
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         sudo apt update
         sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev && \
@@ -61,6 +71,7 @@ jobs:
 
     - name: Runs all the stages in the shell
       run: |
+        source ~/.bashrc
         mkdir -p $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
         export PSL1GHT=$PS3DEV
@@ -71,18 +82,6 @@ jobs:
         export PKG_CONFIG_PATH=$PS3DEV/portlibs/ppu/lib/pkgconfig
         ./toolchain.sh
 
-    - name: Get short SHA
-      id: slug
-      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-    - name: Get current arch
-      id: arch
-      run: echo "::set-output name=arch::$(uname -m)"
-
     - name: Compress ps3dev folder
       run: |
         tar -zcvf ps3dev-${{matrix.os}}-${{steps.arch.outputs.arch}}-${{steps.date.outputs.date}}.tar.gz ps3dev
@@ -91,7 +90,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{matrix.os}}-${{matrix.architecture}}
-        path: ps3dev-*.tar.gz
+        path: *.tar.gz
 
   publish:
     needs: build
