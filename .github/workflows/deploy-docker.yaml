@@ -17,7 +17,10 @@ jobs:
     environment: DockerHub
     env:
       DOCKERHUB_REPONAME: ps3dev
-          
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+
     steps:
 
       - name: Checkout
@@ -36,6 +39,8 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ matrix.platform }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3          
@@ -51,9 +56,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platform: ${{ matrix.platform }}
           push: true
           tags: |
-            ${{env.DOCKERHUB_REPONAME}}:latest
-            ${{env.DOCKERHUB_REPONAME}}:amd64
-            ${{env.DOCKERHUB_REPONAME}}:arm64
+            ${{env.DOCKERHUB_REPONAME}}:${{ matrix.platform }}
+            ${{env.DOCKERHUB_REPONAME}}:${{ matrix.platform }}
