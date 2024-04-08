@@ -68,10 +68,11 @@ jobs:
         pyenv global 3.11.0
         pip install python-config
         echo 'pyenv global 3.11.0' >> ~/.bashrc
+        echo 'echo bashrc loaded' >> ~/.bashrc
 
     - name: Runs all the stages in the shell
       run: |
-        source ~/.bashrc
+        . ~/.bashrc
         mkdir -p $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
         export PSL1GHT=$PS3DEV
