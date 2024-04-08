@@ -58,4 +58,4 @@ jobs:
           file: ./Dockerfile
           platform: ${{ matrix.platform }}
           push: true
-          tags: ${{env.DOCKERHUB_REPONAME}}:${{ matrix.platform }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKERHUB_REPONAME }}:${{ matrix.platform }}
