@@ -40,7 +40,7 @@ For RedHat distros:
   be enough to install everything necessary:
 
 ```bash
-  brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
+  brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config texinfo
 ```
 
 ## Add the following variables to your bash config:
