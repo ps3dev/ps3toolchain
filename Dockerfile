@@ -1,4 +1,5 @@
-FROM ubuntu:xenial
+# FROM ubuntu:xenial
+FROM debian:12-slim
 LABEL maintainer="miigotu@gmail.com"
 
 ENV PS3DEV /usr/local/ps3dev
@@ -11,7 +12,7 @@ RUN \
   apt-get -y update && \
   apt-get -y install \
   autoconf bison build-essential ca-certificates flex git libelf-dev\
-  libgmp-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev \
+  libgmp-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev-is-python3 \
   texinfo wget zlib1g-dev && \
   apt-get -y clean autoclean autoremove && \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -21,6 +22,6 @@ WORKDIR /build
 COPY . /build
 
 # Fixes certificate errors with letsencrypt in ARMv7
-RUN echo "\nca_certificate=/etc/ssl/certs/ca-certificates.crt" | tee -a /etc/wgetrc
-RUN /build/toolchain.sh
+# RUN echo "\nca_certificate=/etc/ssl/certs/ca-certificates.crt" | tee -a /etc/wgetrc
+# RUN /build/toolchain.sh
 

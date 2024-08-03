@@ -26,7 +26,7 @@ For Debian based distros:
     libtool libtool-bin python-dev bzip2 libgmp3-dev pkg-config g++ libssl-dev clang
 ```
 
-For Debian 12:
+For Debian 11 and 12:
 
 > Install `python-is-python3` and `python-dev-is-python3` instead of
   `python` and `python-dev`.
