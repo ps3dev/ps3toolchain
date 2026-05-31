@@ -18,6 +18,9 @@ if [ ! -d ${GDB} ]; then
   ## Patch the source code.
   cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
 
+  ## Patch the source code
+  cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
+
   ## Replace config.guess and config.sub
   cp config.guess config.sub ${GDB}
 
