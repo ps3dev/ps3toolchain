@@ -13,7 +13,7 @@ RUN \
   apt-get -y install \
   autoconf bison build-essential ca-certificates flex git libelf-dev\
   libgmp-dev libncurses5-dev libssl-dev libtool-bin pkg-config python-dev-is-python3 \
-  texinfo wget zlib1g-dev && \
+  texinfo wget zlib1g-dev pv && \
   apt-get -y clean autoclean autoremove && \
   rm -rf /var/lib/{apt,dpkg,cache,log}/
 

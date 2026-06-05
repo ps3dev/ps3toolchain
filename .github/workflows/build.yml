@@ -20,7 +20,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get -y install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python3 python-is-python3 subversion wget zlib1g-dev libtool-bin python3-dev bzip2 libgmp3-dev pkg-config
+        sudo apt-get -y install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python3 python-is-python3 subversion wget zlib1g-dev libtool-bin python3-dev bzip2 libgmp3-dev pkg-config pv
 
     - name: Runs all the stages in the shell
       run: |

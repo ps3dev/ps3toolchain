@@ -15,7 +15,7 @@
 
   autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
   ncurses, patch, python, subversion, wget, zlib, libtool, python,
-  bzip2, gmp, pkg-config, g++, libssl-dev, clang
+  bzip2, gmp, pkg-config, g++, libssl-dev, clang, pv
 
 ### Linux
 
