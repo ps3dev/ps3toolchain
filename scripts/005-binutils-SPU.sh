@@ -9,7 +9,7 @@ if [ ! -d ${BINUTILS} ]; then
   if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue https://ftpmirror.gnu.org/binutils/${BINUTILS}.tar.bz2; fi
 
   ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
-  ../scripts/get-config-scripts.sh
+  ../config/get-config-scripts.sh
 
   ## Unpack the source code.
   tar xfvj ${BINUTILS}.tar.bz2
