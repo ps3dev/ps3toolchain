@@ -8,9 +8,8 @@ if [ ! -d ${BINUTILS} ]; then
   ## Download the source code.
   if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue https://ftpmirror.gnu.org/binutils/${BINUTILS}.tar.bz2; fi
 
-  ## Download an up-to-date config.guess and config.sub
-  if [ ! -f config.guess ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
-  if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
 
   ## Unpack the source code.
   tar xfvj ${BINUTILS}.tar.bz2
