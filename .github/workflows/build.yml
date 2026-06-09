@@ -35,7 +35,7 @@ jobs:
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config texinfo
 
     - name: Install macOS arm64 requirements
-      if: matrix.os == 'macos-15-arm64'
+      if: matrix.os == 'macos-26'
       shell: bash -e {0}
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
@@ -68,7 +68,7 @@ jobs:
         ./toolchain.sh
 
     - name: Runs all the stages in the shell
-      if: matrix.os == 'macos-15-arm64'
+      if: matrix.os == 'macos-26'
       shell: bash -e {0}
       run: |
         mkdir $PWD/ps3dev
