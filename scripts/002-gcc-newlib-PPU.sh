@@ -18,6 +18,11 @@ if [ ! -d ${GCC} ]; then
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
   cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
+  ## Patch for macOS arm64
+  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
+    cat ../patches/${GCC}-PS3-macos-arm64.patch | patch -p1 -d ${GCC}
+  fi
+
   ## Enter the source code directory.
   cd ${GCC}
 
