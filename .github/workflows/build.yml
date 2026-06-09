@@ -31,19 +31,7 @@ jobs:
         HOMEBREW_NO_INSTALL_CLEANUP: 1
         HOMEBREW_NO_ENV_HINTS: 1
       run: |
-        if ! command -v brew >/dev/null 2>&1; then
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        fi
-
-        eval "$(/usr/local/bin/brew shellenv bash)"
-
         brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config texinfo
-
-        if /Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11 -c "import distutils" >/dev/null 2>&1; then
-          echo "Using preinstalled Python 3.11 framework"
-        else
-          brew list python@3.11 >/dev/null 2>&1 || brew install python@3.11 || true
-        fi
 
     - name: Runs all the stages in the shell
       if: matrix.os == 'ubuntu-latest'
@@ -60,20 +48,6 @@ jobs:
       if: matrix.os == 'macos-15-intel'
       shell: arch -x86_64 bash -e {0}
       run: |
-        eval "$(/usr/local/bin/brew shellenv bash)"
-        if /Library/Frameworks/Python.framework/Versions/3.11/bin/python3.11 -c "import distutils" >/dev/null 2>&1; then
-          PY311_PREFIX="/Library/Frameworks/Python.framework/Versions/3.11"
-        else
-          PY311_PREFIX="$(brew --prefix python@3.11)"
-        fi
-        
-        mkdir -p "$PWD/python-shims"
-        ln -sf "$PY311_PREFIX/bin/python3.11" "$PWD/python-shims/python"
-        ln -sf "$PY311_PREFIX/bin/python3.11" "$PWD/python-shims/python3"
-        ln -sf "$PY311_PREFIX/bin/python3.11-config" "$PWD/python-shims/python-config"
-        ln -sf "$PY311_PREFIX/bin/python3.11-config" "$PWD/python-shims/python3-config"
-        export PATH="$PWD/python-shims:$PY311_PREFIX/bin:$PATH"
-
         mkdir $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
         export PSL1GHT=$PS3DEV
