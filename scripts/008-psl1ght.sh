@@ -1,6 +1,12 @@
 #!/bin/sh -e
 # psl1ght.sh by Naomi Peori (naomi@peori.ca)
 
+## Check if we want to skip this step
+if [[ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]]; then
+    echo "PS3 Toolchain only set. Skipping..."
+    exit 0
+fi
+
 ## Download the source code.
 wget --no-check-certificate https://github.com/ps3dev/PSL1GHT/tarball/master -O psl1ght.tar.gz
 
