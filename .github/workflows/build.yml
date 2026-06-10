@@ -12,7 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-15-intel, ubuntu-latest, macos-26]
+        os: [ubuntu-latest]
+#        os: [macos-15-intel, ubuntu-latest, macos-26]
 
     steps:
     - uses: actions/checkout@v6
@@ -46,8 +47,6 @@ jobs:
     - name: Runs all the stages in the shell
       if: matrix.os == 'ubuntu-latest'
       shell: bash -e {0}
-      env:
-        BUILD_PS3TOOLCHAIN_ONLY: 1
       run: |
         mkdir $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
@@ -55,6 +54,7 @@ jobs:
         export PATH=$PATH:$PS3DEV/bin
         export PATH=$PATH:$PS3DEV/ppu/bin
         export PATH=$PATH:$PS3DEV/spu/bin
+        export BUILD_PS3TOOLCHAIN_ONLY=1
         ./toolchain.sh
 
     - name: Runs all the stages in the shell
