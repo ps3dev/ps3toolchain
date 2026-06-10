@@ -35,6 +35,9 @@ jobs:
 
     - name: Runs all the stages in the shell
       if: matrix.os == 'ubuntu-latest'
+      shell: bash -e {0}
+      env:
+        BUILD_PS3TOOLCHAIN_ONLY: 1
       run: |
         mkdir $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
@@ -47,6 +50,8 @@ jobs:
     - name: Runs all the stages in the shell
       if: matrix.os == 'macos-15-intel'
       shell: arch -x86_64 bash -e {0}
+      env:
+        BUILD_PS3TOOLCHAIN_ONLY: 1
       run: |
         mkdir $PWD/ps3dev
         export PS3DEV=$PWD/ps3dev
