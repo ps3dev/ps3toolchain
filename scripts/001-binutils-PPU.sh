@@ -1,24 +1,27 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # binutils-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 BINUTILS="binutils-2.22"
+source ../utils/utils.sh
 
 if [ ! -d ${BINUTILS} ]; then
 
   ## Download the source code.
-  if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue https://ftpmirror.gnu.org/binutils/${BINUTILS}.tar.bz2; fi
+  ../download.sh ${BINUTILS}.tar.bz2
 
   ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  tar xfvj ${BINUTILS}.tar.bz2
+  echo "Unpacking ${BINUTILS}"
+  extract "../archives/${BINUTILS}.tar.bz2"
 
   ## Patch the source code.
   cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
 
   ## Replace config.guess and config.sub
-  cp config.guess config.sub ${BINUTILS}
+  cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
 
 fi
 
@@ -47,4 +50,5 @@ cd ${BINUTILS}/build-ppu
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
+${MAKE:-make} -j $PROCS
+${MAKE:-make} libdir=host-libs/lib MULTIOSDIR=. install

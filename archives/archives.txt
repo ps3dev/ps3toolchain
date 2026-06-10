@@ -1,0 +1,5 @@
+6c7af8ed1c8cf9b4b9d6e6fe09a3e1d3d479fe63984ba8b9b26bf356b6313ca9 19973532 https://sourceware.org/pub/binutils/releases/binutils-2.22.tar.bz2 -> binutils-2.22.tar.bz2
+1cf7adf8ff4b5aa49041c8734bbcf1ad18cc4c94d0029aae0f4e48841088479a 62312628 https://sourceware.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.xz -> gcc-7.2.0.tar.xz
+c644b2847244278c57bec2ddda69d8fab5a7c767f3b9af69aa7aa3da823ff692 14571004 https://sourceware.org/pub/newlib/newlib-1.20.0.tar.gz -> newlib-1.20.0.tar.gz
+-                                                                       - https://github.com/ps3dev/psl1ght/tarball/master -> psl1ght.tar.gz
+-                                                                       - https://github.com/ps3dev/ps3libraries/tarball/master -> ps3libraries.tar.gz

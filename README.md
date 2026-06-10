@@ -14,8 +14,8 @@
 ## Set up your environment by installing the following software:
 
   autoconf, automake, bison, flex, gcc, libelf, make, makeinfo,
-  ncurses, patch, python, subversion, wget, zlib, libtool, python,
-  bzip2, gmp, pkg-config, g++, libssl-dev, clang
+  ncurses, patch, python, subversion, wget, zlib, libtool,
+  bzip2, gmp, pkg-config, g++, libssl-dev, clang, pv
 
 ### Linux
 

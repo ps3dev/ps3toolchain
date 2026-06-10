@@ -1,18 +1,23 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 GCC="gcc-7.2.0"
 NEWLIB="newlib-1.20.0"
+source ../utils/utils.sh
 
 if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GCC}.tar.xz ]; then wget --continue https://ftpmirror.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.xz; fi
-  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
+  ../download.sh ${GCC}.tar.xz
+  ../download.sh ${NEWLIB}.tar.gz
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && tar xfvJ ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
+  echo "Unpacking ${GCC}"
+  extract "../archives/${GCC}.tar.xz"
+
+  echo "Unpacking ${NEWLIB}"
+  extract "../archives/${NEWLIB}.tar.gz"
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
@@ -70,4 +75,5 @@ CFLAGS="-Wno-int-conversion" CXXFLAGS="-Wno-int-conversion" ../configure --prefi
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+${MAKE:-make} -j $PROCS all
+${MAKE:-make} MULTIOSDIR=. install

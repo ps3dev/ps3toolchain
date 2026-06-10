@@ -1,2 +1,4 @@
-build/
-.idea/**
+/build
+/archives/*
+!/archives/archives.txt
+/ps3dev

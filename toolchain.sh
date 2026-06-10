@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -eo pipefail
 # toolchain.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the ps3toolchain directory.
@@ -14,7 +15,14 @@ which gmake 1>/dev/null 2>&1 && export MAKE=gmake
 DEPEND_SCRIPTS=`ls ../depends/*.sh | sort`
 
 ## Run all the depend scripts.
-for SCRIPT in $DEPEND_SCRIPTS; do "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; } done
+failed=0
+for SCRIPT in $(ls ../depends/*.sh | sort); do
+  "$SCRIPT" || {
+    echo "$SCRIPT: Failed."
+    failed=1
+  }
+done
+[ "$failed" -ne 0 ] && exit "$failed"
 
 ## Fetch the build scripts.
 BUILD_SCRIPTS=`ls ../scripts/*.sh | sort`
@@ -28,6 +36,7 @@ if [ $1 ]; then
   for STEP in $@; do
     SCRIPT=""
     for i in $BUILD_SCRIPTS; do
+      echo ">>> Running: $SCRIPT"
       if [ `basename $i | cut -d'-' -f1` -eq $STEP ]; then
         SCRIPT=$i
         break
@@ -44,4 +53,7 @@ if [ $1 ]; then
 fi
 
 ## Run the build scripts.
-for SCRIPT in $BUILD_SCRIPTS; do "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; } done
+for SCRIPT in $BUILD_SCRIPTS; do
+  echo ">>> Running: $SCRIPT"
+  "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; }
+done

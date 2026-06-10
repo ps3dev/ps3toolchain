@@ -1,4 +1,5 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # symlinks-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the PPU directory.
