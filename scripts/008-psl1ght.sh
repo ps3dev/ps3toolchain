@@ -2,7 +2,7 @@
 # psl1ght.sh by Naomi Peori (naomi@peori.ca)
 
 ## Check if we want to skip this step
-if [[ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]]; then
+if [ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]; then
     echo "PS3 Toolchain only set. Skipping..."
     exit 0
 fi
