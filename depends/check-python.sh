@@ -2,7 +2,7 @@
 # check-python.sh by Naomi Peori (naomi@peori.ca)
 
 ## Check for python.
-( python --version || python -V ) 1>/dev/null 2>&1 || { echo "ERROR: Install python before continuing."; exit 1; }
+( python --version || python -V || python3 --version || python3 -V ) 1>/dev/null 2>&1 || { echo "ERROR: Install python before continuing."; exit 1; }
 
 ## Check for python-config
 pyprefix=$(python-config --prefix || python3-config --prefix)
