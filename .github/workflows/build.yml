@@ -33,7 +33,7 @@ jobs:
             autoconf automake bison flex gcc libelf-dev make texinfo \
             libncurses5-dev patch python3 python-is-python3 subversion \
             wget zlib1g-dev libtool-bin python3-dev bzip2 libgmp3-dev \
-            pkg-config pv libssl-dev
+            pkg-config libssl-dev
 
       # ------------------------
       # macOS dependencies
@@ -49,7 +49,7 @@ jobs:
           eval "$(brew shellenv)"
           brew install \
             autoconf automake openssl libelf ncurses zlib gmp wget \
-            pkg-config texinfo pv
+            pkg-config texinfo
 
       # ------------------------
       # GLOBAL ENV SETUP
