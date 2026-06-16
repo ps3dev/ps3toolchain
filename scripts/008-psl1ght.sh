@@ -8,7 +8,7 @@ if [ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]; then
     exit 0
 fi
 
-source ../utils/util.sh
+source ../utils/utils.sh
 
 ## Download the source code.
 ../download.sh psl1ght.tar.gz
