@@ -21,7 +21,7 @@ if [ ! -d ${BINUTILS} ]; then
   cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
 
   ## Replace config.guess and config.sub
-  cp ./config.guess ./config.sub ${BINUTILS}
+  cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
 
 fi
 
