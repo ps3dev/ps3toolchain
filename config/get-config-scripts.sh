@@ -5,11 +5,18 @@ CONFIG_BASE_URL="${CONFIG_BASE_URL:-https://git.savannah.gnu.org/cgit/config.git
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="${SCRIPT_DIR}"
+ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+cd "${ROOT_DIR}/archives"
 
 fetch_config_file() {
   file="$1"
   url="${CONFIG_BASE_URL}/${file}"
   tmp="${file}.tmp"
+
+  if test -f "${file}"; then
+      return 0
+  fi
 
   echo "Fetching ${file} from Savannah, timeout ${CONFIG_TIMEOUT}s..."
 
