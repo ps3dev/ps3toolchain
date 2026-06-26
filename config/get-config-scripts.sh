@@ -4,8 +4,8 @@ CONFIG_TIMEOUT="${CONFIG_TIMEOUT:-15}"
 CONFIG_BASE_URL="${CONFIG_BASE_URL:-https://git.savannah.gnu.org/cgit/config.git/plain}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONFIG_DIR="${SCRIPT_DIR}"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
-CONFIG_DIR="${ROOT_DIR}/config"
 
 cd "${ROOT_DIR}/archives"
 
