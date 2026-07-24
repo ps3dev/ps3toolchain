@@ -1,15 +1,20 @@
 [![License](https://img.shields.io/github/license/ps3dev/ps3toolchain.svg)](./LICENSE)
 [![CI](https://github.com/ps3dev/ps3toolchain/actions/workflows/build.yml/badge.svg)](https://github.com/ps3dev/ps3toolchain/actions/workflows/build.yml)
 
-  What does this do?
- ====================
+> [!NOTE]
+> This is the toolchain repository.
+> For the full development environment, please use
+> [ps3dev](https://github.com/ps3dev/ps3dev).
+
+# What does this do?
 
   This program will automatically build and install a compiler and other
   tools used in the creation of homebrew software for the Sony PlayStation 3
   videogame system.
 
-  How do I use it?
- ==================
+
+# How do I use it?
+
 
 ## Set up your environment by installing the following software:
 
@@ -53,6 +58,10 @@ For RedHat distros:
 ```bash
   brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config texinfo
 ```
+
+### Windows
+
+Use Ubuntu WSL and follow the Linux procedure as normal.
 
 ## Add the following variables to your bash config:
 ```bash
