@@ -2,7 +2,7 @@
 set -eo pipefail
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-10.2.0"
 NEWLIB="newlib-1.20.0"
 source ../utils/utils.sh
 
