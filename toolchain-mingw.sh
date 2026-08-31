@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eo pipefail
 # toolchain-mingw.sh by Miigotu (miigotu@hotmail.com)
 
 MINGW32EXPORTS=\

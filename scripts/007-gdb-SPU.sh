@@ -1,25 +1,26 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # gdb-SPU.sh by Naomi Peori (naomi@peori.ca)
 
 GDB="gdb-8.3.1"
+source ../utils/utils.sh
 
 if [ ! -d ${GDB} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GDB}.tar.xz ]; then wget --continue https://ftp.gnu.org/gnu/gdb/${GDB}.tar.xz; fi
+  ../download.sh ${GDB}.tar.xz
 
-  ## Download an up-to-date config.guess and config.sub
-  if [ ! -f config.guess ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
-  if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  tar xfvJ ${GDB}.tar.xz
+  unpack_if_needed "../archives/${GDB}.tar.xz" "${GDB}"
 
   ## Patch the source code.
-  cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
+  apply_patch "../patches/${GDB}-PS3.patch" "${GDB}"
 
   ## Replace config.guess and config.sub
-  cp config.guess config.sub ${GDB}
+  cp ../archives/config.guess ../archives/config.sub ${GDB}
 
 fi
 
@@ -34,13 +35,16 @@ fi
 cd ${GDB}/build-spu
 
 ## Configure the build.
-
+## pyenv ships Python 3.10; gdb 8.3.1 cannot build against that ABI.
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
-    --disable-werror
+    --disable-werror \
+    --with-python=no \
+    --without-guile
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=`pwd`/host-libs/lib install
+${MAKE:-make} -j $PROCS
+${MAKE:-make} libdir="$(pwd)/host-libs/lib" install

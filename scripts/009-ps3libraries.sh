@@ -1,19 +1,24 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # ps3libraries.sh by Naomi Peori (naomi@peori.ca)
 
-PS3LIBRARIES="ps3libraries"
-
-if [ ! -d ${PS3LIBRARIES} ]; then
-
-    ## Download the source code.
-    wget --no-check-certificate https://github.com/humbertodias/$PS3LIBRARIES/tarball/psl1ght-2.30.1 -O $PS3LIBRARIES.tar.gz
-
-    ## Unpack the source code.
-    rm -Rf $PS3LIBRARIES && mkdir $PS3LIBRARIES && tar --strip-components=1 --directory=$PS3LIBRARIES -xvzf $PS3LIBRARIES.tar.gz
-
+## Check if we want to skip this step
+if [ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]; then
+    echo "PS3 Toolchain only set. Skipping..."
+    exit 0
 fi
 
-cd $PS3LIBRARIES
+source ../utils/utils.sh
+
+## Download the source code.
+../download.sh ps3libraries.tar.gz
+
+## Unpack the source code.
+rm -Rf ps3libraries
+mkdir ps3libraries
+echo "Unpacking ps3libraries"
+extract ../archives/ps3libraries.tar.gz --strip-components=1 --directory=ps3libraries
+cd ps3libraries
 
 ## Compile and install.
 ./libraries.sh

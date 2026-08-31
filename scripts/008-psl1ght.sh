@@ -1,19 +1,24 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # psl1ght.sh by Naomi Peori (naomi@peori.ca)
 
-PSL1GHT_DIR="PSL1GHT"
-
-if [ ! -d ${PSL1GHT_DIR} ]; then
-
-    ## Download the source code.
-    wget --no-check-certificate https://github.com/ps3dev/$PSL1GHT_DIR/tarball/master -O $PSL1GHT_DIR.tar.gz
-
-    ## Unpack the source code.
-    rm -Rf $PSL1GHT_DIR && mkdir $PSL1GHT_DIR && tar --strip-components=1 --directory=$PSL1GHT_DIR -xvzf $PSL1GHT_DIR.tar.gz
-
+## Check if we want to skip this step
+if [ -n "$BUILD_PS3TOOLCHAIN_ONLY" ]; then
+    echo "PS3 Toolchain only set. Skipping..."
+    exit 0
 fi
 
-cd $PSL1GHT_DIR
+source ../utils/utils.sh
+
+## Download the source code.
+../download.sh psl1ght.tar.gz
+
+## Unpack the source code.
+rm -Rf psl1ght
+mkdir psl1ght
+echo "Unpacking psl1ght"
+extract ../archives/psl1ght.tar.gz --strip-components=1 --directory=psl1ght
+cd psl1ght
 
 ## Compile and install.
 ${MAKE:-make} install-ctrl && ${MAKE:-make} && ${MAKE:-make} install

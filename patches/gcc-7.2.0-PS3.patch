@@ -725,3 +725,15 @@ index bedcf1017..8d6c8feff 100644
  powerpc*-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff rs6000/t-linux t-dfprules rs6000/t-ppc64-fp t-slibgcc-libgcc"
  	tmake_file="${tmake_file} t-stack rs6000/t-stack-rs6000"
+diff --git a/zlib/zutil.h b/zlib/zutil.h
+--- a/zlib/zutil.h
++++ b/zlib/zutil.h
+@@ -130,7 +130,7 @@
+ #  endif
+ #endif
+ 
+-#if defined(MACOS) || defined(TARGET_OS_MAC)
++#if defined(MACOS) || (defined(TARGET_OS_MAC) && !defined(__APPLE__))
+ #  define OS_CODE  7
+ #  ifndef Z_SOLO
+ #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os

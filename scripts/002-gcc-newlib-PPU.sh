@@ -1,22 +1,29 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -eo pipefail
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 GCC="gcc-13.2.0"
 NEWLIB="newlib-1.20.0"
+source ../utils/utils.sh
 
 if [ ! -d ${GCC} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GCC}.tar.xz ]; then wget --continue https://ftp.gnu.org/gnu/gcc/${GCC}/${GCC}.tar.xz; fi
-  if [ ! -f ${NEWLIB}.tar.gz ]; then wget --continue https://sourceware.org/pub/newlib/${NEWLIB}.tar.gz; fi
+  ../download.sh ${GCC}.tar.xz
+  ../download.sh ${NEWLIB}.tar.gz
 
   ## Unpack the source code.
-  rm -Rf ${GCC} && tar xfvJ ${GCC}.tar.xz
-  rm -Rf ${NEWLIB} && tar xfvz ${NEWLIB}.tar.gz
+  unpack_if_needed "../archives/${GCC}.tar.xz" "${GCC}"
+  unpack_if_needed "../archives/${NEWLIB}.tar.gz" "${NEWLIB}"
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3-PPU.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+  apply_patch "../patches/${GCC}-PS3-PPU.patch" "${GCC}"
+  apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
+
+  ## Patch for macOS arm64
+  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
+    apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
+  fi
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -44,29 +51,26 @@ fi
 cd ${GCC}/build-ppu
 
 ## Configure the build.
-
-
-# Avoid breakage
-CFLAGS="${CFLAGS/-Werror=format-security/}"
-CXXFLAGS="${CXXFLAGS/-Werror=format-security/}"
-../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-		--with-cpu="cell" \
-		--with-newlib \
-		--with-system-zlib \
-		--enable-languages="c,c++" \
-		--enable-long-double-128 \
-		--enable-lto \
-		--enable-threads \
-		--enable-newlib-multithread \
-		--enable-newlib-hw-fp \
-		--disable-dependency-tracking \
-		--disable-libcc1 \
-		--disable-multilib \
-		--disable-nls \
-		--disable-shared \
-		--disable-win32-registry
+CFLAGS="-Wno-int-conversion" CXXFLAGS="-Wno-int-conversion" ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
+    --disable-dependency-tracking \
+    --disable-libcc1 \
+    --disable-libstdcxx-pch \
+    --disable-multilib \
+    --disable-nls \
+    --disable-shared \
+    --disable-win32-registry \
+    --enable-languages="c,c++" \
+    --enable-long-double-128 \
+    --enable-lto \
+    --enable-threads \
+    --with-cpu="cell" \
+    --with-newlib \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
+    --with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS all && ${MAKE:-make} install
+${MAKE:-make} -j $PROCS all
+${MAKE:-make} MULTIOSDIR=. install

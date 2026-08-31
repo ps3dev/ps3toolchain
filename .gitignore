@@ -1,5 +1,6 @@
-build/
-.idea/**
+/archives/*
+!/archives/archives.txt
+/ps3dev
 .DS_Store
-ps3dev
+.idea/**
 .vscode

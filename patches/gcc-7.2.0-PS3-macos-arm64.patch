@@ -1,0 +1,30 @@
+diff -Nru gcc-7.2.0/gcc/config/aarch64/aarch64.h gcc-7.2.0-mac/gcc/config/aarch64/aarch64.h
+--- gcc-7.2.0/gcc/config/aarch64/aarch64.h	2017-01-19 20:51:49
++++ gcc-7.2.0-mac/gcc/config/aarch64/aarch64.h	2026-06-09 16:10:14
+@@ -930,7 +930,7 @@
+ #define MCPU_TO_MARCH_SPEC_FUNCTIONS \
+   { "rewrite_mcpu", aarch64_rewrite_mcpu },
+ 
+-#if defined(__aarch64__)
++#if defined(__aarch64__) && ! defined(__APPLE__)
+ extern const char *host_detect_local_cpu (int argc, const char **argv);
+ # define EXTRA_SPEC_FUNCTIONS						\
+   { "local_cpu_detect", host_detect_local_cpu },			\
+diff -Nru gcc-7.2.0/gcc/config/host-darwin.c gcc-7.2.0-mac/gcc/config/host-darwin.c
+--- gcc-7.2.0/gcc/config/host-darwin.c	2017-01-01 09:07:43
++++ gcc-7.2.0-mac/gcc/config/host-darwin.c	2026-06-09 16:09:16
+@@ -22,6 +22,8 @@
+ #include "coretypes.h"
+ #include "diagnostic-core.h"
+ #include "config/host-darwin.h"
++#include "hosthooks.h"
++#include "hosthooks-def.h"
+ 
+ /* Yes, this is really supposed to work.  */
+ static char pch_address_space[1024*1024*1024] __attribute__((aligned (4096)));
+@@ -75,3 +77,5 @@
+ 
+   return ret;
+ }
++
++const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;

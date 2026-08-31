@@ -13073,12 +13073,14 @@ index 0000000..66ce33b
 +#endif
 diff --git a/newlib/libc/sys/lv2/sys/utime.h b/newlib/libc/sys/lv2/sys/utime.h
 new file mode 100644
-index 0000000..c0d27f1
+index 0000000..44ff6c6
 --- /dev/null
 +++ b/newlib/libc/sys/lv2/sys/utime.h
-@@ -0,0 +1,20 @@
+@@ -0,0 +1,22 @@
 +#ifndef _SYS_UTIME_H
 +#define _SYS_UTIME_H
++
++#include <time.h>
 +
 +#ifdef __cplusplus
 +extern "C" {

@@ -1,11 +1,7 @@
 name: ci
 
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [run_build]
+  workflow_dispatch
 
 jobs:
   build:
@@ -24,22 +20,21 @@ jobs:
       date: ${{ steps.date.outputs.date }}
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Get short SHA
-      id: slug
-      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
-
-    - name: Get current date
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-    - name: Get current arch
-      id: arch
-      run: echo "::set-output name=arch::$(uname -m)"
-
-    - name: Install Ubuntu requirements
-      if: startsWith(matrix.os, 'ubuntu')
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 1
+        persist-credentials: false
+    - name: Set up Docker Buildx
+      if: success()
+      id: buildx
+      uses: crazy-max/ghaction-docker-buildx@v3
+      with:
+        buildx-version: latest
+        qemu-version: latest
+    - name: Prepare
+      if: success()
+      id: prepare
       run: |
         sudo apt update
         sudo apt -y install autoconf automake bison flex gcc g++ libelf-dev make texinfo libncurses5-dev patch python2-dev subversion wget zlib1g-dev libtool-bin python-dev-is-python3 bzip2 libgmp3-dev pkg-config libssl-dev && \
@@ -49,29 +44,20 @@ jobs:
       if: startsWith(matrix.os, 'macos')
       # act -P macos-latest=-self-hosted --container-architecture linux/amd64
       run: |
-        brew update
-        brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config gnu-sed texinfo
-        echo "alias sed='gsed'" >> ~/.bashrc
-
-        # check current version
-        python --version
-        #python-config --libs
-        
-        # install pyenv
-        brew install pyenv
-        # Initialize pyenv in the current shell
-        eval "$(pyenv init --path)"
-
-        # Install Python 3.11 using pyenv
-        pyenv install 3.11.0
-        # Set Python 3.11 as the global version
-        pyenv global 3.11.0
-        pip install python-config
-        echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
-        echo 'pyenv global 3.11.0' >> ~/.bashrc
-        echo 'echo bashrc loaded' >> ~/.bashrc
-
-    - name: Runs all the stages in the shell
+        echo "${GITHUB_PASSWORD}" | docker login --username "${{ steps.prepare.outputs.docker_username }}" --password-stdin docker.pkg.github.com
+        echo ::set-output name=buildx::$(echo docker buildx build --output type=image,name=${{ steps.prepare.outputs.github_image }},push=true \
+          --platform ${{ steps.prepare.outputs.docker_platforms }} --cache-from "type=local,src=/tmp/.buildx-cache" --cache-to "type=local,dest=/tmp/.buildx-cache" \
+          --tag "${{ steps.prepare.outputs.github_image }}:${{ steps.prepare.outputs.version }}")
+    - name: Cache Docker layers
+      uses: actions/cache@v5
+      id: cache
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ steps.prepare.outputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+    - name: Run Buildx (master)
+      if: success() && steps.prepare.outputs.version == 'master' && github.event_name != 'pull_request'
       run: |
         . ~/.bashrc
         mkdir -p $PWD/ps3dev

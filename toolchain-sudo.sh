@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+set -eo pipefail
 # toolchain-sudo.sh by Naomi Peori (naomi@peori.ca)
 
 ## Enter the ps3toolchain directory.

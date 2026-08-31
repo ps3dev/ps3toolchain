@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            os: linux
+
+          - runner: macos-15-intel
+            os: macos
+
+          - runner: macos-26
+            os: macos
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Linux requirements
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+            autoconf automake bison flex gcc libelf-dev make texinfo \
+            libncurses5-dev patch python3 python-is-python3 subversion \
+            wget zlib1g-dev libtool-bin python3-dev bzip2 libgmp3-dev \
+            pkg-config libssl-dev
+
+      # ------------------------
+      # macOS dependencies
+      # ------------------------
+      - name: Install macOS requirements
+        if: matrix.os == 'macos'
+        shell: bash
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
+          HOMEBREW_NO_ENV_HINTS: 1
+        run: |
+          eval "$(brew shellenv)"
+          brew install \
+            autoconf automake openssl libelf ncurses zlib gmp wget \
+            pkg-config texinfo
+
+      # ------------------------
+      # GLOBAL ENV SETUP
+      # ------------------------
+      - name: Setup environment (PS3DEV + base PATH)
+        shell: bash
+        run: |
+          mkdir -p "$PWD/ps3dev"
+          mkdir -p "$PWD/build"
+
+          echo "BUILD_PS3TOOLCHAIN_ONLY=1" >> $GITHUB_ENV
+          echo "NO_SAVANNAH=1" >> $GITHUB_ENV
+          echo "PS3DEV=$PWD/ps3dev" >> $GITHUB_ENV
+          echo "PSL1GHT=$PWD/ps3dev" >> $GITHUB_ENV
+          echo "PATH=$PATH:$PWD/ps3dev/bin:$PWD/ps3dev/ppu/bin:$PWD/ps3dev/spu/bin" >> $GITHUB_ENV
+
+      - name: Cache downloaded archives
+        uses: actions/cache@v5
+        with:
+          path: archives
+          key: archives-${{ hashFiles('archives/archives.txt') }}
+
+      - name: Purge unverifiable archives
+        run: |
+          while IFS= read -r line; do
+            set -- $line
+            [ "${1:-}" = "-" ] || continue
+            # 3rd field is URL, 5th field (if "->") is rename
+            url="$3"
+            rename=""
+            [ "${4:-}" = "->" ] && rename="${5:-}"
+            file="${rename:-$(basename "$url")}"
+            rm -f "archives/$file"
+          done < archives/archives.txt
+
+      # ------------------------
+      # Build steps
+      # ------------------------
+      - name: Download files
+        working-directory: ./build
+        run: ../download.sh
+
+      - name: Build Binutils (PPU)
+        run: ./toolchain.sh 001
+
+      - name: Build GCC + Newlib (PPU)
+        run: ./toolchain.sh 002
+
+      - name: Symlinks (PPU)
+        run: ./toolchain.sh 004
+
+      - name: Build Binutils (SPU)
+        run: ./toolchain.sh 005
+
+      - name: Build GCC + Newlib (SPU)
+        run: ./toolchain.sh 006
+
+      - name: Get short SHA
+        id: slug
+        run: echo "sha8=${GITHUB_SHA::8}" >> "$GITHUB_OUTPUT"
+
+      - name: Compress ps3dev folder
+        run: tar -zcvf ps3dev-${{ matrix.os }}-${{ runner.arch }}.tar.gz ps3dev
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ps3dev-${{ steps.slug.outputs.sha8 }}-${{ matrix.os }}-${{ runner.arch }}
+          path: ps3dev-${{ matrix.os }}-${{ runner.arch }}.tar.gz
+
+  push_release:
+    if: |
+      github.event_name == 'push' &&
+      github.repository == 'ps3dev/ps3toolchain'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create Pre-Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="nightly-$(date -u +%Y-%m-%d)"
+          gh release delete "$TAG" --yes --cleanup-tag || true
+          gh release create "$TAG" artifacts/*.tar.gz --target ${{ GITHUB.SHA }} -t "$TAG" --prerelease

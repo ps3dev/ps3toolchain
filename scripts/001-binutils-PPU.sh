@@ -1,25 +1,27 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # binutils-PPU.sh by Naomi Peori (naomi@peori.ca)
 
 BINUTILS="binutils-2.42"
+source ../utils/utils.sh
 
 if [ ! -d ${BINUTILS} ]; then
 
   ## Download the source code.
-  if [ ! -f ${BINUTILS}.tar.bz2 ]; then wget --continue https://ftp.gnu.org/gnu/binutils/${BINUTILS}.tar.bz2; fi
+  ../download.sh ${BINUTILS}.tar.bz2
 
-  ## Download an up-to-date config.guess and config.sub
-  if [ ! -f config.guess ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
-  if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  tar xfvj ${BINUTILS}.tar.bz2
+  echo "Unpacking ${BINUTILS}"
+  extract "../archives/${BINUTILS}.tar.bz2"
 
   ## Patch the source code.
   cat ../patches/${BINUTILS}-PS3-PPU.patch | patch -p1 -d ${BINUTILS}
 
   ## Replace config.guess and config.sub
-  cp config.guess config.sub ${BINUTILS}
+  cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
 
 fi
 
@@ -45,9 +47,16 @@ unset LDFLAGS
 		--disable-shared \
 		--disable-debug \
 		--disable-dependency-tracking \
-		--disable-werror
+		--disable-werror \
+		--disable-gprofng \
+		--disable-install-libiberty
 
 ## Compile and install.
+## Do not override libdir: binutils 2.42 installs libdep.la into
+## $libdir/bfd-plugins and libtool requires that path to be absolute.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
-${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=`pwd`/host-libs/lib install
+${MAKE:-make} -j $PROCS
+${MAKE:-make} install
+# Host libiberty can still land under prefix on some configure defaults.
+rm -f "$PS3DEV/ppu/lib/libiberty.a" "$PS3DEV/ppu/lib64/libiberty.a"
