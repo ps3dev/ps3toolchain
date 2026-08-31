@@ -21,7 +21,11 @@ if [ ! -d ${GCC} ]; then
   apply_patch "../patches/${GCC}-PS3-SPU.patch" "${GCC}"
   apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
 
-  ## Patch for macOS arm64
+  ## libc++ 17+ (Xcode 16/26, Intel and Apple Silicon)
+  if [[ $(uname -s) == 'Darwin' ]]; then
+    apply_patch "../patches/${GCC}-PS3-macos.patch" "${GCC}"
+  fi
+  ## Apple Silicon host_hooks / native aarch64 detect
   if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
     apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
   fi
