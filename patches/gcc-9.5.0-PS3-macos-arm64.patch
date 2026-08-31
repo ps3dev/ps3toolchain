@@ -22,11 +22,11 @@ diff --git a/gcc/config/host-darwin.c b/gcc/config/host-darwin.c
  
  /* Yes, this is really supposed to work.  */
  /* This allows for a pagesize of 16384, which we have on Darwin20, but should
-@@ -77,4 +79,6 @@
-      gcc_assert (!ret || mmap_result == addr);
-    }
+@@ -76,5 +76,7 @@
+       gcc_assert (!ret || mmap_result == addr);
+     }
  
-  return ret;
+   return ret;
  }
 +
 +const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;
