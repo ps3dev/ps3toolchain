@@ -16,7 +16,7 @@ jobs:
           - runner: ubuntu-latest
             os: linux
 
-          - runner: macos-15-intel
+          - runner: macos-26-intel
             os: macos
 
           - runner: macos-26
