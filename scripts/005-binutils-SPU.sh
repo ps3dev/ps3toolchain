@@ -45,7 +45,8 @@ cd ${BINUTILS}/build-spu
     --with-gcc \
     --with-gnu-as \
     --with-gnu-ld \
-		--enable-lto
+		--enable-lto \
+		--with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

@@ -49,7 +49,8 @@ unset LDFLAGS
 		--disable-dependency-tracking \
 		--disable-werror \
 		--disable-gprofng \
-		--disable-install-libiberty
+		--disable-install-libiberty \
+		--with-system-zlib
 
 ## Compile and install.
 ## Do not override libdir: binutils 2.42 installs libdep.la into

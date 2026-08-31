@@ -64,7 +64,8 @@ CXXFLAGS="-Wno-int-conversion" \
 		--disable-multilib \
 		--disable-nls \
 		--disable-shared \
-		--disable-win32-registry
+		--disable-win32-registry \
+		--with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

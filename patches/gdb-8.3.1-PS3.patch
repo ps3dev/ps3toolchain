@@ -425,4 +425,18 @@ index c194e761a45..07b04fceb56 100644
 +#endif
  
  #undef STRUCT_WINSIZE_IN_SYS_IOCTL
+
+# Apple Clang 17+ defines TARGET_OS_MAC; do not stub fdopen() on macOS.
+diff --git a/zlib/zutil.h b/zlib/zutil.h
+--- a/zlib/zutil.h
++++ b/zlib/zutil.h
+@@ -137,7 +137,7 @@
+ #  endif
+ #endif
+ 
+-#if defined(MACOS) || defined(TARGET_OS_MAC)
++#if defined(MACOS) || (defined(TARGET_OS_MAC) && !defined(__APPLE__))
+ #  define OS_CODE  7
+ #  ifndef Z_SOLO
+ #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
  
