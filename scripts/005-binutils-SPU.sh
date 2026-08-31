@@ -14,11 +14,10 @@ if [ ! -d ${BINUTILS} ]; then
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  echo "Unpacking ${BINUTILS}"
-  extract "../archives/${BINUTILS}.tar.bz2"
+  unpack_if_needed "../archives/${BINUTILS}.tar.bz2" "${BINUTILS}"
 
   ## Patch the source code.
-  cat ../patches/${BINUTILS}-PS3-SPU.patch | patch -p1 -d ${BINUTILS}
+  apply_patch "../patches/${BINUTILS}-PS3-SPU.patch" "${BINUTILS}"
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
