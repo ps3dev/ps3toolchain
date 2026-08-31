@@ -4,15 +4,13 @@
 diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
 --- a/gcc/config/aarch64/aarch64.h
 +++ b/gcc/config/aarch64/aarch64.h
-@@ -1179,7 +1179,7 @@
- 
+@@ -1191,5 +1191,5 @@
  /* Extra specs when building a native AArch64-hosted compiler.
-  Option rewriting rules based on host system. */
+    Option rewriting rules based on host system.  */
 -#if defined(__aarch64__)
 +#if defined(__aarch64__) && !defined(__APPLE__)
  extern const char *host_detect_local_cpu (int argc, const char **argv);
  #define HAVE_LOCAL_CPU_DETECT
- # define EXTRA_SPEC_FUNCTIONS \
 diff --git a/gcc/config/host-darwin.cc b/gcc/config/host-darwin.cc
 --- a/gcc/config/host-darwin.cc
 +++ b/gcc/config/host-darwin.cc

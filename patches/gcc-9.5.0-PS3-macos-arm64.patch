@@ -2,7 +2,7 @@
 diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
 --- a/gcc/config/aarch64/aarch64.h
 +++ b/gcc/config/aarch64/aarch64.h
-@@ -1083,7 +1083,7 @@
+@@ -1088,6 +1088,6 @@
  #define MCPU_TO_MARCH_SPEC_FUNCTIONS \
    { "rewrite_mcpu", aarch64_rewrite_mcpu },
  
@@ -10,7 +10,6 @@ diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
 +#if defined(__aarch64__) && !defined(__APPLE__)
  extern const char *host_detect_local_cpu (int argc, const char **argv);
  #define HAVE_LOCAL_CPU_DETECT
- # define EXTRA_SPEC_FUNCTIONS						\
 diff --git a/gcc/config/host-darwin.c b/gcc/config/host-darwin.c
 --- a/gcc/config/host-darwin.c
 +++ b/gcc/config/host-darwin.c
@@ -26,7 +25,7 @@ diff --git a/gcc/config/host-darwin.c b/gcc/config/host-darwin.c
 @@ -77,4 +79,6 @@
       gcc_assert (!ret || mmap_result == addr);
     }
-
+ 
   return ret;
  }
 +
