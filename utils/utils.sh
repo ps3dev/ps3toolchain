@@ -50,6 +50,10 @@ unpack_if_needed() {
 # Usage: apply_patch <patchfile> <srcdir>
 apply_patch() {
     local patchfile="$1" srcdir="$2"
+    if [ ! -f "$patchfile" ]; then
+        echo "apply_patch: missing $patchfile" >&2
+        return 1
+    fi
     local stamp="$srcdir/.ps3-patched-$(basename "$patchfile")"
     if [ -f "$stamp" ]; then
         echo "Already patched: $srcdir ($(basename "$patchfile"))"

@@ -1,0 +1,33 @@
+# Build GCC 9.5.0 as a cross compiler on Apple Silicon.
+diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
+--- a/gcc/config/aarch64/aarch64.h
++++ b/gcc/config/aarch64/aarch64.h
+@@ -1083,7 +1083,7 @@
+ #define MCPU_TO_MARCH_SPEC_FUNCTIONS \
+   { "rewrite_mcpu", aarch64_rewrite_mcpu },
+ 
+-#if defined(__aarch64__)
++#if defined(__aarch64__) && !defined(__APPLE__)
+ extern const char *host_detect_local_cpu (int argc, const char **argv);
+ #define HAVE_LOCAL_CPU_DETECT
+ # define EXTRA_SPEC_FUNCTIONS						\
+diff --git a/gcc/config/host-darwin.c b/gcc/config/host-darwin.c
+--- a/gcc/config/host-darwin.c
++++ b/gcc/config/host-darwin.c
+@@ -22,6 +22,8 @@
+ #include "coretypes.h"
+ #include "diagnostic-core.h"
+ #include "config/host-darwin.h"
++#include "hosthooks.h"
++#include "hosthooks-def.h"
+ 
+ /* Yes, this is really supposed to work.  */
+ /* This allows for a pagesize of 16384, which we have on Darwin20, but should
+@@ -77,4 +79,6 @@
+      gcc_assert (!ret || mmap_result == addr);
+    }
+
+  return ret;
+ }
++
++const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;

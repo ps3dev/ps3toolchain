@@ -21,6 +21,11 @@ if [ ! -d ${GCC} ]; then
   apply_patch "../patches/${GCC}-PS3-SPU.patch" "${GCC}"
   apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
 
+  ## Patch for macOS arm64
+  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
+    apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
+  fi
+
   ## Enter the source code directory.
   cd ${GCC}
 
