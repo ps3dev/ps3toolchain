@@ -1,8 +1,8 @@
-# libc++ 17+ (Xcode 16.4 / 26) vs GCC safe-ctype.h. Darwin only (Intel and arm64).
+# libc++ 17+ vs GCC safe-ctype.h. Darwin only (Intel and arm64).
 diff --git a/gcc/system.h b/gcc/system.h
 --- a/gcc/system.h
 +++ b/gcc/system.h
-@@ -194,26 +194,8 @@
+@@ -194,27 +194,8 @@
  #undef fread_unlocked
  #undef fwrite_unlocked
  
@@ -32,7 +32,7 @@ diff --git a/gcc/system.h b/gcc/system.h
  
  #ifdef __cplusplus
  #if defined (INCLUDE_ALGORITHM) || !defined (HAVE_SWAP_IN_UTILITY)
-@@ -229,6 +211,9 @@
+@@ -229,6 +210,9 @@
  #ifdef INCLUDE_SET
  # include <set>
  #endif
@@ -42,7 +42,7 @@ diff --git a/gcc/system.h b/gcc/system.h
  #ifdef INCLUDE_VECTOR
  # include <vector>
  #endif
-@@ -235,6 +220,19 @@
+@@ -236,6 +220,19 @@
  # include <new>
  # include <utility>
  #endif

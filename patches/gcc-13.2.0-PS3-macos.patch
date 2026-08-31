@@ -1,10 +1,9 @@
-# libc++ 17+ (Xcode 16.4 / 26) pulls ctype APIs through <vector>/<locale>.
-# GCC's safe-ctype.h poisons isupper/islower/etc; include C++ headers first.
-# Apply on all Darwin hosts (Intel and Apple Silicon). Linux is unchanged.
+# libc++ 17+ (Xcode 16.4 / 26) vs GCC safe-ctype.h.
+# Darwin only (Intel and Apple Silicon). Linux does not apply this file.
 diff --git a/gcc/system.h b/gcc/system.h
 --- a/gcc/system.h
 +++ b/gcc/system.h
-@@ -194,26 +194,8 @@
+@@ -194,27 +194,8 @@
  #undef fread_unlocked
  #undef fwrite_unlocked
  
@@ -34,7 +33,7 @@ diff --git a/gcc/system.h b/gcc/system.h
  
  #ifdef __cplusplus
  #if defined (INCLUDE_ALGORITHM) || !defined (HAVE_SWAP_IN_UTILITY)
-@@ -226,6 +208,9 @@
+@@ -229,6 +210,9 @@
  #ifdef INCLUDE_SET
  # include <set>
  #endif
@@ -44,7 +43,8 @@ diff --git a/gcc/system.h b/gcc/system.h
  #ifdef INCLUDE_VECTOR
  # include <vector>
  #endif
-@@ -244,6 +226,19 @@
+@@ -244,6 +228,19 @@
+ # include <utility>
  # include <type_traits>
  #endif
  
