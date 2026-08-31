@@ -51,6 +51,9 @@ if [ ! -d ${GCC}/build-ppu ]; then
 
 fi
 
+## newlib 1.20 config.sub rejects aarch64-apple-darwin (Apple Silicon).
+refresh_config_scripts "${NEWLIB}" "${GCC}"
+
 ## Enter the build directory.
 cd ${GCC}/build-ppu
 
