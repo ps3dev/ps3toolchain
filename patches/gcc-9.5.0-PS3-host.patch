@@ -1,9 +1,8 @@
-# libc++ 17+ (Xcode 16.4 / 26) vs GCC safe-ctype.h.
-# Darwin only (Intel and Apple Silicon). Linux does not apply this file.
+# Host GCC 16 / libc++ 17+: include C++ headers before safe-ctype.h on every OS.
 diff --git a/gcc/system.h b/gcc/system.h
 --- a/gcc/system.h
 +++ b/gcc/system.h
-@@ -194,27 +194,8 @@
+@@ -194,27 +194,9 @@
  #undef fread_unlocked
  #undef fwrite_unlocked
  
@@ -28,24 +27,19 @@ diff --git a/gcc/system.h b/gcc/system.h
 -#if !defined (errno) && defined (HAVE_DECL_ERRNO) && !HAVE_DECL_ERRNO
 -extern int errno;
 -#endif
-+/* Include C++ headers before "safe-ctype.h".  libc++ 17+ (Xcode 16 / 26)
-+   pulls ctype names through <vector>/<locale>; the poison macros break them.  */
++/* Include C++ headers before "safe-ctype.h".  Host GCC 16 libstdc++ and
++   libc++ 17+ pull ctype names through <string>/<memory>/<locale>; the
++   poison macros break islower/toupper.  */
  
  #ifdef __cplusplus
  #if defined (INCLUDE_ALGORITHM) || !defined (HAVE_SWAP_IN_UTILITY)
-@@ -229,6 +210,9 @@
- #ifdef INCLUDE_SET
- # include <set>
- #endif
-+#ifdef INCLUDE_STRING
-+# include <string>
-+#endif
- #ifdef INCLUDE_VECTOR
- # include <vector>
- #endif
-@@ -244,6 +228,19 @@
+@@ -235,8 +217,24 @@
+ # include <cstring>
+ # include <new>
  # include <utility>
- # include <type_traits>
++# include <string>
++# include <memory>
++# include <locale>
  #endif
  
 +/* There are an extraordinary number of issues with <ctype.h>.
@@ -63,3 +57,4 @@ diff --git a/gcc/system.h b/gcc/system.h
 +
  /* Some of glibc's string inlines cause warnings.  Plus we'd rather
     rely on (and therefore test) GCC's string builtins.  */
+ #define __NO_STRING_INLINES
