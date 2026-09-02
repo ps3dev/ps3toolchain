@@ -2,7 +2,7 @@
 set -eo pipefail
 # gcc-newlib-SPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-9.5.0"
 NEWLIB="newlib-1.20.0"
 source ../utils/utils.sh
 
@@ -13,15 +13,20 @@ if [ ! -d ${GCC} ]; then
   ../download.sh ${NEWLIB}.tar.gz
 
   ## Unpack the source code.
-  echo "Unpacking ${GCC}"
-  extract "../archives/${GCC}.tar.xz"
+  unpack_if_needed "../archives/${GCC}.tar.xz" "${GCC}"
+  unpack_if_needed "../archives/${NEWLIB}.tar.gz" "${NEWLIB}"
 
-  echo "Unpacking ${NEWLIB}"
-  extract "../archives/${NEWLIB}.tar.gz"
+  ## Patch the source code. newlib is shared with the PPU step and
+  ## must not be unpacked/patched a second time.
+  apply_patch "../patches/${GCC}-PS3-SPU.patch" "${GCC}"
+  apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
 
-  ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+  ## Host GCC 16 / libc++ 17+: safe-ctype vs <string>/<locale>
+  apply_patch "../patches/${GCC}-PS3-host.patch" "${GCC}"
+  ## Apple Silicon host_hooks / native aarch64 detect
+  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
+    apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
+  fi
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -45,28 +50,32 @@ if [ ! -d ${GCC}/build-spu ]; then
 
 fi
 
+## newlib 1.20 config.sub rejects aarch64-apple-darwin (Apple Silicon).
+refresh_config_scripts "${NEWLIB}" "${GCC}"
+
 ## Enter the build directory.
 cd ${GCC}/build-spu
 
 ## Configure the build.
+unset CFLAGS CXXFLAGS LDFLAGS
 CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fschedule-insns -mdual-nops -mwarn-reloc" \
 CFLAGS="-Wno-int-conversion" \
 CXXFLAGS="-Wno-int-conversion" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
-    --disable-dependency-tracking \
-    --disable-libcc1 \
-    --disable-libssp \
-    --disable-multilib \
-    --disable-nls \
-    --disable-shared \
-    --disable-win32-registry \
-    --enable-languages="c,c++" \
-    --enable-lto \
-    --enable-threads \
-    --with-newlib \
-    --enable-newlib-multithread \
-    --enable-newlib-hw-fp \
-    --with-pic
+		--enable-languages="c,c++" \
+		--enable-lto \
+		--enable-threads \
+		--enable-newlib-multithread \
+		--enable-newlib-hw-fp \
+		--enable-obsolete \
+		--disable-dependency-tracking \
+		--disable-libcc1 \
+		--disable-libssp \
+		--disable-multilib \
+		--disable-nls \
+		--disable-shared \
+		--disable-win32-registry \
+		--with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

@@ -2,7 +2,7 @@
 set -eo pipefail
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-13.2.0"
 NEWLIB="newlib-1.20.0"
 source ../utils/utils.sh
 
@@ -13,19 +13,18 @@ if [ ! -d ${GCC} ]; then
   ../download.sh ${NEWLIB}.tar.gz
 
   ## Unpack the source code.
-  echo "Unpacking ${GCC}"
-  extract "../archives/${GCC}.tar.xz"
-
-  echo "Unpacking ${NEWLIB}"
-  extract "../archives/${NEWLIB}.tar.gz"
+  unpack_if_needed "../archives/${GCC}.tar.xz" "${GCC}"
+  unpack_if_needed "../archives/${NEWLIB}.tar.gz" "${NEWLIB}"
 
   ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+  apply_patch "../patches/${GCC}-PS3-PPU.patch" "${GCC}"
+  apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
 
-  ## Patch for macOS arm64
+  ## Host GCC 16 / libc++ 17+: safe-ctype vs <string>/<locale>, libcody char8_t
+  apply_patch "../patches/${GCC}-PS3-host.patch" "${GCC}"
+  ## Apple Silicon host_hooks / native aarch64 detect
   if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
-    cat ../patches/${GCC}-PS3-macos-arm64.patch | patch -p1 -d ${GCC}
+    apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
   fi
 
   ## Enter the source code directory.
@@ -49,6 +48,9 @@ if [ ! -d ${GCC}/build-ppu ]; then
   mkdir ${GCC}/build-ppu
 
 fi
+
+## newlib 1.20 config.sub rejects aarch64-apple-darwin (Apple Silicon).
+refresh_config_scripts "${NEWLIB}" "${GCC}"
 
 ## Enter the build directory.
 cd ${GCC}/build-ppu

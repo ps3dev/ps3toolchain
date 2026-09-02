@@ -2,7 +2,7 @@
 set -eo pipefail
 # binutils-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-BINUTILS="binutils-2.22"
+BINUTILS="binutils-2.42"
 source ../utils/utils.sh
 
 if [ ! -d ${BINUTILS} ]; then
@@ -18,7 +18,7 @@ if [ ! -d ${BINUTILS} ]; then
   extract "../archives/${BINUTILS}.tar.bz2"
 
   ## Patch the source code.
-  cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
+  cat ../patches/${BINUTILS}-PS3-PPU.patch | patch -p1 -d ${BINUTILS}
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
@@ -36,19 +36,28 @@ fi
 cd ${BINUTILS}/build-ppu
 
 ## Configure the build.
+unset LDFLAGS
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
-    --disable-nls \
-    --disable-shared \
-    --disable-debug \
-    --disable-dependency-tracking \
-    --disable-werror \
-    --enable-64-bit-bfd \
-    --with-gcc \
-    --with-gnu-as \
-    --with-gnu-ld
+		--with-gcc \
+		--with-gnu-as \
+		--with-gnu-ld \
+		--enable-64-bit-bfd \
+		--enable-lto \
+		--disable-nls \
+		--disable-shared \
+		--disable-debug \
+		--disable-dependency-tracking \
+		--disable-werror \
+		--disable-gprofng \
+		--disable-install-libiberty \
+		--with-system-zlib
 
 ## Compile and install.
+## Do not override libdir: binutils 2.42 installs libdep.la into
+## $libdir/bfd-plugins and libtool requires that path to be absolute.
 PROCS="$(nproc --all 2>&1)" || ret=$?
 if [ ! -z $ret ]; then PROCS=4; fi
 ${MAKE:-make} -j $PROCS
-${MAKE:-make} libdir=host-libs/lib MULTIOSDIR=. install
+${MAKE:-make} install
+# Host libiberty can still land under prefix on some configure defaults.
+rm -f "$PS3DEV/ppu/lib/libiberty.a" "$PS3DEV/ppu/lib64/libiberty.a"

@@ -1,0 +1,32 @@
+# Build GCC 13.2.0 as a cross compiler on Apple Silicon.
+# host_detect_local_cpu / driver-aarch64.o are not linked for Darwin hosts,
+# and host-darwin.cc must export host_hooks.
+diff --git a/gcc/config/aarch64/aarch64.h b/gcc/config/aarch64/aarch64.h
+--- a/gcc/config/aarch64/aarch64.h
++++ b/gcc/config/aarch64/aarch64.h
+@@ -1191,5 +1191,5 @@
+ /* Extra specs when building a native AArch64-hosted compiler.
+    Option rewriting rules based on host system.  */
+-#if defined(__aarch64__)
++#if defined(__aarch64__) && !defined(__APPLE__)
+ extern const char *host_detect_local_cpu (int argc, const char **argv);
+ #define HAVE_LOCAL_CPU_DETECT
+diff --git a/gcc/config/host-darwin.cc b/gcc/config/host-darwin.cc
+--- a/gcc/config/host-darwin.cc
++++ b/gcc/config/host-darwin.cc
+@@ -23,6 +23,8 @@
+ #include "options.h"
+ #include "diagnostic-core.h"
+ #include "config/host-darwin.h"
++#include "hosthooks.h"
++#include "hosthooks-def.h"
+ #include <errno.h>
+ 
+ /* For Darwin (macOS only) platforms, without ASLR (PIE) enabled on the
+@@ -180,4 +182,6 @@
+     }
+ 
+   return 1;
+ }
++
++const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;
