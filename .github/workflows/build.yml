@@ -92,6 +92,22 @@ jobs:
         working-directory: ./build
         run: ../download.sh
 
+      - name: Show host GCC version
+        shell: bash
+        run: |
+          echo "which gcc: $(command -v gcc || true)"
+          echo "which g++: $(command -v g++ || true)"
+          echo "which cc:  $(command -v cc || true)"
+          echo "----- gcc --version -----"
+          gcc --version
+          echo "----- g++ --version -----"
+          g++ --version
+          echo "----- cc --version -----"
+          cc --version
+          echo "----- gcc -dumpfullversion / -dumpmachine -----"
+          gcc -dumpfullversion -dumpversion
+          gcc -dumpmachine
+
       - name: Build Binutils (PPU)
         run: ./toolchain.sh 001
 

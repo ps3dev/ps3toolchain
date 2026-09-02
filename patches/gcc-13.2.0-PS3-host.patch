@@ -1,5 +1,7 @@
 # Host GCC 16 / libc++ 17+: include C++ headers before safe-ctype.h on every
 # OS, and teach libcody about char8_t (u8"" is char8_t* under -fchar8_t).
+# Packet (unsigned, size_t) vs Packet (unsigned, char8_t*) is ambiguous for
+# integer 0 on C++20+ host compilers; cast BOOL payloads to size_t.
 diff --git a/gcc/system.h b/gcc/system.h
 --- a/gcc/system.h
 +++ b/gcc/system.h
@@ -213,10 +215,12 @@ diff --git a/libcody/client.cc b/libcody/client.cc
      {
 -      if (words[1] == u8"FALSE")
 +      if (words[1] == (const char *) u8"FALSE")
- 	return Packet (Client::PC_BOOL, 0);
+-	return Packet (Client::PC_BOOL, 0);
++	return Packet (Client::PC_BOOL, size_t (0));
 -      else if (words[1] == u8"TRUE")
 +      else if (words[1] == (const char *) u8"TRUE")
- 	return Packet (Client::PC_BOOL, 1);
+-	return Packet (Client::PC_BOOL, 1);
++	return Packet (Client::PC_BOOL, size_t (1));
        else
  	return Packet (Client::PC_ERROR, u8"");
 diff --git a/libcody/server.cc b/libcody/server.cc

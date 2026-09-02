@@ -36,6 +36,10 @@ cd ${GDB}/build-spu
 
 ## Configure the build.
 ## pyenv ships Python 3.10; gdb 8.3.1 cannot build against that ABI.
+## Host GCC 15/16 default to C23; bundled readline expects pre-C23
+## unprototyped signal handlers (VOID_SIGHANDLER).
+CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversion" \
+CXXFLAGS="${CXXFLAGS:-} -std=gnu++17 -Wno-narrowing" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
