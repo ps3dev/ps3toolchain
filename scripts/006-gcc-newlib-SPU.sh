@@ -16,12 +16,18 @@ if [ ! -d ${GCC} ]; then
   echo "Unpacking ${GCC}"
   extract "../archives/${GCC}.tar.xz"
 
-  echo "Unpacking ${NEWLIB}"
-  extract "../archives/${NEWLIB}.tar.gz"
+  if [ ! -d ${NEWLIB} ]; then
+
+    echo "Unpacking ${NEWLIB}"
+    extract "../archives/${NEWLIB}.tar.gz"
+
+    ## Patch the source code.
+    cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
+
+  fi
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-  cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
   ## Enter the source code directory.
   cd ${GCC}
