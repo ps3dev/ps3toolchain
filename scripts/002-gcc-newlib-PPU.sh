@@ -2,7 +2,7 @@
 set -eo pipefail
 # gcc-newlib-PPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-13.2.0"
 NEWLIB="newlib-1.20.0"
 source ../utils/utils.sh
 
@@ -28,11 +28,6 @@ if [ ! -d ${GCC} ]; then
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-
-  ## Patch for macOS arm64
-  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
-    cat ../patches/${GCC}-PS3-macos-arm64.patch | patch -p1 -d ${GCC}
-  fi
 
   ## Enter the source code directory.
   cd ${GCC}
