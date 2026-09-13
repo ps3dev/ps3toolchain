@@ -31,9 +31,6 @@ if [ ! -d ${GCC} ]; then
     apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
   fi
 
-  ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
-
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${GCC}
 
