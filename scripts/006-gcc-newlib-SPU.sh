@@ -62,20 +62,22 @@ CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fsched
 CFLAGS="-Wno-int-conversion" \
 CXXFLAGS="-Wno-int-conversion" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
-		--enable-languages="c,c++" \
-		--enable-lto \
-		--enable-threads \
-		--enable-newlib-multithread \
-		--enable-newlib-hw-fp \
-		--enable-obsolete \
-		--disable-dependency-tracking \
-		--disable-libcc1 \
-		--disable-libssp \
-		--disable-multilib \
-		--disable-nls \
-		--disable-shared \
-		--disable-win32-registry \
-		--with-system-zlib
+    --disable-dependency-tracking \
+    --disable-libcc1 \
+    --disable-libssp \
+    --disable-multilib \
+    --disable-nls \
+    --disable-shared \
+    --disable-win32-registry \
+    --enable-languages="c,c++" \
+    --enable-lto \
+    --enable-threads \
+    --with-newlib \
+    --enable-newlib-multithread \
+    --enable-newlib-hw-fp \
+    --enable-obsolete \
+    --with-pic \
+    --with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
