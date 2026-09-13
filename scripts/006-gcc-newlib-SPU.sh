@@ -27,6 +27,9 @@ if [ ! -d ${GCC} ]; then
     ## Patch the source code.
     cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
 
+    ## Replace config.guess and config.sub
+    cp ../archives/config.guess ../archives/config.sub ${NEWLIB}
+
   fi
 
   ## Patch the source code.
