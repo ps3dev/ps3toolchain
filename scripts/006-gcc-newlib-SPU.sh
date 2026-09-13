@@ -81,6 +81,7 @@ CXXFLAGS="-Wno-int-conversion" \
     --with-newlib \
     --enable-newlib-multithread \
     --enable-newlib-hw-fp \
+    --with-system-zlib \
     --enable-obsolete \
     --with-pic
 
