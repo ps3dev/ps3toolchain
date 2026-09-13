@@ -12,6 +12,9 @@ if [ ! -d ${GCC} ]; then
   ../download.sh ${GCC}.tar.xz
   ../download.sh ${NEWLIB}.tar.gz
 
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
+
   ## Unpack the source code.
   echo "Unpacking ${GCC}"
   extract "../archives/${GCC}.tar.xz"
@@ -28,6 +31,9 @@ if [ ! -d ${GCC} ]; then
 
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
+
+  ## Replace config.guess and config.sub
+  cp ../archives/config.guess ../archives/config.sub ${GCC}
 
   ## Enter the source code directory.
   cd ${GCC}
