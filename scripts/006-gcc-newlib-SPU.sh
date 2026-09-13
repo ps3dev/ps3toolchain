@@ -2,7 +2,7 @@
 set -eo pipefail
 # gcc-newlib-SPU.sh by Naomi Peori (naomi@peori.ca)
 
-GCC="gcc-7.2.0"
+GCC="gcc-9.5.0"
 NEWLIB="newlib-1.20.0"
 source ../utils/utils.sh
 
@@ -72,6 +72,7 @@ CXXFLAGS="-Wno-int-conversion" \
     --with-newlib \
     --enable-newlib-multithread \
     --enable-newlib-hw-fp \
+    --enable-obsolete \
     --with-pic
 
 ## Compile and install.
