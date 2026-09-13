@@ -33,6 +33,7 @@ if [ ! -d ${GCC} ]; then
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${GCC}
+  cp ../archives/config.guess ../archives/config.sub ${NEWLIB}
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -81,9 +82,9 @@ CXXFLAGS="-Wno-int-conversion" \
     --with-newlib \
     --enable-newlib-multithread \
     --enable-newlib-hw-fp \
+    --with-system-zlib \
     --enable-obsolete \
-    --with-pic \
-    --with-system-zlib
+    --with-pic
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?

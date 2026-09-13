@@ -32,6 +32,7 @@ if [ ! -d ${GCC} ]; then
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${GCC}
+  cp ../archives/config.guess ../archives/config.sub ${NEWLIB}
 
   ## Enter the source code directory.
   cd ${GCC}
