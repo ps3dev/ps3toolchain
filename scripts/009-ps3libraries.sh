@@ -10,6 +10,9 @@ fi
 
 source ../utils/utils.sh
 
+## Host CC/CXX (common in Docker) makes autotools skip powerpc64-ps3-elf-gcc.
+unset CC CXX CPP
+
 ## Download the source code.
 ../download.sh ps3libraries.tar.gz
 

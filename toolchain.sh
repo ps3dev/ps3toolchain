@@ -55,5 +55,5 @@ fi
 ## Run the build scripts.
 for SCRIPT in $BUILD_SCRIPTS; do
   echo ">>> Running: $SCRIPT"
-  "$SCRIPT" || { echo "$SCRIPT: Failed."; exit 1; }
+  "$SCRIPT" || { echo "$SCRIPT: Failed (exit $?)."; exit 1; }
 done

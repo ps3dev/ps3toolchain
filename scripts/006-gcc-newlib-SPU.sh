@@ -16,27 +16,24 @@ if [ ! -d ${GCC} ]; then
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  echo "Unpacking ${GCC}"
-  extract "../archives/${GCC}.tar.xz"
+  unpack_if_needed "../archives/${GCC}.tar.xz" "${GCC}"
+  unpack_if_needed "../archives/${NEWLIB}.tar.gz" "${NEWLIB}"
 
-  if [ ! -d ${NEWLIB} ]; then
+  ## Patch the source code. newlib is shared with the PPU step and
+  ## must not be unpacked/patched a second time.
+  apply_patch "../patches/${GCC}-PS3-SPU.patch" "${GCC}"
+  apply_patch "../patches/${NEWLIB}-PS3.patch" "${NEWLIB}"
 
-    echo "Unpacking ${NEWLIB}"
-    extract "../archives/${NEWLIB}.tar.gz"
-
-    ## Patch the source code.
-    cat ../patches/${NEWLIB}-PS3.patch | patch -p1 -d ${NEWLIB}
-
-    ## Replace config.guess and config.sub
-    cp ../archives/config.guess ../archives/config.sub ${NEWLIB}
-
+  ## Host GCC 16 / libc++ 17+: safe-ctype vs <string>/<locale>
+  apply_patch "../patches/${GCC}-PS3-host.patch" "${GCC}"
+  ## Apple Silicon host_hooks / native aarch64 detect
+  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
+    apply_patch "../patches/${GCC}-PS3-macos-arm64.patch" "${GCC}"
   fi
-
-  ## Patch the source code.
-  cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${GCC}
+  cp ../archives/config.guess ../archives/config.sub ${NEWLIB}
 
   ## Enter the source code directory.
   cd ${GCC}
@@ -60,10 +57,14 @@ if [ ! -d ${GCC}/build-spu ]; then
 
 fi
 
+## newlib 1.20 config.sub rejects aarch64-apple-darwin (Apple Silicon).
+refresh_config_scripts "${NEWLIB}" "${GCC}"
+
 ## Enter the build directory.
 cd ${GCC}/build-spu
 
 ## Configure the build.
+unset CFLAGS CXXFLAGS LDFLAGS
 CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fschedule-insns -mdual-nops -mwarn-reloc" \
 CFLAGS="-Wno-int-conversion" \
 CXXFLAGS="-Wno-int-conversion" \
