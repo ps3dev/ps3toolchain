@@ -14,10 +14,11 @@ if [ ! -d ${BINUTILS} ]; then
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  unpack_if_needed "../archives/${BINUTILS}.tar.bz2" "${BINUTILS}"
+  echo "Unpacking ${BINUTILS}"
+  extract "../archives/${BINUTILS}.tar.bz2"
 
   ## Patch the source code.
-  apply_patch "../patches/${BINUTILS}-PS3-SPU.patch" "${BINUTILS}"
+  cat ../patches/${BINUTILS}-PS3.patch | patch -p1 -d ${BINUTILS}
 
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${BINUTILS}
@@ -46,8 +47,8 @@ CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversi
     --with-gcc \
     --with-gnu-as \
     --with-gnu-ld \
-		--enable-lto \
-		--with-system-zlib
+    --enable-lto \
+    --with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
