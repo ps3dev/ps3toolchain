@@ -35,13 +35,6 @@ if [ ! -d ${GCC} ]; then
   ## Patch the source code.
   cat ../patches/${GCC}-PS3.patch | patch -p1 -d ${GCC}
 
-  ## Host GCC 16 / libc++ 17+: safe-ctype vs <string>/<locale>
-  cat ../patches/${GCC}-PS3-host.patch | patch -p1 -d ${GCC}
-  ## Apple Silicon host_hooks / native aarch64 detect
-  if [[ $(uname -s) == 'Darwin' && $(uname -m) == 'arm64' ]]; then
-    cat ../patches/${GCC}-PS3-macos-arm64.patch | patch -p1 -d ${GCC}
-  fi
-
   ## Replace config.guess and config.sub
   cp ../archives/config.guess ../archives/config.sub ${GCC}
 
@@ -71,7 +64,6 @@ fi
 cd ${GCC}/build-spu
 
 ## Configure the build.
-unset CFLAGS CXXFLAGS LDFLAGS
 CFLAGS_FOR_TARGET="-Os -fpic -ffast-math -ftree-vectorize -funroll-loops -fschedule-insns -mdual-nops -mwarn-reloc" \
 CFLAGS="-Wno-int-conversion" \
 CXXFLAGS="-Wno-int-conversion" \

@@ -1,8 +1,113 @@
-# Original from https://github.com/ps3dev/ps3toolchain
-# Updated to gcc 9.5.0 by Darjan Krijan [https://disc-kuraudo.eu]
-diff '--color=auto' -urN a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
---- a/gcc/config/rs6000/cell64lv2.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/gcc/config/rs6000/cell64lv2.h	2023-01-01 17:58:23.274094209 +0100
+diff --git a/Makefile.in b/Makefile.in
+index 64e091ba71..33570f9dad 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -27294,7 +27294,6 @@ check-libiberty:
+ .PHONY: install-libiberty maybe-install-libiberty
+ maybe-install-libiberty:
+ @if libiberty
+-maybe-install-libiberty: install-libiberty
+ 
+ install-libiberty: installdirs
+ 	@: $(MAKE); $(unstage)
+diff --git a/gcc/config.gcc b/gcc/config.gcc
+index 94885c7d75..3a2d236656 100644
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -2587,6 +2587,15 @@ pdp11-*-*)
+ #	tmake_file="${tmake_file} rs6000/t-fprules"
+ #	extra_headers=
+ #	;;
++powerpc64-ps3-elf)
++	tm_file="${tm_file} dbxelf.h elfos.h gnu-user.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
++	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
++	if test x${enable_secureplt} = xyes; then
++		tm_file="rs6000/secureplt.h ${tm_file}"
++	fi
++	extra_options="${extra_options} rs6000/sysv4.opt"
++	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
++	;;
+ powerpc-*-darwin*)
+ 	extra_options="${extra_options} ${cpu_type}/darwin.opt"
+ 	case ${target} in
+diff --git a/gcc/config.host b/gcc/config.host
+index 816a0f06cb..2d9bf9ed48 100644
+--- a/gcc/config.host
++++ b/gcc/config.host
+@@ -99,7 +99,8 @@ case ${host} in
+ esac
+ 
+ case ${host} in
+-  aarch64*-*-freebsd* | aarch64*-*-linux* | aarch64*-*-fuchsia*)
++  aarch64*-*-freebsd* | aarch64*-*-linux* | aarch64*-*-fuchsia* |\
++  aarch64*-*-darwin*)
+     case ${target} in
+       aarch64*-*-*)
+ 	host_extra_gcc_objs="driver-aarch64.o"
+@@ -251,6 +252,10 @@ case ${host} in
+     host_extra_gcc_objs="${host_extra_gcc_objs} driver-mingw32.o"
+     host_lto_plugin_soname=liblto_plugin-0.dll
+     ;;
++  aarch64*-*-darwin*)
++    out_host_hook_obj="${out_host_hook_obj} host-aarch64-darwin.o"
++    host_xmake_file="${host_xmake_file} aarch64/x-darwin"
++    ;;
+   i[34567]86-*-darwin* | x86_64-*-darwin*)
+     out_host_hook_obj="${out_host_hook_obj} host-i386-darwin.o"
+     host_xmake_file="${host_xmake_file} i386/x-darwin"
+diff --git a/gcc/config/aarch64/host-aarch64-darwin.c b/gcc/config/aarch64/host-aarch64-darwin.c
+new file mode 100644
+index 0000000000..d70f2df3bf
+--- /dev/null
++++ b/gcc/config/aarch64/host-aarch64-darwin.c
+@@ -0,0 +1,33 @@
++/* aarch64/arm64-darwin host-specific hook definitions.
++
++Copyright The GNU Toolchain Authors.
++
++This file is part of GCC.
++
++GCC is free software; you can redistribute it and/or modify it under
++the terms of the GNU General Public License as published by the Free
++Software Foundation; either version 3, or (at your option) any later
++version.
++
++GCC is distributed in the hope that it will be useful, but WITHOUT ANY
++WARRANTY; without even the implied warranty of MERCHANTABILITY or
++FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++for more details.
++
++You should have received a copy of the GNU General Public License
++along with GCC; see the file COPYING3.  If not see
++<http://www.gnu.org/licenses/>.  */
++
++#define IN_TARGET_CODE 1
++
++#include "config.h"
++#include "system.h"
++#include "coretypes.h"
++#include "hosthooks.h"
++#include "hosthooks-def.h"
++#include "config/host-darwin.h"
++
++/* Darwin doesn't do anything special for arm64/aarch64 hosts; this file
++   exists just to include the generic config/host-darwin.h.  */
++
++const struct host_hooks host_hooks = HOST_HOOKS_INITIALIZER;
+diff --git a/gcc/config/aarch64/x-darwin b/gcc/config/aarch64/x-darwin
+new file mode 100644
+index 0000000000..6d788d5e89
+--- /dev/null
++++ b/gcc/config/aarch64/x-darwin
+@@ -0,0 +1,3 @@
++host-aarch64-darwin.o : $(srcdir)/config/aarch64/host-aarch64-darwin.c
++	$(COMPILE) $<
++	$(POSTCOMPILE)
+diff --git a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cell64lv2.h
+new file mode 100644
+index 0000000000..31ebbd9552
+--- /dev/null
++++ b/gcc/config/rs6000/cell64lv2.h
 @@ -0,0 +1,587 @@
 +/* Definitions of target machine for GNU compiler,
 +   for 64 bit PowerPC linux.
@@ -591,33 +696,36 @@ diff '--color=auto' -urN a/gcc/config/rs6000/cell64lv2.h b/gcc/config/rs6000/cel
 +   enabling the __float128 keyword.  */
 +#undef	TARGET_FLOAT128_ENABLE_TYPE
 +#define TARGET_FLOAT128_ENABLE_TYPE 1
-diff '--color=auto' -urN a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
---- a/gcc/config/rs6000/rs6000.c	2022-05-27 09:21:11.000000000 +0200
-+++ b/gcc/config/rs6000/rs6000.c	2023-01-01 18:00:32.742783224 +0100
-@@ -1424,6 +1424,10 @@
+diff --git a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
+index 991dcca18e..68900a85c8 100644
+--- a/gcc/config/rs6000/rs6000.c
++++ b/gcc/config/rs6000/rs6000.c
+@@ -1424,6 +1424,10 @@ rtl_opt_pass *make_pass_analyze_swaps (gcc::context*);
  static bool rs6000_keep_leaf_when_profiled () __attribute__ ((unused));
  static tree rs6000_fold_builtin (tree, int, tree *, bool);
  
 +#ifdef POWERPC_CELL64LV2
-+static bool rs6000_cell64lv2_valid_pointer_mode(scalar_int_mode);
++static bool rs6000_cell64lv2_valid_pointer_mode (scalar_int_mode);
 +#endif
 +
  /* Hash table stuff for keeping track of TOC entries.  */
  
  struct GTY((for_user)) toc_hash_struct
-@@ -39732,7 +39736,18 @@
+@@ -39732,7 +39736,20 @@ rs6000_mangle_decl_assembler_name (tree decl, tree id)
    return id;
  }
  
 -
 +#ifdef POWERPC_CELL64LV2
++
 +#undef TARGET_VALID_POINTER_MODE
 +#define TARGET_VALID_POINTER_MODE rs6000_cell64lv2_valid_pointer_mode
 +
 +static bool
-+rs6000_cell64lv2_valid_pointer_mode(scalar_int_mode mode)
++rs6000_cell64lv2_valid_pointer_mode (scalar_int_mode mode)
 +{
-+	return (mode == SImode || (TARGET_64BIT && mode == DImode) || mode == ptr_mode || mode == Pmode);
++  return (mode == SImode || (TARGET_64BIT && mode == DImode)
++	  || mode == ptr_mode || mode == Pmode);
 +}
 +
 +#endif
@@ -625,29 +733,11 @@ diff '--color=auto' -urN a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000
  struct gcc_target targetm = TARGET_INITIALIZER;
  
  #include "gt-rs6000.h"
-diff '--color=auto' -urN a/gcc/config.gcc b/gcc/config.gcc
---- a/gcc/config.gcc	2022-05-27 09:21:10.000000000 +0200
-+++ b/gcc/config.gcc	2023-01-01 14:28:35.684278963 +0100
-@@ -2587,6 +2587,15 @@
- #	tmake_file="${tmake_file} rs6000/t-fprules"
- #	extra_headers=
- #	;;
-+powerpc64-ps3-elf)
-+	tm_file="${tm_file} dbxelf.h elfos.h gnu-user.h usegas.h freebsd-spec.h newlib-stdint.h rs6000/sysv4.h rs6000/default64.h"
-+	tm_file="rs6000/biarch64.h ${tm_file} rs6000/cell64lv2.h"
-+	if test x${enable_secureplt} = xyes; then
-+		tm_file="rs6000/secureplt.h ${tm_file}"
-+	fi
-+	extra_options="${extra_options} rs6000/sysv4.opt"
-+	tmake_file="rs6000/t-fprules rs6000/t-fprules-fpbit rs6000/t-ppcgas rs6000/t-ppccomm"
-+	;;
- powerpc-*-darwin*)
- 	extra_options="${extra_options} ${cpu_type}/darwin.opt"
- 	case ${target} in
-diff '--color=auto' -urN a/gcc/configure b/gcc/configure
---- a/gcc/configure	2022-05-27 09:21:46.000000000 +0200
-+++ b/gcc/configure	2023-01-01 14:52:19.312078588 +0100
-@@ -28944,12 +28944,12 @@
+diff --git a/gcc/configure b/gcc/configure
+index 8c25a18fa0..60d12e6bc4 100755
+--- a/gcc/configure
++++ b/gcc/configure
+@@ -28944,12 +28944,12 @@ $as_echo "#define HAVE_LD_PPC_GNU_ATTR_LONG_DOUBLE 1" >>confdefs.h
  esac
  
  case "$target:$tm_file" in
@@ -662,10 +752,11 @@ diff '--color=auto' -urN a/gcc/configure b/gcc/configure
       emul_name="-melf64ppc"
        ;;
       *le-*-freebsd*)
-diff '--color=auto' -urN a/gcc/configure.ac b/gcc/configure.ac
---- a/gcc/configure.ac	2022-05-27 09:21:11.000000000 +0200
-+++ b/gcc/configure.ac	2023-01-01 14:51:42.742384668 +0100
-@@ -5671,12 +5671,12 @@
+diff --git a/gcc/configure.ac b/gcc/configure.ac
+index d67f72df8a..2f7fc60c0c 100644
+--- a/gcc/configure.ac
++++ b/gcc/configure.ac
+@@ -5671,12 +5671,12 @@ EOF
  esac
  
  case "$target:$tm_file" in
@@ -680,10 +771,75 @@ diff '--color=auto' -urN a/gcc/configure.ac b/gcc/configure.ac
       emul_name="-melf64ppc"
        ;;
       *le-*-freebsd*)
-diff '--color=auto' -urN a/libgcc/config.host b/libgcc/config.host
---- a/libgcc/config.host	2022-05-27 09:21:12.000000000 +0200
-+++ b/libgcc/config.host	2023-01-01 14:29:07.913987821 +0100
-@@ -1134,6 +1134,8 @@
+diff --git a/gcc/system.h b/gcc/system.h
+index d04f8fd336..97be99e4a0 100644
+--- a/gcc/system.h
++++ b/gcc/system.h
+@@ -194,27 +194,8 @@ extern int fprintf_unlocked (FILE *, const char *, ...);
+ #undef fread_unlocked
+ #undef fwrite_unlocked
+ 
+-/* Include <string> before "safe-ctype.h" to avoid GCC poisoning
+-   the ctype macros through safe-ctype.h */
+-
+-#ifdef __cplusplus
+-#ifdef INCLUDE_STRING
+-# include <string>
+-#endif
+-#endif
+-
+-/* There are an extraordinary number of issues with <ctype.h>.
+-   The last straw is that it varies with the locale.  Use libiberty's
+-   replacement instead.  */
+-#include "safe-ctype.h"
+-
+-#include <sys/types.h>
+-
+-#include <errno.h>
+-
+-#if !defined (errno) && defined (HAVE_DECL_ERRNO) && !HAVE_DECL_ERRNO
+-extern int errno;
+-#endif
++/* Include C++ standard headers before "safe-ctype.h" to avoid GCC
++   poisoning the ctype macros through safe-ctype.h */
+ 
+ #ifdef __cplusplus
+ #if defined (INCLUDE_ALGORITHM) || !defined (HAVE_SWAP_IN_UTILITY)
+@@ -229,6 +210,9 @@ extern int errno;
+ #ifdef INCLUDE_SET
+ # include <set>
+ #endif
++#ifdef INCLUDE_STRING
++# include <string>
++#endif
+ #ifdef INCLUDE_VECTOR
+ # include <vector>
+ #endif
+@@ -237,6 +221,19 @@ extern int errno;
+ # include <utility>
+ #endif
+ 
++/* There are an extraordinary number of issues with <ctype.h>.
++   The last straw is that it varies with the locale.  Use libiberty's
++   replacement instead.  */
++#include "safe-ctype.h"
++
++#include <sys/types.h>
++
++#include <errno.h>
++
++#if !defined (errno) && defined (HAVE_DECL_ERRNO) && !HAVE_DECL_ERRNO
++extern int errno;
++#endif
++
+ /* Some of glibc's string inlines cause warnings.  Plus we'd rather
+    rely on (and therefore test) GCC's string builtins.  */
+ #define __NO_STRING_INLINES
+diff --git a/libgcc/config.host b/libgcc/config.host
+index 0486a0135e..842252d106 100644
+--- a/libgcc/config.host
++++ b/libgcc/config.host
+@@ -1134,6 +1134,8 @@ powerpc-*-rtems*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff t-crtstuff-pic t-fdpbit"
  	extra_parts="$extra_parts crtbeginS.o crtendS.o crtbeginT.o ecrti.o ecrtn.o ncrti.o ncrtn.o"
  	;;
@@ -692,28 +848,3 @@ diff '--color=auto' -urN a/libgcc/config.host b/libgcc/config.host
  powerpc*-*-linux*)
  	tmake_file="${tmake_file} rs6000/t-ppccomm rs6000/t-savresfgpr rs6000/t-crtstuff rs6000/t-linux t-dfprules rs6000/t-ppc64-fp t-slibgcc-libgcc"
  	tmake_file="${tmake_file} t-stack rs6000/t-stack-rs6000"
-diff '--color=auto' -urN a/Makefile.in b/Makefile.in
---- a/Makefile.in	2022-05-27 09:21:10.000000000 +0200
-+++ b/Makefile.in	2023-01-01 14:54:20.241067239 +0100
-@@ -27294,7 +27294,6 @@
- .PHONY: install-libiberty maybe-install-libiberty
- maybe-install-libiberty:
- @if libiberty
--maybe-install-libiberty: install-libiberty
- 
- install-libiberty: installdirs
- 	@: $(MAKE); $(unstage)
-
-# Apple Clang 17+ defines TARGET_OS_MAC; do not stub fdopen() on macOS.
-diff --git a/zlib/zutil.h b/zlib/zutil.h
---- a/zlib/zutil.h
-+++ b/zlib/zutil.h
-@@ -137,7 +137,7 @@
- #  endif
- #endif
- 
--#if defined(MACOS) || defined(TARGET_OS_MAC)
-+#if defined(MACOS) || (defined(TARGET_OS_MAC) && !defined(__APPLE__))
- #  define OS_CODE  7
- #  ifndef Z_SOLO
- #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
