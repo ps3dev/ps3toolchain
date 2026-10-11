@@ -8,9 +8,8 @@ if [ ! -d ${GDB} ]; then
   ## Download the source code.
   if [ ! -f ${GDB}.tar.xz ]; then wget --continue https://ftpmirror.gnu.org/gnu/gdb/${GDB}.tar.xz; fi
 
-  ## Download an up-to-date config.guess and config.sub
-  if [ ! -f config.guess ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.guess; fi
-  if [ ! -f config.sub ]; then wget --continue https://git.savannah.gnu.org/cgit/config.git/plain/config.sub; fi
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
 
   ## Unpack the source code.
   tar xfvJ ${GDB}.tar.xz
@@ -19,7 +18,7 @@ if [ ! -d ${GDB} ]; then
   cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
 
   ## Replace config.guess and config.sub
-  cp config.guess config.sub ${GDB}
+  cp ../archives/config.guess ../archives/config.sub ${GDB}
 
 fi
 
