@@ -52,6 +52,9 @@ if [ $1 ]; then
   BUILD_SCRIPTS="$REQUESTS"
 fi
 
+## A preset host compiler makes autotools skip powerpc64-ps3-elf-gcc.
+unset CC CXX CPP
+
 ## Run the build scripts.
 for SCRIPT in $BUILD_SCRIPTS; do
   echo ">>> Running: $SCRIPT"
