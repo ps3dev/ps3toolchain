@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -eo pipefail
+# gdb-PPU.sh by Naomi Peori (naomi@peori.ca)
+
+GDB="gdb-8.3.1"
+source ../utils/utils.sh
+
+if [ ! -d ${GDB} ]; then
+
+  ## Download the source code.
+  ../download.sh ${GDB}.tar.xz
+
+  ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
+  ../config/get-config-scripts.sh
+
+  ## Unpack the source code.
+  echo "Unpacking ${GDB}"
+  extract "../archives/${GDB}.tar.xz"
+
+  ## Patch the source code.
+  cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
+
+  ## Replace config.guess and config.sub
+  cp ../archives/config.guess ../archives/config.sub ${GDB}
+
+fi
+
+if [ ! -d ${GDB}/build-ppu ]; then
+
+  ## Create the build directory.
+  mkdir ${GDB}/build-ppu
+
+fi
+
+## Enter the build directory.
+cd ${GDB}/build-ppu
+
+## Configure the build.
+CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration" \
+../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
+    --disable-multilib \
+    --disable-nls \
+    --disable-sim \
+    --disable-werror \
+    --with-system-zlib
+
+## Compile and install.
+PROCS="$(nproc --all 2>&1)" || ret=$?
+if [ ! -z $ret ]; then PROCS=4; fi
+${MAKE:-make} -j $PROCS && ${MAKE:-make} libdir=host-libs/lib install
