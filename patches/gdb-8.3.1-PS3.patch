@@ -1,270 +1,55 @@
-diff --git a/gdb/python/python.c b/gdb/python/python.c
-index 67f362b852d0..4bdd2201abc3 100644
---- a/gdb/python/python.c
-+++ b/gdb/python/python.c
-@@ -28,14 +28,13 @@
- #include "value.h"
- #include "language.h"
- #include "event-loop.h"
--#include "serial.h"
- #include "readline/tilde.h"
- #include "python.h"
- #include "extension-priv.h"
- #include "cli/cli-utils.h"
- #include <ctype.h>
- #include "location.h"
--#include "ser-event.h"
-+#include "run-on-main-thread.h"
- 
- /* Declared constants and enum for python stack printing.  */
- static const char python_excp_none[] = "none";
-@@ -228,13 +227,37 @@
- 
-   m_error->restore ();
- 
--  PyGILState_Release (m_state);
-   python_gdbarch = m_gdbarch;
-   python_language = m_language;
- 
-   restore_active_ext_lang (m_previous_active);
-+  PyGILState_Release (m_state);
- }
- 
-+/* A helper class to save and restore the GIL, but without touching
-+   the other globals that are handled by gdbpy_enter.  */
-+
-+class gdbpy_gil
-+{
-+public:
-+
-+  gdbpy_gil ()
-+    : m_state (PyGILState_Ensure ())
-+  {
-+  }
-+
-+  ~gdbpy_gil ()
-+  {
-+    PyGILState_Release (m_state);
-+  }
-+
-+  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
-+
-+private:
-+
-+  PyGILState_STATE m_state;
-+};
-+
- /* Set the quit flag.  */
- 
- static void
-@@ -248,6 +271,10 @@
- static int
- gdbpy_check_quit_flag (const struct extension_language_defn *extlang)
- {
-+  if (!gdb_python_initialized)
-+    return 0;
-+
-+  gdbpy_gil gil;
-   return PyOS_InterruptOccurred ();
- }
- 
-@@ -942,60 +969,54 @@
- /* A single event.  */
- struct gdbpy_event
- {
--  /* The Python event.  This is just a callable object.  */
--  PyObject *event;
--  /* The next event.  */
--  struct gdbpy_event *next;
--};
-+  gdbpy_event (gdbpy_ref<> &&func)
-+    : m_func (func.release ())
-+  {
-+  }
-+
-+  gdbpy_event (gdbpy_event &&other)
-+    : m_func (other.m_func)
-+  {
-+    other.m_func = nullptr;
-+  }
- 
--/* All pending events.  */
--static struct gdbpy_event *gdbpy_event_list;
--/* The final link of the event list.  */
--static struct gdbpy_event **gdbpy_event_list_end;
--
--/* So that we can wake up the main thread even when it is blocked in
--   poll().  */
--static struct serial_event *gdbpy_serial_event;
--
--/* The file handler callback.  This reads from the internal pipe, and
--   then processes the Python event queue.  This will always be run in
--   the main gdb thread.  */
-+  gdbpy_event (const gdbpy_event &other)
-+    : m_func (other.m_func)
-+  {
-+    gdbpy_gil gil;
-+    Py_XINCREF (m_func);
-+  }
- 
--static void
--gdbpy_run_events (int error, gdb_client_data client_data)
--{
--  gdbpy_enter enter_py (get_current_arch (), current_language);
-+  ~gdbpy_event ()
-+  {
-+    gdbpy_gil gil;
-+    Py_XDECREF (m_func);
-+  }
-+
-+  gdbpy_event &operator= (const gdbpy_event &other) = delete;
- 
--  /* Clear the event fd.  Do this before flushing the events list, so
--     that any new event post afterwards is sure to re-awake the event
--     loop.  */
--  serial_event_clear (gdbpy_serial_event);
--
--  while (gdbpy_event_list)
--    {
--      /* Dispatching the event might push a new element onto the event
--	 loop, so we update here "atomically enough".  */
--      struct gdbpy_event *item = gdbpy_event_list;
--      gdbpy_event_list = gdbpy_event_list->next;
--      if (gdbpy_event_list == NULL)
--	gdbpy_event_list_end = &gdbpy_event_list;
-+  void operator() ()
-+  {
-+    gdbpy_enter enter_py (get_current_arch (), current_language);
- 
--      gdbpy_ref<> call_result (PyObject_CallObject (item->event, NULL));
-+    gdbpy_ref<> call_result (PyObject_CallObject (m_func, NULL));
-       if (call_result == NULL)
- 	gdbpy_print_stack ();
--
--      Py_DECREF (item->event);
--      xfree (item);
-     }
--}
-+
-+private:
-+
-+  /* The Python event.  This is just a callable object.  Note that
-+     this is not a gdbpy_ref<>, because we have to take particular
-+     care to only destroy the reference when holding the GIL. */
-+  PyObject *m_func;
-+};
- 
- /* Submit an event to the gdb thread.  */
- static PyObject *
- gdbpy_post_event (PyObject *self, PyObject *args)
- {
--  struct gdbpy_event *event;
-   PyObject *func;
--  int wakeup;
- 
-   if (!PyArg_ParseTuple (args, "O", &func))
-     return NULL;
-@@ -1007,38 +1028,13 @@
-       return NULL;
-     }
- 
--  Py_INCREF (func);
--
--  /* From here until the end of the function, we have the GIL, so we
--     can operate on our global data structures without worrying.  */
--  wakeup = gdbpy_event_list == NULL;
--
--  event = XNEW (struct gdbpy_event);
--  event->event = func;
--  event->next = NULL;
--  *gdbpy_event_list_end = event;
--  gdbpy_event_list_end = &event->next;
--
--  /* Wake up gdb when needed.  */
--  if (wakeup)
--    serial_event_set (gdbpy_serial_event);
-+  gdbpy_ref<> func_ref = gdbpy_ref<>::new_reference (func);
-+  gdbpy_event event (std::move (func_ref));
-+  run_on_main_thread (event);
- 
-   Py_RETURN_NONE;
- }
- 
--/* Initialize the Python event handler.  */
--static int
--gdbpy_initialize_events (void)
--{
--  gdbpy_event_list_end = &gdbpy_event_list;
--
--  gdbpy_serial_event = make_serial_event ();
--  add_file_handler (serial_event_fd (gdbpy_serial_event),
--		    gdbpy_run_events, NULL);
--
--  return 0;
--}
--
- 
- 
- /* This is the extension_language_ops.before_prompt "method".  */
-@@ -1573,6 +1569,7 @@
- 
-   Py_Finalize ();
- 
-+  gdb_python_initialized = false;
-   restore_active_ext_lang (previous_active);
- }
- 
-@@ -1701,7 +1698,6 @@
-       || gdbpy_initialize_linetable () < 0
-       || gdbpy_initialize_thread () < 0
-       || gdbpy_initialize_inferior () < 0
--      || gdbpy_initialize_events () < 0
-       || gdbpy_initialize_eventregistry () < 0
-       || gdbpy_initialize_py_events () < 0
-       || gdbpy_initialize_event () < 0
-@@ -1736,8 +1732,7 @@
-     return false;
- 
-   /* Release the GIL while gdb runs.  */
--  PyThreadState_Swap (NULL);
--  PyEval_ReleaseLock ();
-+  PyEval_SaveThread ();
- 
-   make_final_cleanup (finalize_python, NULL);
- 
---- /dev/null	2023-07-16 09:39:45.472000000 +0200
-+++ b/gdb/run-on-main-thread.h	2023-07-30 10:43:06.264134972 +0200
-@@ -0,0 +1,28 @@
-+/* Run a function on the main thread
-+   Copyright (C) 2019 Free Software Foundation, Inc.
-+
-+   This file is part of GDB.
-+
-+   This program is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-+
-+#ifndef GDB_RUN_ON_MAIN_THREAD_H
-+#define GDB_RUN_ON_MAIN_THREAD_H
-+
-+#include <functional>
-+
-+/* Send a runnable to the main thread.  */
-+
-+extern void run_on_main_thread (std::function<void ()> &&);
-+
-+#endif /* GDB_RUN_ON_MAIN_THREAD_H */
---- /dev/null	2023-07-16 09:39:45.472000000 +0200
-+++ b/gdb/run-on-main-thread.c	2023-07-30 10:43:03.510435316 +0200
+From d389392f3ba60319005d4cb6ecc890df77fe4327 Mon Sep 17 00:00:00 2001
+From: Tom Tromey <tom@tromey.com>
+Date: Fri, 8 Mar 2019 15:51:06 -0700
+Subject: [PATCH 1/9] Introduce run_on_main_thread
+
+This introduces a way for a callback to be run on the main thread.
+
+gdb/ChangeLog
+2019-11-26  Tom Tromey  <tom@tromey.com>
+
+	* run-on-main-thread.c: New file.
+	* run-on-main-thread.h: New file.
+	* unittests/main-thread-selftests.c: New file.
+	* Makefile.in (SUBDIR_UNITTESTS_SRCS): Add
+	main-thread-selftests.c.
+	(HFILES_NO_SRCDIR): Add run-on-main-thread.h.
+	(COMMON_SFILES): Add run-on-main-thread.c.
+
+Change-Id: I16ef82f0564e9f8a524bdc64cb31df79a988ad9f
+---
+ gdb/Makefile.in          |  2 +
+ gdb/run-on-main-thread.c | 97 ++++++++++++++++++++++++++++++++++++++++
+ gdb/run-on-main-thread.h | 28 ++++++++++++
+ 3 files changed, 127 insertions(+)
+ create mode 100644 gdb/run-on-main-thread.c
+ create mode 100644 gdb/run-on-main-thread.h
+
+diff --git a/gdb/Makefile.in b/gdb/Makefile.in
+index 5614cc3386c..a7942e6c37f 100644
+--- a/gdb/Makefile.in
++++ b/gdb/Makefile.in
+@@ -1100,6 +1100,7 @@ COMMON_SFILES = \
+ 	remote-fileio.c \
+ 	remote-notif.c \
+ 	reverse.c \
++	run-on-main-thread.c \
+ 	rust-lang.c \
+ 	sentinel-frame.c \
+ 	ser-event.c \
+@@ -1362,6 +1363,7 @@ HFILES_NO_SRCDIR = \
+ 	riscv-tdep.h \
+ 	rs6000-aix-tdep.h \
+ 	rs6000-tdep.h \
++	run-on-main-thread.h \
+ 	s390-linux-tdep.h \
+ 	s390-tdep.h \
+ 	score-tdep.h \
+diff --git a/gdb/run-on-main-thread.c b/gdb/run-on-main-thread.c
+new file mode 100644
+index 00000000000..86824b5af4a
+--- /dev/null
++++ b/gdb/run-on-main-thread.c
 @@ -0,0 +1,97 @@
 +/* Run a function on the main thread
 +   Copyright (C) 2019 Free Software Foundation, Inc.
@@ -363,27 +148,62 @@ index 67f362b852d0..4bdd2201abc3 100644
 +  runnable_event = make_serial_event ();
 +  add_file_handler (serial_event_fd (runnable_event), run_events, nullptr);
 +}
---- a/gdb/Makefile.in	2023-07-30 10:45:06.611621149 +0200
-+++ b/gdb/Makefile.in	2023-07-30 10:46:04.284435216 +0200
-@@ -1100,6 +1100,7 @@
- 	remote-fileio.c \
- 	remote-notif.c \
- 	reverse.c \
-+	run-on-main-thread.c \
- 	rust-lang.c \
- 	sentinel-frame.c \
- 	ser-event.c \
-@@ -1362,6 +1363,7 @@
- 	riscv-tdep.h \
- 	rs6000-aix-tdep.h \
- 	rs6000-tdep.h \
-+	run-on-main-thread.h \
- 	s390-linux-tdep.h \
- 	s390-tdep.h \
- 	score-tdep.h \
+diff --git a/gdb/run-on-main-thread.h b/gdb/run-on-main-thread.h
+new file mode 100644
+index 00000000000..fd1a2c42532
+--- /dev/null
++++ b/gdb/run-on-main-thread.h
+@@ -0,0 +1,28 @@
++/* Run a function on the main thread
++   Copyright (C) 2019 Free Software Foundation, Inc.
++
++   This file is part of GDB.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
++
++#ifndef GDB_RUN_ON_MAIN_THREAD_H
++#define GDB_RUN_ON_MAIN_THREAD_H
++
++#include <functional>
++
++/* Send a runnable to the main thread.  */
++
++extern void run_on_main_thread (std::function<void ()> &&);
++
++#endif /* GDB_RUN_ON_MAIN_THREAD_H */
+-- 
+2.54.0
+
+
+From 724ef51a366dd301e7258eeac7bd177bed3de061 Mon Sep 17 00:00:00 2001
+From: Raul Tambre <raul@tambre.ee>
+Date: Sat, 4 May 2019 15:48:17 -0400
+Subject: [PATCH 2/9] Fix incorrect use of 'is' operator for comparison in
+ python/lib/gdb/command/prompt.py
+
+The 'is' operator is not meant to be used for comparisons. It currently working
+is an implementation detail of CPython.  CPython 3.8 has added a SyntaxWarning
+for this.
+---
+ gdb/python/lib/gdb/command/prompt.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gdb/python/lib/gdb/command/prompt.py b/gdb/python/lib/gdb/command/prompt.py
+index 3d662a7d3f1..04b9e49c229 100644
 --- a/gdb/python/lib/gdb/command/prompt.py
 +++ b/gdb/python/lib/gdb/command/prompt.py
-@@ -45,7 +45,7 @@ def __init__(self):
+@@ -45,7 +45,7 @@ The currently defined substitutions are:
          self.hook_set = False
  
      def get_show_string (self, pvalue):
@@ -392,7 +212,7 @@ index 67f362b852d0..4bdd2201abc3 100644
             return "The extended prompt is: " + self.value
          else:
             return "The extended prompt is not set."
-@@ -57,7 +57,7 @@ def get_set_string (self):
+@@ -57,7 +57,7 @@ The currently defined substitutions are:
          return ""
  
      def before_prompt_hook(self, current):
@@ -401,3 +221,981 @@ index 67f362b852d0..4bdd2201abc3 100644
              return gdb.prompt.substitute_prompt(self.value)
          else:
              return None
+-- 
+2.54.0
+
+
+From 356a9c3eb083ef3a077bdcf16cd81eff2705d7ea Mon Sep 17 00:00:00 2001
+From: Tom Tromey <tom@tromey.com>
+Date: Sat, 8 Jun 2019 08:15:57 -0600
+Subject: [PATCH 3/9] Use run_on_main_thread in gdb.post_event
+
+This changes gdb.post_event to use the new run_on_main_thread
+function.  This is somewhat tricky because the Python GIL must be held
+while manipulating reference counts.
+
+2019-11-26  Tom Tromey  <tom@tromey.com>
+
+	* python/python.c (class gdbpy_gil): New.
+	(struct gdbpy_event): Add constructor, destructor, operator().
+	(gdbpy_post_event): Use run_on_main_thread.
+	(gdbpy_initialize_events): Remove.
+	(do_start_initialization): Update.
+
+Change-Id: Ie4431e60f328dae48bd96b6c6a8e875e70bda1de
+---
+ gdb/python/python.c | 135 +++++++++++++++++++++-----------------------
+ 1 file changed, 63 insertions(+), 72 deletions(-)
+
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index c23db2c1261..fa21e13ee57 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -28,14 +28,13 @@
+ #include "value.h"
+ #include "language.h"
+ #include "event-loop.h"
+-#include "serial.h"
+ #include "readline/tilde.h"
+ #include "python.h"
+ #include "extension-priv.h"
+ #include "cli/cli-utils.h"
+ #include <ctype.h>
+ #include "location.h"
+-#include "ser-event.h"
++#include "run-on-main-thread.h"
+ 
+ /* Declared constants and enum for python stack printing.  */
+ static const char python_excp_none[] = "none";
+@@ -939,63 +938,81 @@ gdbpy_source_script (const struct extension_language_defn *extlang,
+ 
+ /* Posting and handling events.  */
+ 
++/* A helper class to save and restore the GIL, but without touching
++   the other globals that are handled by gdbpy_enter.  */
++
++class gdbpy_gil
++{
++public:
++
++  gdbpy_gil ()
++    : m_state (PyGILState_Ensure ())
++  {
++  }
++
++  ~gdbpy_gil ()
++  {
++    PyGILState_Release (m_state);
++  }
++
++  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
++
++private:
++
++  PyGILState_STATE m_state;
++};
++
+ /* A single event.  */
+ struct gdbpy_event
+ {
+-  /* The Python event.  This is just a callable object.  */
+-  PyObject *event;
+-  /* The next event.  */
+-  struct gdbpy_event *next;
+-};
++  gdbpy_event (gdbpy_ref<> &&func)
++    : m_func (func.release ())
++  {
++  }
+ 
+-/* All pending events.  */
+-static struct gdbpy_event *gdbpy_event_list;
+-/* The final link of the event list.  */
+-static struct gdbpy_event **gdbpy_event_list_end;
++  gdbpy_event (gdbpy_event &&other)
++    : m_func (other.m_func)
++  {
++    other.m_func = nullptr;
++  }
+ 
+-/* So that we can wake up the main thread even when it is blocked in
+-   poll().  */
+-static struct serial_event *gdbpy_serial_event;
++  gdbpy_event (const gdbpy_event &other)
++    : m_func (other.m_func)
++  {
++    gdbpy_gil gil;
++    Py_XINCREF (m_func);
++  }
++
++  ~gdbpy_event ()
++  {
++    gdbpy_gil gil;
++    Py_XDECREF (m_func);
++  }
+ 
+-/* The file handler callback.  This reads from the internal pipe, and
+-   then processes the Python event queue.  This will always be run in
+-   the main gdb thread.  */
++  gdbpy_event &operator= (const gdbpy_event &other) = delete;
+ 
+-static void
+-gdbpy_run_events (int error, gdb_client_data client_data)
+-{
+-  gdbpy_enter enter_py (get_current_arch (), current_language);
++  void operator() ()
++  {
++    gdbpy_enter enter_py (get_current_arch (), current_language);
+ 
+-  /* Clear the event fd.  Do this before flushing the events list, so
+-     that any new event post afterwards is sure to re-awake the event
+-     loop.  */
+-  serial_event_clear (gdbpy_serial_event);
++    gdbpy_ref<> call_result (PyObject_CallObject (m_func, NULL));
++    if (call_result == NULL)
++      gdbpy_print_stack ();
++  }
+ 
+-  while (gdbpy_event_list)
+-    {
+-      /* Dispatching the event might push a new element onto the event
+-	 loop, so we update here "atomically enough".  */
+-      struct gdbpy_event *item = gdbpy_event_list;
+-      gdbpy_event_list = gdbpy_event_list->next;
+-      if (gdbpy_event_list == NULL)
+-	gdbpy_event_list_end = &gdbpy_event_list;
+-
+-      gdbpy_ref<> call_result (PyObject_CallObject (item->event, NULL));
+-      if (call_result == NULL)
+-	gdbpy_print_stack ();
++private:
+ 
+-      Py_DECREF (item->event);
+-      xfree (item);
+-    }
+-}
++  /* The Python event.  This is just a callable object.  Note that
++     this is not a gdbpy_ref<>, because we have to take particular
++     care to only destroy the reference when holding the GIL. */
++  PyObject *m_func;
++};
+ 
+ /* Submit an event to the gdb thread.  */
+ static PyObject *
+ gdbpy_post_event (PyObject *self, PyObject *args)
+ {
+-  struct gdbpy_event *event;
+   PyObject *func;
+-  int wakeup;
+ 
+   if (!PyArg_ParseTuple (args, "O", &func))
+     return NULL;
+@@ -1007,38 +1024,13 @@ gdbpy_post_event (PyObject *self, PyObject *args)
+       return NULL;
+     }
+ 
+-  Py_INCREF (func);
+-
+-  /* From here until the end of the function, we have the GIL, so we
+-     can operate on our global data structures without worrying.  */
+-  wakeup = gdbpy_event_list == NULL;
+-
+-  event = XNEW (struct gdbpy_event);
+-  event->event = func;
+-  event->next = NULL;
+-  *gdbpy_event_list_end = event;
+-  gdbpy_event_list_end = &event->next;
+-
+-  /* Wake up gdb when needed.  */
+-  if (wakeup)
+-    serial_event_set (gdbpy_serial_event);
++  gdbpy_ref<> func_ref = gdbpy_ref<>::new_reference (func);
++  gdbpy_event event (std::move (func_ref));
++  run_on_main_thread (event);
+ 
+   Py_RETURN_NONE;
+ }
+ 
+-/* Initialize the Python event handler.  */
+-static int
+-gdbpy_initialize_events (void)
+-{
+-  gdbpy_event_list_end = &gdbpy_event_list;
+-
+-  gdbpy_serial_event = make_serial_event ();
+-  add_file_handler (serial_event_fd (gdbpy_serial_event),
+-		    gdbpy_run_events, NULL);
+-
+-  return 0;
+-}
+-
+ 
+ 
+ /* This is the extension_language_ops.before_prompt "method".  */
+@@ -1701,7 +1693,6 @@ do_start_initialization ()
+       || gdbpy_initialize_linetable () < 0
+       || gdbpy_initialize_thread () < 0
+       || gdbpy_initialize_inferior () < 0
+-      || gdbpy_initialize_events () < 0
+       || gdbpy_initialize_eventregistry () < 0
+       || gdbpy_initialize_py_events () < 0
+       || gdbpy_initialize_event () < 0
+-- 
+2.54.0
+
+
+From 81e74d34e77bd1d88927e7215b59e7d436976a9e Mon Sep 17 00:00:00 2001
+From: Philippe Waroquiers <philippe.waroquiers@skynet.be>
+Date: Sat, 23 Nov 2019 11:08:12 +0100
+Subject: [PATCH 4/9] Fix crashes due to python GIL released too early
+
+When running GDB tests under Valgrind, various tests are failing due
+to invalid memory access.
+Here is the stack trace reported by Valgrind, for gdb.base/freebpcmd.exp :
+  ==18658== Invalid read of size 8
+  ==18658==    at 0x7F9107: is_main (signalmodule.c:195)
+  ==18658==    by 0x7F9107: PyOS_InterruptOccurred (signalmodule.c:1730)
+  ==18658==    by 0x3696E2: check_quit_flag() (extension.c:829)
+  ==18658==    by 0x36980B: restore_active_ext_lang(active_ext_lang_state*) (extension.c:782)
+  ==18658==    by 0x48F617: gdbpy_enter::~gdbpy_enter() (python.c:235)
+  ==18658==    by 0x47BB71: add_thread_object(thread_info*) (object.h:470)
+  ==18658==    by 0x53A84D: operator() (std_function.h:687)
+  ==18658==    by 0x53A84D: notify (observable.h:106)
+  ==18658==    by 0x53A84D: add_thread_silent(ptid_t) (thread.c:311)
+  ==18658==    by 0x3CD954: inf_ptrace_target::create_inferior(char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&
+  , char**, int) (inf-ptrace.c:139)
+  ==18658==    by 0x3FE644: linux_nat_target::create_inferior(char const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&,
+   char**, int) (linux-nat.c:1094)
+  ==18658==    by 0x3D5727: run_command_1(char const*, int, run_how) (infcmd.c:633)
+  ==18658==    by 0x2C05D1: cmd_func(cmd_list_element*, char const*, int) (cli-decode.c:1948)
+  ==18658==    by 0x53F29F: execute_command(char const*, int) (top.c:639)
+  ==18658==    by 0x3638EB: command_handler(char const*) (event-top.c:586)
+  ==18658==    by 0x36468C: command_line_handler(std::unique_ptr<char, gdb::xfree_deleter<char> >&&) (event-top.c:771)
+  ==18658==    by 0x36407C: gdb_rl_callback_handler(char*) (event-top.c:217)
+  ==18658==    by 0x5B2A1F: rl_callback_read_char (callback.c:281)
+  ==18658==    by 0x36346D: gdb_rl_callback_read_char_wrapper_noexcept() (event-top.c:175)
+  ==18658==    by 0x363F70: gdb_rl_callback_read_char_wrapper(void*) (event-top.c:192)
+  ==18658==    by 0x3633AF: stdin_event_handler(int, void*) (event-top.c:514)
+  ==18658==    by 0x362504: gdb_wait_for_event (event-loop.c:857)
+  ==18658==    by 0x362504: gdb_wait_for_event(int) (event-loop.c:744)
+  ==18658==    by 0x362676: gdb_do_one_event() [clone .part.11] (event-loop.c:321)
+  ==18658==    by 0x3627AD: gdb_do_one_event (event-loop.c:303)
+  ==18658==    by 0x3627AD: start_event_loop() (event-loop.c:370)
+  ==18658==    by 0x41D35A: captured_command_loop() (main.c:381)
+  ==18658==    by 0x41F2A4: captured_main (main.c:1224)
+  ==18658==    by 0x41F2A4: gdb_main(captured_main_args*) (main.c:1239)
+  ==18658==    by 0x227D0A: main (gdb.c:32)
+  ==18658==  Address 0x10 is not stack'd, malloc'd or (recently) free'd
+
+The problem seems to be created by gdbpy_enter::~gdbpy_enter () releasing the GIL lock
+too early:
+~gdbpy_enter () does:
+      ...
+      PyGILState_Release (m_state);
+      python_gdbarch = m_gdbarch;
+      python_language = m_language;
+
+      restore_active_ext_lang (m_previous_active);
+    }
+
+So, it releases the GIL lock, does 2 assignments and then leads to the following
+call sequence:
+  restore_active_ext_lang => check_quit_flag => python.c gdbpy_check_quit_flag
+     => PyOS_InterruptOccurred => is_main.
+is_main code is:
+    static int
+    is_main(_PyRuntimeState *runtime)
+    {
+        unsigned long thread = PyThread_get_thread_ident();
+        PyInterpreterState *interp = _PyRuntimeState_GetThreadState(runtime)->interp;
+        return (thread == runtime->main_thread
+                && interp == runtime->interpreters.main);
+    }
+
+The macros and functions to access the thread state are documented as:
+    /* Variable and macro for in-line access to current thread
+       and interpreter state */
+
+    #define _PyRuntimeState_GetThreadState(runtime) \
+        ((PyThreadState*)_Py_atomic_load_relaxed(&(runtime)->gilstate.tstate_current))
+
+    /* Get the current Python thread state.
+
+       Efficient macro reading directly the 'gilstate.tstate_current' atomic
+       variable. The macro is unsafe: it does not check for error and it can
+       return NULL.
+
+       The caller must hold the GIL.
+
+       See also PyThreadState_Get() and PyThreadState_GET(). */
+    #define _PyThreadState_GET() _PyRuntimeState_GetThreadState(&_PyRuntime)
+
+So, we see that GDB releases the GIL and then potentially calls
+_PyRuntimeState_GetThreadState that needs the GIL.
+
+It is not very clear why the problem is only observed when running under
+Valgrind.  Probably caused by the slowdown due to Valgrind and/or to the 'single
+thread' scheduling by Valgrind.
+
+This patch fixes the crashes by releasing the GIT lock later.
+
+2019-11-26  Philippe Waroquiers  <philippe.waroquiers@skynet.be>
+
+	* python/python.c (gdbpy_enter::~gdbpy_enter): Release GIL after
+	restore_active_ext_lang, as GIL is needed for (indirectly)
+	called PyOS_InterruptOccurred.
+---
+ gdb/python/python.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index fa21e13ee57..ea25fd583f4 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -227,11 +227,11 @@ gdbpy_enter::~gdbpy_enter ()
+ 
+   m_error->restore ();
+ 
+-  PyGILState_Release (m_state);
+   python_gdbarch = m_gdbarch;
+   python_language = m_language;
+ 
+   restore_active_ext_lang (m_previous_active);
++  PyGILState_Release (m_state);
+ }
+ 
+ /* Set the quit flag.  */
+-- 
+2.54.0
+
+
+From da7df9911969dae863d3bea4f66e68891b3333ae Mon Sep 17 00:00:00 2001
+From: Kevin Buettner <kevinb@redhat.com>
+Date: Wed, 27 May 2020 20:05:40 -0700
+Subject: [PATCH 5/9] Fix Python3.9 related runtime problems
+
+Python3.9b1 is now available on Rawhide.  GDB w/ Python 3.9 support
+can be built using the configure switch -with-python=/usr/bin/python3.9.
+
+Attempting to run gdb/Python3.9 segfaults on startup:
+
+    #0  0x00007ffff7b0582c in PyEval_ReleaseLock () from /lib64/libpython3.9.so.1.0
+    #1  0x000000000069ccbf in do_start_initialization ()
+	at worktree-test1/gdb/python/python.c:1789
+    #2  _initialize_python ()
+	at worktree-test1/gdb/python/python.c:1877
+    #3  0x00000000007afb0a in initialize_all_files () at init.c:237
+    ...
+
+Consulting the the documentation...
+
+https://docs.python.org/3/c-api/init.html
+
+...we find that PyEval_ReleaseLock() has been deprecated since version
+3.2.  It recommends using PyEval_SaveThread or PyEval_ReleaseThread()
+instead.  In do_start_initialization, in gdb/python/python.c, we
+can replace the calls to PyThreadState_Swap() and PyEval_ReleaseLock()
+with a single call to PyEval_SaveThread.   (Thanks to Keith Seitz
+for working this out.)
+
+With that in place, GDB gets a little bit further.  It still dies
+on startup, but the backtrace is different:
+
+    #0  0x00007ffff7b04306 in PyOS_InterruptOccurred ()
+       from /lib64/libpython3.9.so.1.0
+    #1  0x0000000000576e86 in check_quit_flag ()
+	at worktree-test1/gdb/extension.c:776
+    #2  0x0000000000576f8a in set_active_ext_lang (now_active=now_active@entry=0x983c00 <extension_language_python>)
+	at worktree-test1/gdb/extension.c:705
+    #3  0x000000000069d399 in gdbpy_enter::gdbpy_enter (this=0x7fffffffd2d0,
+	gdbarch=0x0, language=0x0)
+	at worktree-test1/gdb/python/python.c:211
+    #4  0x0000000000686e00 in python_new_inferior (inf=0xddeb10)
+	at worktree-test1/gdb/python/py-inferior.c:251
+    #5  0x00000000005d9fb9 in std::function<void (inferior*)>::operator()(inferior*) const (__args#0=<optimized out>, this=0xccad20)
+	at /usr/include/c++/10/bits/std_function.h:617
+    #6  gdb::observers::observable<inferior*>::notify (args#0=0xddeb10,
+	this=<optimized out>)
+	at worktree-test1/gdb/../gdbsupport/observable.h:106
+    #7  add_inferior_silent (pid=0)
+	at worktree-test1/gdb/inferior.c:113
+    #8  0x00000000005dbcb8 in initialize_inferiors ()
+	at worktree-test1/gdb/inferior.c:947
+    ...
+
+We checked with some Python Developers and were told that we should
+acquire the GIL prior to calling any Python C API function.  We
+definitely don't have the GIL for calls of PyOS_InterruptOccurred().
+
+I moved class_gdbpy_gil earlier in the file and use it in
+gdbpy_check_quit_flag() to acquire (and automatically release) the
+GIL.
+
+With those changes in place, I was able to run to a GDB prompt.  But,
+when trying to quit, it segfaulted again due to due to some other
+problems with gdbpy_check_quit_flag():
+
+    Thread 1 "gdb" received signal SIGSEGV, Segmentation fault.
+    0x00007ffff7bbab0c in new_threadstate () from /lib64/libpython3.9.so.1.0
+    (top-gdb) bt 8
+    #0  0x00007ffff7bbab0c in new_threadstate () from /lib64/libpython3.9.so.1.0
+    #1  0x00007ffff7afa5ea in PyGILState_Ensure.cold ()
+       from /lib64/libpython3.9.so.1.0
+    #2  0x000000000069b58c in gdbpy_gil::gdbpy_gil (this=<synthetic pointer>)
+	at worktree-test1/gdb/python/python.c:278
+    #3  gdbpy_check_quit_flag (extlang=<optimized out>)
+	at worktree-test1/gdb/python/python.c:278
+    #4  0x0000000000576e96 in check_quit_flag ()
+	at worktree-test1/gdb/extension.c:776
+    #5  0x000000000057700c in restore_active_ext_lang (previous=0xe9c050)
+	at worktree-test1/gdb/extension.c:729
+    #6  0x000000000088913a in do_my_cleanups (
+	pmy_chain=0xc31870 <final_cleanup_chain>,
+	old_chain=0xae5720 <sentinel_cleanup>)
+	at worktree-test1/gdbsupport/cleanups.cc:131
+    #7  do_final_cleanups ()
+	at worktree-test1/gdbsupport/cleanups.cc:143
+
+In this case, we're trying to call a Python C API function after
+Py_Finalize() has been called from finalize_python().  I made
+finalize_python set gdb_python_initialized to false and then cause
+check_quit_flag() to return early when it's false.
+
+With these changes in place, GDB seems to be working again with
+Python3.9b1.  I think it likely that there are other problems lurking.
+I wouldn't be surprised to find that there are other calls into Python
+where we don't first make sure that we have the GIL.  Further changes
+may well be needed.
+
+I see no regressions testing on Rawhide using a GDB built with the
+default Python version (3.8.3) versus one built using Python 3.9b1.
+
+I've also tested on Fedora 28, 29, 30, 31, and 32 (all x86_64) using
+the default (though updated) system installed versions of Python on
+those OSes.  This means that I've tested against Python versions
+2.7.15, 2.7.17, 2.7.18, 3.7.7, 3.8.2, and 3.8.3.  In each case GDB
+still builds without problem and shows no regressions after applying
+this patch.
+
+gdb/ChangeLog:
+
+2020-MM-DD  Kevin Buettner  <kevinb@redhat.com>
+	    Keith Seitz  <keiths@redhat.com>
+
+	* python/python.c (do_start_initialization): For Python 3.9 and
+	later, call PyEval_SaveThread instead of PyEval_ReleaseLock.
+	(class gdbpy_gil): Move to earlier in file.
+	(finalize_python): Set gdb_python_initialized.
+	(gdbpy_check_quit_flag): Acquire GIL via gdbpy_gil.  Return early
+	when not initialized.
+---
+ gdb/python/python.c | 56 ++++++++++++++++++++++++---------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
+
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index ea25fd583f4..6c26c3961f8 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -234,6 +234,30 @@ gdbpy_enter::~gdbpy_enter ()
+   PyGILState_Release (m_state);
+ }
+ 
++/* A helper class to save and restore the GIL, but without touching
++   the other globals that are handled by gdbpy_enter.  */
++
++class gdbpy_gil
++{
++public:
++
++  gdbpy_gil ()
++    : m_state (PyGILState_Ensure ())
++  {
++  }
++
++  ~gdbpy_gil ()
++  {
++    PyGILState_Release (m_state);
++  }
++
++  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
++
++private:
++
++  PyGILState_STATE m_state;
++};
++
+ /* Set the quit flag.  */
+ 
+ static void
+@@ -247,6 +271,10 @@ gdbpy_set_quit_flag (const struct extension_language_defn *extlang)
+ static int
+ gdbpy_check_quit_flag (const struct extension_language_defn *extlang)
+ {
++  if (!gdb_python_initialized)
++    return 0;
++
++  gdbpy_gil gil;
+   return PyOS_InterruptOccurred ();
+ }
+ 
+@@ -938,30 +966,6 @@ gdbpy_source_script (const struct extension_language_defn *extlang,
+ 
+ /* Posting and handling events.  */
+ 
+-/* A helper class to save and restore the GIL, but without touching
+-   the other globals that are handled by gdbpy_enter.  */
+-
+-class gdbpy_gil
+-{
+-public:
+-
+-  gdbpy_gil ()
+-    : m_state (PyGILState_Ensure ())
+-  {
+-  }
+-
+-  ~gdbpy_gil ()
+-  {
+-    PyGILState_Release (m_state);
+-  }
+-
+-  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
+-
+-private:
+-
+-  PyGILState_STATE m_state;
+-};
+-
+ /* A single event.  */
+ struct gdbpy_event
+ {
+@@ -1565,6 +1569,7 @@ finalize_python (void *ignore)
+ 
+   Py_Finalize ();
+ 
++  gdb_python_initialized = false;
+   restore_active_ext_lang (previous_active);
+ }
+ 
+@@ -1727,8 +1732,7 @@ do_start_initialization ()
+     return false;
+ 
+   /* Release the GIL while gdb runs.  */
+-  PyThreadState_Swap (NULL);
+-  PyEval_ReleaseLock ();
++  PyEval_SaveThread ();
+ 
+   make_final_cleanup (finalize_python, NULL);
+ 
+-- 
+2.54.0
+
+
+From 925362df09a58af820bff3181f349375c37b8047 Mon Sep 17 00:00:00 2001
+From: Kevin Buettner <kevinb@redhat.com>
+Date: Thu, 30 Jun 2022 15:40:29 -0700
+Subject: [PATCH 6/9] Handle Python 3.11 deprecation of PySys_SetPath and
+ Py_SetProgramName
+
+Python 3.11 deprecates PySys_SetPath and Py_SetProgramName.  The
+PyConfig API replaces these and other functions.  This commit uses the
+PyConfig API to provide equivalent functionality while also preserving
+support for older versions of Python, i.e. those before Python 3.8.
+
+A beta version of Python 3.11 is available in Fedora Rawhide.  Both
+Fedora 35 and Fedora 36 use Python 3.10, while Fedora 34 still used
+Python 3.9.  I've tested these changes on Fedora 34, Fedora 36, and
+rawhide, though complete testing was not possible on rawhide due to
+a kernel bug.  That being the case, I decided to enable the newer
+PyConfig API by testing PY_VERSION_HEX against 0x030a0000.  This
+corresponds to Python 3.10.
+
+We could try to use the PyConfig API for Python versions as early as 3.8,
+but I'm reluctant to do this as there may have been PyConfig related
+bugs in earlier versions which have since been fixed.  Recent linux
+distributions should have support for Python 3.10.  This should be
+more than adequate for testing the new Python initialization code in
+GDB.
+
+Information about the PyConfig API as well as the motivation behind
+deprecating the old interface can be found at these links:
+
+https://github.com/python/cpython/issues/88279
+https://peps.python.org/pep-0587/
+https://docs.python.org/3.11/c-api/init_config.html
+
+The v2 commit also addresses several problems that Simon found in
+the v1 version.
+
+In v1, I had used Py_DontWriteBytecodeFlag in the new initialization
+code, but Simon pointed out that this global configuration variable
+will be deprecated in Python 3.12.  This version of the patch no longer
+uses Py_DontWriteBytecodeFlag in the new initialization code.
+Additionally, both Py_DontWriteBytecodeFlag and Py_IgnoreEnvironmentFlag
+will no longer be used when building GDB against Python 3.10 or higher.
+While it's true that both of these global configuration variables are
+deprecated in Python 3.12, it makes sense to disable their use for
+gdb builds against 3.10 and higher since those are the versions for
+which the PyConfig API is now being used by GDB.  (The PyConfig API
+includes different mechanisms for making the same settings afforded
+by use of the soon-to-be deprecated global configuration variables.)
+
+Simon also noted that PyConfig_Clear() would not have be called for
+one of the failure paths.  I've fixed that problem and also made the
+rest of the "bail out" code more direct.  In particular,
+PyConfig_Clear() will always be called, both for success and failure.
+
+The v3 patch addresses some rebase conflicts related to module
+initialization .  Commit 3acd9a692dd ("Make 'import gdb.events' work")
+uses PyImport_ExtendInittab instead of PyImport_AppendInittab.  That
+commit also initializes a struct for each module to import.  Both the
+initialization and the call to were moved ahead of the ifdefs to avoid
+having to replicate (at least some of) the code three times in various
+portions of the ifdefs.
+
+Bug: https://sourceware.org/bugzilla/show_bug.cgi?id=28668
+Bug: https://sourceware.org/bugzilla/show_bug.cgi?id=29287
+---
+ gdb/python/python-internal.h |  5 +++++
+ gdb/python/python.c          | 11 +++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/gdb/python/python-internal.h b/gdb/python/python-internal.h
+index d11af83c8e5..da3055d926e 100644
+--- a/gdb/python/python-internal.h
++++ b/gdb/python/python-internal.h
+@@ -263,6 +263,10 @@ gdb_PySys_GetObject (const char *name)
+ 
+ #define PySys_GetObject gdb_PySys_GetObject
+ 
++/* PySys_SetPath was deprecated in Python 3.11.  Disable the deprecated
++   code for Python 3.10 and newer.  */
++#if PY_VERSION_HEX < 0x030a0000
++
+ /* PySys_SetPath's 'path' parameter was missing the 'const' qualifier
+    before Python 3.6.  Hence, we wrap it in a function to avoid errors
+    when compiled with -Werror.  */
+@@ -280,6 +284,7 @@ gdb_PySys_SetPath (const GDB_PYSYS_SETPATH_CHAR *path)
+ }
+ 
+ #define PySys_SetPath gdb_PySys_SetPath
++#endif
+ 
+ /* Wrap PyGetSetDef to allow convenient construction with string
+    literals.  Unfortunately, PyGetSetDef's 'name' and 'doc' members
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index 6c26c3961f8..23d65df0db9 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -1844,6 +1844,16 @@ do_finish_initialization (const struct extension_language_defn *extlang)
+ 
+   sys_path = PySys_GetObject ("path");
+ 
++  /* PySys_SetPath was deprecated in Python 3.11.  Disable this
++     deprecated code for Python 3.10 and newer.  Also note that this
++     ifdef eliminates potential initialization of sys.path via
++     PySys_SetPath.  My (kevinb's) understanding of PEP 587 suggests
++     that it's not necessary due to module_search_paths being
++     initialized to an empty list following any of the PyConfig
++     initialization functions.  If it does turn out that some kind of
++     initialization is still needed, it should be added to the
++     PyConfig-based initialization in do_start_initialize().  */
++#if PY_VERSION_HEX < 0x030a0000
+   /* If sys.path is not defined yet, define it first.  */
+   if (!(sys_path && PyList_Check (sys_path)))
+     {
+@@ -1854,6 +1864,7 @@ do_finish_initialization (const struct extension_language_defn *extlang)
+ #endif
+       sys_path = PySys_GetObject ("path");
+     }
++#endif
+   if (sys_path && PyList_Check (sys_path))
+     {
+       gdbpy_ref<> pythondir (PyString_FromString (gdb_pythondir.c_str ()));
+-- 
+2.54.0
+
+
+From 1d22fe67228ea84e3047e299a387097b27407c08 Mon Sep 17 00:00:00 2001
+From: Andrew Burgess <aburgess@redhat.com>
+Date: Wed, 6 Dec 2023 16:57:11 +0100
+Subject: [PATCH 7/9] gdb/python: avoid use of _PyOS_ReadlineTState
+
+In python/py-gdb-readline.c we make use of _PyOS_ReadlineTState,
+however, this variable is no longer public in Python 3.13, and so GDB
+no longer builds.
+
+We are making use of _PyOS_ReadlineTState in order to re-acquire the
+Python Global Interpreter Lock (GIL).  The _PyOS_ReadlineTState
+variable is set in Python's outer readline code prior to calling the
+user (GDB) supplied readline callback function, which for us is
+gdbpy_readline_wrapper.  The gdbpy_readline_wrapper function is called
+without the GIL held.
+
+Instead of using _PyOS_ReadlineTState, I propose that we switch to
+calling PyGILState_Ensure() and PyGILState_Release().  These functions
+will acquire the GIL based on the current thread.  I think this should
+be sufficient; I can't imagine why we'd be running
+gdbpy_readline_wrapper on one thread on behalf of a different Python
+thread.... that would be unexpected I think.
+
+Approved-By: Tom Tromey <tom@tromey.com>
+---
+ gdb/python/py-gdb-readline.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/gdb/python/py-gdb-readline.c b/gdb/python/py-gdb-readline.c
+index 1e6cd739d6a..9dec7bf12e3 100644
+--- a/gdb/python/py-gdb-readline.c
++++ b/gdb/python/py-gdb-readline.c
+@@ -50,13 +50,11 @@ gdbpy_readline_wrapper (FILE *sys_stdin, FILE *sys_stdout,
+       if (except.reason == RETURN_QUIT)
+ 	return NULL;
+ 
+-      /* The thread state is nulled during gdbpy_readline_wrapper,
+-	 with the original value saved in the following undocumented
+-	 variable (see Python's Parser/myreadline.c and
+-	 Modules/readline.c).  */
+-      PyEval_RestoreThread (_PyOS_ReadlineTState);
++
++      /* This readline callback is called without the GIL held.  */
++      gdbpy_gil gil;
++
+       gdbpy_convert_exception (except);
+-      PyEval_SaveThread ();
+       return NULL;
+     }
+   END_CATCH
+-- 
+2.54.0
+
+
+From 140dc180f4e2887688ca61d04c3bdff0b2d5f361 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Alexandra=20H=C3=A1jkov=C3=A1?= <ahajkova@redhat.com>
+Date: Wed, 6 Dec 2023 17:17:25 +0100
+Subject: [PATCH 8/9] gdb: move gdbpy_gil into python-internal.h
+
+Move gdbpy_gil class into python-internal.h, the next
+commit wants to make use of this class from a file other
+than python.c.
+
+Approved-By: Tom Tromey <tom@tromey.com>
+---
+ gdb/python/python-internal.h | 24 ++++++++++++++++++++++++
+ gdb/python/python.c          | 24 ------------------------
+ 2 files changed, 24 insertions(+), 24 deletions(-)
+
+diff --git a/gdb/python/python-internal.h b/gdb/python/python-internal.h
+index da3055d926e..10ee6ccc636 100644
+--- a/gdb/python/python-internal.h
++++ b/gdb/python/python-internal.h
+@@ -728,6 +728,30 @@ extern const struct language_defn *python_language;
+       }						\
+   } while (0)
+ 
++/* A helper class to save and restore the GIL, but without touching
++   the other globals that are handled by gdbpy_enter.  */
++
++class gdbpy_gil
++{
++public:
++
++  gdbpy_gil ()
++    : m_state (PyGILState_Ensure ())
++  {
++  }
++
++  ~gdbpy_gil ()
++  {
++    PyGILState_Release (m_state);
++  }
++
++  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
++
++private:
++
++  PyGILState_STATE m_state;
++};
++
+ /* Use this after a TRY_EXCEPT to throw the appropriate Python
+    exception.  This macro is for use inside setter functions.  */
+ #define GDB_PY_SET_HANDLE_EXCEPTION(Exception)				\
+diff --git a/gdb/python/python.c b/gdb/python/python.c
+index 23d65df0db9..99260024f63 100644
+--- a/gdb/python/python.c
++++ b/gdb/python/python.c
+@@ -234,30 +234,6 @@ gdbpy_enter::~gdbpy_enter ()
+   PyGILState_Release (m_state);
+ }
+ 
+-/* A helper class to save and restore the GIL, but without touching
+-   the other globals that are handled by gdbpy_enter.  */
+-
+-class gdbpy_gil
+-{
+-public:
+-
+-  gdbpy_gil ()
+-    : m_state (PyGILState_Ensure ())
+-  {
+-  }
+-
+-  ~gdbpy_gil ()
+-  {
+-    PyGILState_Release (m_state);
+-  }
+-
+-  DISABLE_COPY_AND_ASSIGN (gdbpy_gil);
+-
+-private:
+-
+-  PyGILState_STATE m_state;
+-};
+-
+ /* Set the quit flag.  */
+ 
+ static void
+-- 
+2.54.0
+
+
+From f360f35c2b503a7116fc832fbc4213ab66beec42 Mon Sep 17 00:00:00 2001
+From: Carlos Galvez <carlosgalvezp@gmail.com>
+Date: Sat, 21 Dec 2024 22:25:40 +0100
+Subject: [PATCH 9/9] Fix -Wenum-constexpr-conversion in enum-flags.h
+
+This fixes PR 31331:
+https://sourceware.org/bugzilla/show_bug.cgi?id=31331
+
+Currently, enum-flags.h is suppressing the warning
+-Wenum-constexpr-conversion coming from recent versions of Clang.
+This warning is intended to be made a compiler error
+(non-downgradeable) in future versions of Clang:
+
+https://github.com/llvm/llvm-project/issues/59036
+
+The rationale is that casting a value of an integral type into an
+enumeration is Undefined Behavior if the value does not fit in the
+range of values of the enum:
+https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#1766
+
+Undefined Behavior is not allowed in constant expressions, leading to
+an ill-formed program.
+
+In this case, in enum-flags.h, we are casting the value -1 to an enum
+of a positive range only, which is UB as per the Standard and thus not
+allowed in a constexpr context.
+
+The purpose of doing this instead of using std::underlying_type is
+because, for C-style enums, std::underlying_type typically returns
+"unsigned int". However, when operating with it arithmetically, the
+enum is promoted to *signed* int, which is what we want to avoid.
+
+This patch solves this issue as follows:
+
+* Use std::underlying_type and remove the custom enum_underlying_type.
+
+* Ensure that operator~ is called always on an unsigned integer. We do
+  this by casting the input enum into std::size_t, which can fit any
+  unsigned integer. We have the guarantee that the cast is safe,
+  because we have checked that the underlying type is unsigned. If the
+  enum had negative values, the underlying type would be signed.
+
+  This solves the issue with C-style enums, but also solves a hidden
+  issue: enums with underlying type of std::uint8_t or std::uint16_t are
+  *also* promoted to signed int. Now they are all explicitly casted
+  to the largest unsigned int type and operator~ is safe to use.
+
+* There is one more thing that needs fix. Currently, operator~ is
+  implemented as follows:
+
+  return (enum_type) ~underlying(e);
+
+  After applying ~underlying(e), the result is a very large value,
+  which we then cast to "enum_type". This cast is Undefined Behavior
+  if the large value does not fit in the range of the enum. For
+  C++ enums (scoped and/or with explicit underlying type), the range
+  of the enum is the entire range of the underlying type, so the cast
+  is safe. However, for C-style enums, the range is the smallest
+  bit-field that can hold all the values of the enumeration. So the
+  range is a lot smaller and casting a large value to the enum would
+  invoke Undefined Behavior.
+
+  To solve this problem, we create a new trait
+  EnumHasFixedUnderlyingType, to ensure operator~ may only be called
+  on C++-style enums. This behavior is roughly the same as what we
+  had on trunk, but relying on different properties of the enums.
+
+* Once this is implemented, the following tests fail to compile:
+
+  CHECK_VALID (true,  int,  true ? EF () : EF2 ())
+
+  This is because it expects the enums to be promoted to signed int,
+  instead of unsigned int (which is the true underlying type).
+
+  I propose to remove these tests altogether, because:
+
+  - The comment nearby say they are not very important.
+  - Comparing 2 enums of different type like that is strange, relies
+    on integer promotions and thus hurts readability. As per comments
+    in the related PR, we likely don't want this type of code in gdb
+    code anyway, so there's no point in testing it.
+  - Most importantly, this type of comparison will be ill-formed in
+    C++26 for regular enums, so enum_flags does not need to emulate
+    that.
+
+Since this is the only place where the warning was suppressed, remove
+also the corresponding macro in include/diagnostics.h.
+
+The change has been tested by running the entire gdb test suite
+(make check) and comparing the results (testsuite/gdb.sum) against
+trunk. No noticeable differences have been observed.
+
+Bug: https://sourceware.org/bugzilla/show_bug.cgi?id=31331
+Tested-by: Keith Seitz <keiths@redhat.com>
+Approved-By: Tom Tromey <tom@tromey.com>
+---
+ gdb/common/enum-flags.h | 22 +---------------------
+ 1 file changed, 1 insertion(+), 21 deletions(-)
+
+diff --git a/gdb/common/enum-flags.h b/gdb/common/enum-flags.h
+index 88ba5910f9d..0f8bc825b3a 100644
+--- a/gdb/common/enum-flags.h
++++ b/gdb/common/enum-flags.h
+@@ -66,32 +66,12 @@ template<typename T> struct enum_flags_type {};
+     typedef enum_flags<enum_type> type;			\
+   }
+ 
+-/* Until we can rely on std::underlying type being universally
+-   available (C++11), roll our own for enums.  */
+-template<int size, bool sign> class integer_for_size { typedef void type; };
+-template<> struct integer_for_size<1, 0> { typedef uint8_t type; };
+-template<> struct integer_for_size<2, 0> { typedef uint16_t type; };
+-template<> struct integer_for_size<4, 0> { typedef uint32_t type; };
+-template<> struct integer_for_size<8, 0> { typedef uint64_t type; };
+-template<> struct integer_for_size<1, 1> { typedef int8_t type; };
+-template<> struct integer_for_size<2, 1> { typedef int16_t type; };
+-template<> struct integer_for_size<4, 1> { typedef int32_t type; };
+-template<> struct integer_for_size<8, 1> { typedef int64_t type; };
+-
+-template<typename T>
+-struct enum_underlying_type
+-{
+-  typedef typename
+-    integer_for_size<sizeof (T), static_cast<bool>(T (-1) < T (0))>::type
+-    type;
+-};
+-
+ template <typename E>
+ class enum_flags
+ {
+ public:
+   typedef E enum_type;
+-  typedef typename enum_underlying_type<enum_type>::type underlying_type;
++  typedef typename std::underlying_type<enum_type>::type underlying_type;
+ 
+ private:
+   /* Private type used to support initializing flag types with zero:
+-- 
+2.54.0
+
