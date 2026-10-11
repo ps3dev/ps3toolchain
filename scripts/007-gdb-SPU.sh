@@ -40,7 +40,8 @@ CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversi
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
-    --disable-werror
+    --disable-werror \
+    --with-system-zlib
 
 ## Compile and install.
 PROCS="$(nproc --all 2>&1)" || ret=$?
