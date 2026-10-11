@@ -1,7 +1,9 @@
-#!/bin/sh -e
+#!/usr/bin/env bash
+set -eo pipefail
 # gdb-SPU.sh by Naomi Peori (naomi@peori.ca)
 
 GDB="gdb-8.3.1"
+source ../utils/utils.sh
 
 if [ ! -d ${GDB} ]; then
 
@@ -12,7 +14,8 @@ if [ ! -d ${GDB} ]; then
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  tar xfvJ ../archives/${GDB}.tar.xz
+  echo "Unpacking ${GDB}"
+  extract "../archives/${GDB}.tar.xz"
 
   ## Patch the source code.
   cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
