@@ -52,6 +52,9 @@ if [ $1 ]; then
   BUILD_SCRIPTS="$REQUESTS"
 fi
 
+## A preset host CC, CXX, CPP, or LDFLAGS is picked up by the cross build.
+unset CC CXX CPP LDFLAGS
+
 ## Run the build scripts.
 for SCRIPT in $BUILD_SCRIPTS; do
   echo ">>> Running: $SCRIPT"
