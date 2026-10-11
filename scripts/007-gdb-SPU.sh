@@ -6,13 +6,13 @@ GDB="gdb-8.3.1"
 if [ ! -d ${GDB} ]; then
 
   ## Download the source code.
-  if [ ! -f ${GDB}.tar.xz ]; then wget --continue https://ftpmirror.gnu.org/gnu/gdb/${GDB}.tar.xz; fi
+  ../download.sh ${GDB}.tar.xz
 
   ## Fetch config.guess and config.sub, falling back to copies if Savannah is unavailable
   ../config/get-config-scripts.sh
 
   ## Unpack the source code.
-  tar xfvJ ${GDB}.tar.xz
+  tar xfvJ ../archives/${GDB}.tar.xz
 
   ## Patch the source code.
   cat ../patches/${GDB}-PS3.patch | patch -p1 -d ${GDB}
