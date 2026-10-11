@@ -34,6 +34,7 @@ fi
 cd ${GDB}/build-ppu
 
 ## Configure the build.
+CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration" \
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
     --disable-multilib \
     --disable-nls \

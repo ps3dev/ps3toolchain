@@ -34,6 +34,7 @@ fi
 cd ${GDB}/build-spu
 
 ## Configure the build.
+CFLAGS="${CFLAGS:-} -std=gnu17 -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration" \
 ../configure --prefix="$PS3DEV/spu" --target="spu" \
     --disable-nls \
     --disable-sim \
