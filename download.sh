@@ -178,29 +178,6 @@ EOF
     done < "$ARCHIVE"
 }
 
-# Guess a GNU/sourceware URL when archives.txt has no matching line.
-guess_url() {
-    file="$1"
-    case "$file" in
-        binutils-*.tar.*)
-            printf 'https://ftpmirror.gnu.org/gnu/binutils/%s\n' "$file"
-            ;;
-        gcc-*.tar.*)
-            ver="${file%.tar.*}"
-            printf 'https://ftpmirror.gnu.org/gnu/gcc/%s/%s\n' "$ver" "$file"
-            ;;
-        newlib-*.tar.*)
-            printf 'https://sourceware.org/pub/newlib/%s\n' "$file"
-            ;;
-        gdb-*.tar.*)
-            printf 'https://ftpmirror.gnu.org/gnu/gdb/%s\n' "$file"
-            ;;
-        *)
-            return 1
-            ;;
-    esac
-}
-
 run_one() {
     target="$1"
     found=0
@@ -218,17 +195,11 @@ EOF
         found=1
         break
     done < "$ARCHIVE"
-    [ "$found" -eq 1 ] && return 0
-
-    if url=$(guess_url "$target"); then
-        echo "Not in $ARCHIVE; fetching $url" >&2
-        download "-" "-" "$url" "$target"
-        return 0
-    fi
-
-    echo "Not found: $target" >&2
-    echo "Add a line to archives/archives.txt or use a GNU/sourceware tarball name." >&2
-    exit 1
+    [ "$found" -eq 1 ] || {
+        echo "Not found: $target" >&2
+        echo "Add a line to archives/archives.txt, including the SHA256." >&2
+        exit 1
+    }
 }
 
 # -----------------------------------------------------------------------------
