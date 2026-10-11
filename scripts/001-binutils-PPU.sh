@@ -36,7 +36,6 @@ fi
 cd ${BINUTILS}/build-ppu
 
 ## Configure the build.
-unset LDFLAGS
 ../configure --prefix="$PS3DEV/ppu" --target="powerpc64-ps3-elf" \
 		--with-gcc \
 		--with-gnu-as \
